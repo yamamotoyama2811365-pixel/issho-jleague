@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Jリーグ10問クイズ | MATCHDAY{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">10 QUESTIONS</p><h1>Jリーグ10問クイズ</h1><p>10問の正解数、同点なら回答時間でランキング。最後にニックネームを登録できます。</p></section>
+<div id="quiz-app" class="quiz-app">
+  <div id="quiz-start" class="panel quiz-start"><h2>準備はいい？</h2><p>出題は10問。スタートした瞬間からタイム計測。</p><button id="start-btn" type="button" class="btn primary big">10問スタート</button></div>
+  <div id="quiz-body" hidden><div class="quiz-progress"><span id="progress-text">1 / 10</span><div><i id="progress-bar"></i></div><b id="timer">0.00s</b></div><form id="quiz-form"><div id="question-box"></div><button id="next-btn" class="btn primary big" type="submit">次へ</button></form></div>
+  <div id="name-box" class="panel" hidden><h2>10問終了！</h2><p>ランキングに載せる名前を入力してください。</p><form id="name-form"><input id="nickname" maxlength="24" required placeholder="ニックネーム"><button class="btn primary big">結果を保存</button></form></div>
+  <div id="result-box" class="result-card" hidden><p class="eyebrow">RESULT</p><h2><span id="score">0</span>/10</h2><p><b id="rank">-</b>位 / <span id="final-time">0.00</span>秒</p><a class="btn primary" href="/leaderboard">ランキングを見る</a><button id="retry-btn" type="button" class="btn">もう一度</button></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='quiz.js') }}"></script>{% endblock %}
