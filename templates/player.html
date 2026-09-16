@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{ player.name }} | MATCHDAY{% endblock %}
+{% block content %}
+<section class="player-hero"><div class="shirt">{{ player.number if player.number is not none else '—' }}</div><div><p class="eyebrow">{{ player.club.league }} / {{ player.club.name }}</p><h1>{{ player.name }}</h1><p>{{ player.position or '' }}</p></div></section>
+<div class="stats-grid">
+<div><small>生年月日</small><b>{{ player.birthdate or '—' }}</b></div><div><small>出身地</small><b>{{ player.birthplace or '—' }}</b></div><div><small>身長</small><b>{{ player.height_cm or '—' }}{% if player.height_cm %}cm{% endif %}</b></div><div><small>体重</small><b>{{ player.weight_kg or '—' }}{% if player.weight_kg %}kg{% endif %}</b></div><div><small>出場</small><b>{{ player.appearances if player.appearances is not none else '—' }}</b></div><div><small>得点</small><b>{{ player.goals if player.goals is not none else '—' }}</b></div>
+</div>
+<div class="source-note">基本データ出典：<a href="{{ player.source_url }}" rel="nofollow noopener" target="_blank">Jリーグ公式 選手ページ</a>。画像・紹介文は転載していません。</div>
+{% endblock %}
