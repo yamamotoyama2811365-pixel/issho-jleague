@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}クイズランキング | MATCHDAY{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">LEADERBOARD</p><h1>クイズランキング</h1><p>正解数が多い順、同点なら回答時間が速い順。</p></section>
+<div class="tabs"><a class="{% if period=='all' %}active{% endif %}" href="/leaderboard?period=all">総合</a><a class="{% if period=='week' %}active{% endif %}" href="/leaderboard?period=week">7日間</a><a class="{% if period=='today' %}active{% endif %}" href="/leaderboard?period=today">今日</a></div>
+<div class="ranking-list large">{% for row in rows %}<div class="rank-row"><b>{{ loop.index }}</b><span>{{ row.nickname }}</span><strong>{{ row.score }}/10</strong><em>{{ '%.2f'|format(row.elapsed_ms/1000) }}秒</em></div>{% else %}<p class="empty">まだ記録がありません。</p>{% endfor %}</div>
+{% endblock %}
