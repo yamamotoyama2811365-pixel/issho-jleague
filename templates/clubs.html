@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}全60クラブ | MATCHDAY{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">ALL 60 CLUBS</p><h1>J1・J2・J3 全クラブ</h1><p>2026/27シーズンの60クラブをリーグ別に掲載。</p></section>
+{% for league in ['J1','J2','J3'] %}
+<h2 class="league-title">{{ league }}</h2>
+<div class="club-grid">
+{% for c in clubs if c.league == league %}<article class="club-card"><div class="club-badge">{{ league }}</div><h3>{{ c.name }}</h3><p>{% if c.stadium %}{{ c.stadium.name }}{% else %}スタジアム情報同期待ち{% endif %}</p><a href="/players?club={{ c.slug }}">所属選手を見る →</a></article>{% endfor %}
+</div>
+{% endfor %}
+{% endblock %}
