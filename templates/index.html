@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">J1 / J2 / J3 FAN PORTAL</p>
+    <h1>一生Jリーグ。</h1>
+    <p class="lead">選手を調べる。スタジアムへ行く。クイズで競う。Jリーグの“次の一戦”をもっと楽しむための場所。</p>
+    <div class="hero-actions"><a class="btn primary" href="/players">全選手を見る</a><a class="btn" href="/quiz">10問クイズに挑戦</a></div>
+  </div>
+  <div class="scoreboard">
+    <div><b>{{ club_count }}</b><span>CLUBS</span></div>
+    <div><b>{{ player_count }}</b><span>PLAYERS</span></div>
+    <div><b>{{ stadium_count }}</b><span>STADIUMS</span></div>
+  </div>
+</section>
+<section class="grid3 feature-grid">
+  <article class="feature"><span>01</span><h2>全選手名鑑</h2><p>J1・J2・J3を横断して、クラブ、ポジション、背番号、出身地などから探せます。</p><a href="/players">選手検索へ →</a></article>
+  <article class="feature"><span>02</span><h2>スタジアム遠征</h2><p>座席エリアの独自図解、アクセス、スタグル、ホテル、観光まで1ページにまとめます。</p><a href="/stadiums">スタジアムへ →</a></article>
+  <article class="feature"><span>03</span><h2>10問クイズ</h2><p>10問の正解数と回答時間で競争。ニックネームを保存してランキング掲載。</p><a href="/quiz">挑戦する →</a></article>
+</section>
+<section class="section-head"><div><p class="eyebrow">LEADERBOARD</p><h2>総合ランキング</h2></div><a href="/leaderboard">100位まで見る →</a></section>
+<div class="ranking-list">
+{% for row in top %}<div class="rank-row"><b>{{ loop.index }}</b><span>{{ row.nickname }}</span><strong>{{ row.score }}/10</strong><em>{{ '%.2f'|format(row.elapsed_ms/1000) }}秒</em></div>{% else %}<p class="empty">まだ記録がありません。最初の挑戦者になろう。</p>{% endfor %}
+</div>
+{% endblock %}
