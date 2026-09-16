@@ -5,8 +5,9 @@
 出場/得点、スタジアム名・入場可能数・住所などの事実項目と出典URLのみ。
 """
 import re
-import time
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import urljoin
@@ -23,14 +24,18 @@ sys.path.insert(0, str(ROOT))
 from app import SessionLocal, Club, Player, Stadium, init_db  # noqa: E402
 
 BASE = "https://www.jleague.jp"
-UA = "IsshoJLeague/1.1 (+factual roster sync)"
+UA = "IsshoJLeague/1.2 (+factual roster sync)"
 HEADERS = {"User-Agent": UA, "Accept-Language": "ja,en;q=0.5"}
-SESSION = requests.Session()
-SESSION.headers.update(HEADERS)
-SESSION.mount("https://", HTTPAdapter(max_retries=Retry(
-    total=3, connect=3, read=3, backoff_factor=0.8,
-    status_forcelist=(429, 500, 502, 503, 504), allowed_methods=("GET",)
-)))
+
+
+def new_session():
+    s = requests.Session()
+    s.headers.update(HEADERS)
+    s.mount("https://", HTTPAdapter(max_retries=Retry(
+        total=2, connect=2, read=2, backoff_factor=0.7,
+        status_forcelist=(429, 500, 502, 503, 504), allowed_methods=("GET",)
+    )))
+    return s
 
 
 def clean(text):
@@ -88,7 +93,7 @@ def player_from_cells(cells, club_slug, source_url):
 
 
 def player_from_anchor(a, club_slug, source_url):
-    """Jリーグ側がtableタグを使わない表示でも、選手リンクの最小親要素から抽出する。"""
+    """tableタグが無い表示でも、選手リンクを含む最小のデータ行から抽出する。"""
     name = clean(a.get_text(" "))
     if not name:
         return None
@@ -111,8 +116,7 @@ def player_from_anchor(a, club_slug, source_url):
     hm = re.search(r"(\d{3})\s*/\s*(\d{2,3})", row_text)
     if not (pm and bm and hm):
         return None
-    before_birth = row_text[:bm.start()]
-    before_birth = before_birth.replace(name, " ").replace("HG", " ")
+    before_birth = row_text[:bm.start()].replace(name, " ").replace("HG", " ")
     before_birth = re.sub(r"\b(?:GK|DF|MF|FW)\s*\d{1,3}\b", " ", before_birth)
     birthplace = clean(before_birth).strip("| -") or None
     after_hw = row_text[hm.end():]
@@ -130,12 +134,29 @@ def player_from_anchor(a, club_slug, source_url):
     }
 
 
+def roster_anchors(soup):
+    """最初の「選手一覧」見出しから次の大見出しまでの選手リンクだけ返す。"""
+    headings = [h for h in soup.find_all(["h2", "h3"]) if clean(h.get_text(" ")) == "選手一覧"]
+    if headings:
+        heading = headings[0]
+        found = []
+        for el in heading.find_all_next(["a", "h2", "h3"]):
+            if el is not heading and el.name in {"h2", "h3"}:
+                label = clean(el.get_text(" "))
+                if label and label != "選手一覧":
+                    break
+            if el.name == "a" and re.search(r"^/player/\d+/?(?:[?#].*)?$", el.get("href") or ""):
+                found.append(el)
+        if found:
+            return found
+    return soup.find_all("a", href=re.compile(r"^/player/\d+/?(?:[?#].*)?$"))
+
+
 def parse_players(html, club_slug, source_url):
     soup = BeautifulSoup(html, "html.parser")
     rows = []
     seen_urls = set()
 
-    # 1) 通常のtable構造がある場合
     for table in soup.find_all("table"):
         txt = clean(table.get_text(" "))
         if "出生地" not in txt or "生年月日" not in txt or "身長/体重" not in txt:
@@ -145,20 +166,17 @@ def parse_players(html, club_slug, source_url):
             if p and p["source_url"] not in seen_urls:
                 seen_urls.add(p["source_url"]); rows.append(p)
 
-    # 2) レスポンシブ表示等でtableタグが無い場合。/player/123... のリンクを起点に最小行を読む
     if not rows:
-        for a in soup.find_all("a", href=re.compile(r"^/player/\d+/?(?:[?#].*)?$")):
+        for a in roster_anchors(soup):
             href = absolute(a.get("href")).split("?")[0].split("#")[0]
             if href in seen_urls:
                 continue
             p = player_from_anchor(a, club_slug, source_url)
             if p:
                 seen_urls.add(href); rows.append(p)
-
     return rows
 
 
-# 旧テストとの互換名
 def parse_player_table(html, club_slug, source_url):
     return parse_players(html, club_slug, source_url)
 
@@ -171,7 +189,6 @@ def parse_stadium(html, source_url):
     capacity = None
     address = None
 
-    # 「ホームスタジアム」の直後にある短い文字列を採用
     for i, line in enumerate(lines):
         if line == "ホームスタジアム":
             for cand in lines[i + 1:i + 7]:
@@ -183,7 +200,6 @@ def parse_stadium(html, source_url):
             if name:
                 break
 
-    # 保険: 空白入りコロンにも対応し、取得範囲を100文字以内に制限
     if not name:
         m = re.search(r"ホームスタジアム\s+(.{1,100}?)\s+入場可能数\s*[:：]\s*([\d,]+)\s*人", clean(" ".join(lines)))
         if m:
@@ -191,12 +207,9 @@ def parse_stadium(html, source_url):
             capacity = int(m.group(2).replace(",", ""))
 
     if name:
-        # 同じスタジアム名の後に「入場可能数」が続く箇所から収容人数を取得
-        pat = re.compile(re.escape(name) + r"\s*\n\s*入場可能数\s*[:：]\s*([\d,]+)\s*人")
-        cm = pat.search(joined)
+        cm = re.search(re.escape(name) + r"\s*\n\s*入場可能数\s*[:：]\s*([\d,]+)\s*人", joined)
         if cm:
             capacity = int(cm.group(1).replace(",", ""))
-        # ページ下部のスタジアム節では、その次行が住所。上部の「監督」は除外する
         addr_pat = re.compile(re.escape(name) + r"\s*\n\s*入場可能数\s*[:：]\s*[\d,]+\s*人\s*\n([^\n]{3,160})")
         for am in addr_pat.finditer(joined):
             cand = clean(am.group(1))
@@ -210,39 +223,45 @@ def parse_stadium(html, source_url):
 
 
 def discover_official_urls():
-    """リーグ公式のクラブ一覧から現在の正確な /club/<slug>/ URL を解決する。"""
     found = {}
+    s = new_session()
     for league in ("j1", "j2", "j3"):
-        r = SESSION.get(f"{BASE}/{league}/club/", timeout=25)
+        r = s.get(f"{BASE}/{league}/club/", timeout=20)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         for a in soup.find_all("a", href=True):
             label = clean(a.get_text(" "))
-            href = a.get("href") or ""
-            m = re.search(r"/club/([^/?#]+)/?", href)
+            m = re.search(r"/club/([^/?#]+)/?", a.get("href") or "")
             if label and m:
                 found[label] = f"{BASE}/club/{m.group(1)}/player/"
-        time.sleep(0.4)
+        time.sleep(0.25)
     return found
 
 
-def sync_club(club, official_url=None, delay=0.8):
-    url = official_url or club.source_url or f"{BASE}/club/{club.slug}/player/"
-    r = SESSION.get(url, timeout=25)
+def fetch_club(club_id, club_name, club_slug, fallback_url, official_url):
+    url = official_url or fallback_url or f"{BASE}/club/{club_slug}/player/"
+    s = new_session()
+    r = s.get(url, timeout=22)
     r.raise_for_status()
-    players = parse_players(r.text, club.slug, url)
-    stadium = parse_stadium(r.text, url)
+    return {
+        "club_id": club_id, "club_name": club_name, "club_slug": club_slug, "url": url,
+        "players": parse_players(r.text, club_slug, url),
+        "stadium": parse_stadium(r.text, url),
+    }
 
+
+def save_club(payload):
     with SessionLocal() as db:
-        c = db.scalar(select(Club).where(Club.id == club.id))
-        c.source_url = url
-
-        # 選手はスタジアム抽出の成否と切り離して必ず更新
+        c = db.scalar(select(Club).where(Club.id == payload["club_id"]))
+        if not c:
+            return
+        c.source_url = payload["url"]
         old = db.scalars(select(Player).where(Player.club_id == c.id)).all()
         for p in old:
             db.delete(p)
         db.flush()
-        for p in players:
+        for pdata in payload["players"]:
+            p = dict(pdata)
             base = p.pop("slug")[:155]
             unique = base
             i = 2
@@ -250,24 +269,21 @@ def sync_club(club, official_url=None, delay=0.8):
                 suffix = f"-{i}"; unique = base[:160-len(suffix)] + suffix; i += 1
             db.add(Player(club_id=c.id, slug=unique, updated_at=datetime.now(timezone.utc), **p))
 
+        stadium = payload["stadium"]
         if stadium.get("name"):
             s = db.scalar(select(Stadium).where(Stadium.name == stadium["name"]))
             if not s:
-                st_slug = (slugify(stadium["name"], allow_unicode=False) or f"{club.slug}-stadium")[:175]
+                st_slug = (slugify(stadium["name"], allow_unicode=False) or f"{c.slug}-stadium")[:175]
                 s = Stadium(name=stadium["name"][:160], slug=st_slug,
                             capacity=stadium.get("capacity"), address=stadium.get("address"),
-                            source_url=url)
-                db.add(s)
-                db.flush()
+                            source_url=payload["url"])
+                db.add(s); db.flush()
             else:
                 s.capacity = stadium.get("capacity") or s.capacity
                 s.address = stadium.get("address") or s.address
-                s.source_url = url
+                s.source_url = payload["url"]
             c.stadium_id = s.id
-
         db.commit()
-    print(f"{club.league} {club.name}: players={len(players)} stadium={stadium.get('name')}", flush=True)
-    time.sleep(delay)
 
 
 def main():
@@ -278,13 +294,25 @@ def main():
     except Exception as e:
         print(f"WARN official URL discovery failed: {e}", flush=True)
         official = {}
+
     with SessionLocal() as db:
         clubs = db.scalars(select(Club).order_by(Club.league, Club.id)).all()
-    for club in clubs:
-        try:
-            sync_club(club, official.get(club.name))
-        except Exception as e:
-            print(f"ERROR {club.league} {club.name}: {e}", flush=True)
+        club_rows = [(c.id, c.league, c.name, c.slug, c.source_url) for c in clubs]
+
+    # 公式サイトへの同時アクセスは4件までに抑える。
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        jobs = {
+            pool.submit(fetch_club, cid, name, slug, fallback, official.get(name)):
+            (league, name) for cid, league, name, slug, fallback in club_rows
+        }
+        for future in as_completed(jobs):
+            league, name = jobs[future]
+            try:
+                payload = future.result()
+                save_club(payload)
+                print(f"{league} {name}: players={len(payload['players'])} stadium={payload['stadium'].get('name')}", flush=True)
+            except Exception as e:
+                print(f"ERROR {league} {name}: {e}", flush=True)
 
 if __name__ == "__main__":
     main()
