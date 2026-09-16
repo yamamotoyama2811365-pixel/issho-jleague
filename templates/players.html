@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}全選手名鑑 | MATCHDAY{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">PLAYER DIRECTORY</p><h1>J1・J2・J3 全選手</h1><p>登録済み {{ total }} 人。同期後は60クラブの選手を横断検索できます。</p></section>
+<form class="filterbar" method="get">
+  <input name="q" value="{{ q }}" placeholder="選手名・クラブ名・出身地で検索">
+  <select name="league"><option value="">全リーグ</option>{% for x in ['J1','J2','J3'] %}<option value="{{ x }}" {% if league==x %}selected{% endif %}>{{ x }}</option>{% endfor %}</select>
+  <select name="club"><option value="">全クラブ</option>{% for c in clubs %}<option value="{{ c.slug }}" {% if club_slug==c.slug %}selected{% endif %}>{{ c.league }} {{ c.name }}</option>{% endfor %}</select>
+  <button class="btn primary">検索</button>
+</form>
+<div class="player-list">
+{% for p in players %}
+<a class="player-row" href="/player/{{ p.slug }}"><span class="num">{{ p.number if p.number is not none else '-' }}</span><span><b>{{ p.name }}</b><small>{{ p.club.name }}</small></span><span class="pos">{{ p.position or '-' }}</span><span class="bio">{{ p.birthplace or '' }}{% if p.height_cm %} / {{ p.height_cm }}cm{% endif %}</span></a>
+{% else %}<div class="empty panel"><h3>選手データは同期待ちです</h3><p>同期スクリプト実行後、ここにJ1・J2・J3の選手が表示されます。</p></div>{% endfor %}
+</div>
+{% endblock %}
