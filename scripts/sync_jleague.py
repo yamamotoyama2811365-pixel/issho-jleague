@@ -3,7 +3,11 @@
 画像、ロゴ、エンブレム、公式紹介文、公式座席図は保存・転載しない。
 保存するのは選手名・背番号・ポジション・出生地・生年月日・身長体重・
 出場/得点、スタジアム名・入場可能数・住所などの事実項目と出典URLのみ。
+
+通常のWebデプロイではこの同期を実行しない。
+RUN_FULL_SYNC=1 が設定された専用更新ジョブでのみ実行する。
 """
+import os
 import re
 import sys
 import time
@@ -315,4 +319,7 @@ def main():
                 print(f"ERROR {league} {name}: {e}", flush=True)
 
 if __name__ == "__main__":
+    if os.getenv("RUN_FULL_SYNC") != "1":
+        print("Full J.League sync skipped (RUN_FULL_SYNC is not enabled).", flush=True)
+        raise SystemExit(0)
     main()
