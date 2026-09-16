@@ -171,7 +171,7 @@ def players():
             stmt = stmt.where(Club.league == league)
         if club_slug:
             stmt = stmt.where(Club.slug == club_slug)
-        stmt = stmt.order_by(Club.league, Club.name, Player.position, Player.number.nulls_last(), Player.name).limit(500)
+        stmt = stmt.order_by(Club.league, Club.name, Player.position, Player.number.nulls_last(), Player.name).limit(5000)
         rows = db.scalars(stmt).all()
         clubs = db.scalars(select(Club).order_by(Club.league, Club.name)).all()
         total = db.scalar(select(func.count()).select_from(Player)) or 0
@@ -216,17 +216,25 @@ def quiz_start():
         if len(all_q) < 10:
             return jsonify({"error":"クイズ問題が10問未満です"}), 500
         chosen = random.sample(all_q, 10)
-        attempt = QuizAttempt(id=str(uuid.uuid4()), question_ids=",".join(str(x.id) for x in chosen))
-        db.add(attempt)
-        db.commit()
         payload = []
+        attempt_tokens = []
         for q in chosen:
+            original = {"A":q.option_a,"B":q.option_b,"C":q.option_c,"D":q.option_d}
+            correct_text = original[q.correct]
+            shuffled = list(original.values())
+            random.shuffle(shuffled)
+            options = {chr(65+i): text for i, text in enumerate(shuffled)}
+            correct_value = next(k for k, text in options.items() if text == correct_text)
+            attempt_tokens.append(f"{q.id}:{correct_value}")
             payload.append({
                 "id": q.id,
                 "question": q.question,
                 "category": q.category,
-                "options": {"A":q.option_a,"B":q.option_b,"C":q.option_c,"D":q.option_d}
+                "options": options
             })
+        attempt = QuizAttempt(id=str(uuid.uuid4()), question_ids=",".join(attempt_tokens))
+        db.add(attempt)
+        db.commit()
         return jsonify({"attempt_id":attempt.id, "questions":payload})
 
 @app.post("/api/quiz/submit")
@@ -245,7 +253,17 @@ def quiz_submit():
             return jsonify({"error":"挑戦データが見つかりません"}), 404
         if attempt.completed_at is not None:
             return jsonify({"error":"この挑戦は送信済みです"}), 409
-        ids = [int(x) for x in attempt.question_ids.split(",") if x]
+        tokens = [x for x in attempt.question_ids.split(",") if x]
+        ids = []
+        attempt_keys = {}
+        for token in tokens:
+            if ":" in token:
+                raw_id, key = token.split(":", 1)
+                qid = int(raw_id)
+                attempt_keys[qid] = key.upper()
+            else:
+                qid = int(token)
+            ids.append(qid)
         qs = db.scalars(select(QuizQuestion).where(QuizQuestion.id.in_(ids))).all()
         qmap = {q.id:q for q in qs}
         score = 0
@@ -253,9 +271,10 @@ def quiz_submit():
         for qid in ids:
             q = qmap.get(qid)
             ans = str(answers.get(str(qid), "")).upper()
-            ok = bool(q and ans == q.correct)
+            correct_value = attempt_keys.get(qid, q.correct if q else "")
+            ok = bool(q and ans == correct_value)
             score += int(ok)
-            details.append({"id":qid,"correct":ok,"correct_value": q.correct if q else None,"explanation":q.explanation if q else None})
+            details.append({"id":qid,"correct":ok,"correct_value": correct_value if q else None,"explanation":q.explanation if q else None})
         now = datetime.now(timezone.utc)
         started = attempt.started_at
         if started.tzinfo is None:
