@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+issho_jleague.db
+.pytest_cache/
