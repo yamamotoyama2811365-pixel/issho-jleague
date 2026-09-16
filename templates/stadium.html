@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ stadium.name }} | MATCHDAY{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">STADIUM GUIDE</p><h1>{{ stadium.name }}</h1><p>{% for c in stadium.clubs %}{{ c.name }}{% if not loop.last %} / {% endif %}{% endfor %}</p></section>
+<div class="stadium-layout">
+  <section class="panel seat-panel">
+    <div class="section-head mini"><div><p class="eyebrow">ORIGINAL GUIDE MAP</p><h2>観戦エリア簡易図</h2></div></div>
+    <svg class="seatmap" viewBox="0 0 760 460" role="img" aria-label="スタジアム簡易観戦エリア図">
+      <rect x="135" y="80" width="490" height="300" rx="42" class="stand"/>
+      <rect x="215" y="140" width="330" height="180" rx="8" class="pitch"/>
+      <rect x="110" y="150" width="85" height="160" rx="20" class="zone"/><text x="152" y="235">ホーム</text>
+      <rect x="565" y="150" width="85" height="160" rx="20" class="zone alt"/><text x="607" y="235">アウェイ</text>
+      <rect x="235" y="55" width="290" height="60" rx="18" class="zone neutral"/><text x="380" y="91">バックスタンド</text>
+      <rect x="235" y="345" width="290" height="60" rx="18" class="zone neutral"/><text x="380" y="381">メインスタンド</text>
+      <text x="380" y="235" class="pitch-label">PITCH</text>
+    </svg>
+    <p class="caption">公式座席図の転載ではなく、観戦エリアの位置関係を示す独自簡易図。実際のゲート・席種・ホーム/アウェイ区分は各試合の公式案内で確認してください。</p>
+  </section>
+  <aside class="panel facts"><h2>基本情報</h2><dl><dt>収容人数</dt><dd>{{ stadium.capacity if stadium.capacity else '確認中' }}{% if stadium.capacity %}人{% endif %}</dd><dt>住所</dt><dd>{{ stadium.address or '確認中' }}</dd><dt>ホームクラブ</dt><dd>{% for c in stadium.clubs %}{{ c.name }}{% if not loop.last %}<br>{% endif %}{% endfor %}</dd></dl></aside>
+</div>
+<div class="guide-grid">
+<article class="panel"><h2>どの席で観る？</h2><p>{{ stadium.seat_note or '初観戦・応援重視・静かに観たい・子連れ・雨天など、目的別のおすすめ席情報を追加する枠です。' }}</p></article>
+<article class="panel"><h2>アクセス</h2><p>{{ stadium.access_note or '最寄駅、主要駅・空港からの所要時間、徒歩ルート、駐車場情報を追加します。' }}</p></article>
+<article class="panel"><h2>スタグル</h2><p>{{ stadium.gourmet_note or '定番・人気・地域色の強いスタジアムグルメを掲載します。' }}</p></article>
+<article class="panel"><h2>ホテル・観光</h2><p>{{ stadium.hotel_note or '徒歩圏・最寄駅・遠征向けホテルに加え、観光とお土産情報を掲載します。' }}</p></article>
+</div>
+{% if stadium.source_url %}<div class="source-note">基本情報出典：<a href="{{ stadium.source_url }}" rel="nofollow noopener" target="_blank">Jリーグ公式クラブページ</a></div>{% endif %}
+{% endblock %}
