@@ -1,0 +1,15 @@
+(() => {
+  const root = document.getElementById('quiz-app'); if (!root) return;
+  const startBox = document.getElementById('quiz-start'), body = document.getElementById('quiz-body'), nameBox = document.getElementById('name-box'), resultBox = document.getElementById('result-box');
+  const startBtn = document.getElementById('start-btn'), qBox = document.getElementById('question-box'), form = document.getElementById('quiz-form'), nextBtn = document.getElementById('next-btn');
+  const progressText = document.getElementById('progress-text'), progressBar = document.getElementById('progress-bar'), timer = document.getElementById('timer');
+  const nameForm = document.getElementById('name-form'), nickname = document.getElementById('nickname'), retry = document.getElementById('retry-btn');
+  let attemptId = null, questions = [], index = 0, answers = {}, started = 0, raf = 0;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function tick(){ timer.textContent=((performance.now()-started)/1000).toFixed(2)+'s'; raf=requestAnimationFrame(tick); }
+  function render(){ const q=questions[index]; progressText.textContent=`${index+1} / ${questions.length}`; progressBar.style.width=`${((index+1)/questions.length)*100}%`; nextBtn.textContent=index===questions.length-1?'回答を確定':'次へ'; qBox.innerHTML=`<div class="question-card"><span class="qcat">${esc(q.category)}</span><h2>${esc(q.question)}</h2><div class="options">${Object.entries(q.options).map(([k,v])=>`<label><input type="radio" name="answer" value="${k}" required><span><b>${k}</b>${esc(v)}</span></label>`).join('')}</div></div>`; }
+  async function start(){ startBtn.disabled=true; try{ const r=await fetch('/api/quiz/start',{method:'POST'}); const d=await r.json(); if(!r.ok) throw new Error(d.error||'開始できません'); attemptId=d.attempt_id; questions=d.questions; index=0; answers={}; startBox.hidden=true; body.hidden=false; started=performance.now(); tick(); render(); }catch(e){ alert(e.message); startBtn.disabled=false; }}
+  form.addEventListener('submit', e=>{ e.preventDefault(); const f=new FormData(form); const val=f.get('answer'); if(!val)return; answers[String(questions[index].id)]=val; if(index<questions.length-1){index++;render();}else{cancelAnimationFrame(raf);body.hidden=true;nameBox.hidden=false;nickname.focus();}});
+  nameForm.addEventListener('submit', async e=>{ e.preventDefault(); const btn=nameForm.querySelector('button');btn.disabled=true;try{const r=await fetch('/api/quiz/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attempt_id:attemptId,nickname:nickname.value,answers})});const d=await r.json();if(!r.ok)throw new Error(d.error||'保存できません');nameBox.hidden=true;resultBox.hidden=false;document.getElementById('score').textContent=d.score;document.getElementById('rank').textContent=d.rank;document.getElementById('final-time').textContent=(d.elapsed_ms/1000).toFixed(2);}catch(err){alert(err.message);btn.disabled=false;}});
+  retry.addEventListener('click',()=>location.reload()); startBtn.addEventListener('click',start);
+})();
