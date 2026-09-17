@@ -12,6 +12,7 @@ on:
     paths:
       - '.github/workflows/weekend-sync.yml'
       - 'scripts/sync_competition_data.py'
+      - 'scripts/sync_standings.py'
 
 permissions:
   contents: read
@@ -48,7 +49,10 @@ jobs:
             exit 1
           fi
 
-      - name: Sync standings and match results
+      - name: Sync league standings
+        run: python scripts/sync_standings.py
+
+      - name: Sync match results
         run: python scripts/sync_competition_data.py
 
       - name: Weekly roster and stadium refresh
