@@ -1,10 +1,12 @@
 """J1/J2/J3の直近日程と試合別JリーグチケットURLを同期する。
 
-公式日程ページから試合詳細URLを拾い、各試合詳細ページから
-日時・ホーム/アウェイ・会場・チケット購入URLだけを保存する。
+公式日程ページから試合詳細URLと同じ試合カード内のチケット購入URLを拾い、
+各試合詳細ページから日時・ホーム/アウェイ・会場を照合して保存する。
+画像や記事本文は保存しない。
 """
 import re
 import sys
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
@@ -22,9 +24,8 @@ from app import engine, SessionLocal, Club, Stadium, init_db  # noqa: E402
 
 BASE = "https://www.jleague.jp"
 LEAGUES = ("J1", "J2", "J3")
-HEADERS = {"User-Agent": "IsshoJLeague/1.4 (+fixture and ticket sync)", "Accept-Language": "ja,en;q=0.5"}
+HEADERS = {"User-Agent": "IsshoJLeague/1.5 (+fixture and ticket sync)", "Accept-Language": "ja,en;q=0.5"}
 MATCH_RE = re.compile(r"/match/(j1|j2|j3)/(20\d{2})/(\d{6})/?")
-CLUB_RE = re.compile(r"/club/([^/?#]+)/?")
 
 
 def http():
@@ -39,6 +40,12 @@ def http():
 
 def clean(v):
     return re.sub(r"\s+", " ", v or "").strip()
+
+
+def norm(v):
+    """全半角・空白・句読点差を吸収してクラブ/会場名を照合する。"""
+    value = unicodedata.normalize("NFKC", v or "").casefold()
+    return re.sub(r"[^\wぁ-んァ-ヶ一-龠々ー]", "", value)
 
 
 def ensure_table():
@@ -70,15 +77,35 @@ def db_index():
     with SessionLocal() as db:
         clubs = db.scalars(select(Club)).all()
         stadiums = db.scalars(select(Stadium)).all()
-    club_by_slug = {c.slug: {"id": c.id, "name": c.name, "slug": c.slug} for c in clubs}
+    club_rows = [
+        {"id": c.id, "name": c.name, "slug": c.slug, "norm": norm(c.name)}
+        for c in clubs
+    ]
     stadium_rows = sorted(
-        [{"id": s.id, "name": s.name, "slug": s.slug} for s in stadiums],
-        key=lambda x: len(x["name"] or ""), reverse=True,
+        [{"id": s.id, "name": s.name, "slug": s.slug, "norm": norm(s.name)} for s in stadiums],
+        key=lambda x: len(x["norm"]), reverse=True,
     )
-    return club_by_slug, stadium_rows
+    return club_rows, stadium_rows
 
 
-def collect_urls(league):
+def nearest_ticket_link(match_anchor):
+    """日程ページ上で試合詳細リンクと同じカードにあるチケット購入リンクを探す。"""
+    node = match_anchor
+    for _ in range(10):
+        node = getattr(node, "parent", None)
+        if node is None:
+            break
+        links = node.find_all("a", href=True)
+        tickets = [a for a in links if "jleague-ticket.jp" in (a.get("href") or "")]
+        if tickets:
+            return tickets[0].get("href")
+        # 親を上がり過ぎると別試合のチケットを拾うので、巨大ブロックになる前に止める。
+        if len(clean(node.get_text(" "))) > 3500:
+            break
+    return None
+
+
+def collect_matches(league):
     url = f"{BASE}/{league.lower()}/match/"
     r = http().get(url, timeout=25)
     r.raise_for_status()
@@ -90,14 +117,51 @@ def collect_urls(league):
         m = MATCH_RE.search(href)
         if not m or m.group(1).upper() != league:
             continue
-        absolute = urljoin(BASE, href.split("?")[0].split("#")[0])
-        if absolute not in seen:
-            seen.add(absolute)
-            out.append(absolute)
+        match_url = urljoin(BASE, href.split("?")[0].split("#")[0])
+        if match_url in seen:
+            continue
+        seen.add(match_url)
+        out.append({
+            "match_url": match_url,
+            "ticket_url": nearest_ticket_link(a),
+        })
     return out
 
 
-def parse_detail(match_url, club_by_slug, stadium_rows):
+def identify_teams(page_text, clubs):
+    """試合詳細本文に出る正式クラブ名の出現順からホーム→アウェイを判定する。"""
+    hay = norm(page_text)
+    hits = []
+    for club in clubs:
+        needle = club["norm"]
+        if not needle:
+            continue
+        pos = hay.find(needle)
+        if pos >= 0:
+            hits.append((pos, -len(needle), club))
+    hits.sort(key=lambda x: (x[0], x[1]))
+    teams = []
+    seen = set()
+    for _, _, club in hits:
+        if club["id"] in seen:
+            continue
+        seen.add(club["id"])
+        teams.append(club)
+        if len(teams) == 2:
+            break
+    return teams
+
+
+def identify_stadium(page_text, stadium_rows):
+    hay = norm(page_text)
+    for stadium in stadium_rows:
+        if stadium["norm"] and stadium["norm"] in hay:
+            return stadium
+    return None
+
+
+def parse_detail(item, clubs, stadium_rows):
+    match_url = item["match_url"]
     m = MATCH_RE.search(match_url)
     if not m:
         return None
@@ -113,19 +177,10 @@ def parse_detail(match_url, club_by_slug, stadium_rows):
     scope = soup.find("main") or soup
     page_text = clean(scope.get_text(" "))
 
-    # 試合ページ上に現れるクラブURLを順番に拾う。通常はホーム→アウェイ。
-    teams = []
-    seen = set()
-    for a in scope.find_all("a", href=True):
-        cm = CLUB_RE.search(a.get("href") or "")
-        if not cm:
-            continue
-        slug = cm.group(1)
-        club = club_by_slug.get(slug)
-        if club and club["id"] not in seen:
-            seen.add(club["id"])
-            teams.append(club)
+    teams = identify_teams(page_text, clubs)
     if len(teams) < 2:
+        title = clean(soup.title.get_text(" ") if soup.title else "")
+        print(f"WARN teams not identified: title={title[:140]}", flush=True)
         return None
     home, away = teams[0], teams[1]
 
@@ -133,9 +188,8 @@ def parse_detail(match_url, club_by_slug, stadium_rows):
     strings = [clean(s) for s in scope.stripped_strings if clean(s)]
     for i, value in enumerate(strings):
         if value.upper() == "KICK OFF":
-            for cand in strings[i + 1:i + 5]:
-                tm = re.fullmatch(r"\d{1,2}:\d{2}", cand)
-                if tm:
+            for cand in strings[i + 1:i + 6]:
+                if re.fullmatch(r"\d{1,2}:\d{2}", cand):
                     kickoff = cand
                     break
             if kickoff:
@@ -144,23 +198,18 @@ def parse_detail(match_url, club_by_slug, stadium_rows):
         tm = re.search(r"\b([01]?\d|2[0-3]):[0-5]\d\b", page_text)
         kickoff = tm.group(0) if tm else None
 
-    stadium = None
-    for s in stadium_rows:
-        if s["name"] and s["name"] in page_text:
-            stadium = s
-            break
+    stadium = identify_stadium(page_text, stadium_rows)
 
-    ticket_url = None
-    for a in scope.find_all("a", href=True):
-        href = a.get("href") or ""
-        if "jleague-ticket.jp" in href:
-            ticket_url = href
-            break
+    ticket_url = item.get("ticket_url")
+    if not ticket_url:
+        for a in scope.find_all("a", href=True):
+            href = a.get("href") or ""
+            if "jleague-ticket.jp" in href:
+                ticket_url = href
+                break
 
     title = clean(soup.title.get_text(" ") if soup.title else "")
-    competition = league
-    if "明治安田" in title:
-        competition = f"明治安田{league}リーグ"
+    competition = f"明治安田{league}リーグ" if "明治安田" in title else league
 
     return {
         "match_key": f"{league}-{year}-{code}",
@@ -194,7 +243,7 @@ def save(row):
             home_name=EXCLUDED.home_name, away_name=EXCLUDED.away_name,
             venue=EXCLUDED.venue, stadium_id=EXCLUDED.stadium_id,
             competition=EXCLUDED.competition, match_url=EXCLUDED.match_url,
-            ticket_url=EXCLUDED.ticket_url, updated_at=NOW()
+            ticket_url=COALESCE(EXCLUDED.ticket_url, fixtures.ticket_url), updated_at=NOW()
     """)
     with engine.begin() as conn:
         conn.execute(stmt, row)
@@ -203,23 +252,26 @@ def save(row):
 def main():
     init_db()
     ensure_table()
-    club_by_slug, stadium_rows = db_index()
-    urls = []
+    clubs, stadium_rows = db_index()
+    matches = []
     for league in LEAGUES:
-        found = collect_urls(league)
-        print(f"{league}: match URLs={len(found)}", flush=True)
-        urls.extend(found)
+        found = collect_matches(league)
+        print(
+            f"{league}: match URLs={len(found)} ticket candidates={sum(bool(x.get('ticket_url')) for x in found)}",
+            flush=True,
+        )
+        matches.extend(found)
 
     saved = 0
     ticketed = 0
     with ThreadPoolExecutor(max_workers=4) as pool:
-        jobs = {pool.submit(parse_detail, url, club_by_slug, stadium_rows): url for url in urls}
+        jobs = {pool.submit(parse_detail, item, clubs, stadium_rows): item for item in matches}
         for future in as_completed(jobs):
-            url = jobs[future]
+            item = jobs[future]
             try:
                 row = future.result()
                 if not row:
-                    print(f"WARN parse failed: {url}", flush=True)
+                    print(f"WARN parse failed: {item['match_url']}", flush=True)
                     continue
                 save(row)
                 saved += 1
@@ -230,7 +282,7 @@ def main():
                     flush=True,
                 )
             except Exception as exc:
-                print(f"ERROR {url}: {exc}", flush=True)
+                print(f"ERROR {item['match_url']}: {exc}", flush=True)
 
     with engine.begin() as conn:
         upcoming = conn.execute(text("SELECT COUNT(*) FROM fixtures WHERE match_date >= CURRENT_DATE")).scalar_one()
