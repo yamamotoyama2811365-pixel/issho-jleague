@@ -41,8 +41,14 @@ jobs:
                   body, _ = read("/players/")
                   if hashlib.sha256(body).digest() == hashlib.sha256(expected).digest():
                       break
-              except Exception:
-                  pass
+                  if attempt % 4 == 0:
+                      print("Waiting for current Pages snapshot", len(body), len(expected), flush=True)
+              except urllib.error.HTTPError as e:
+                  if e.code in (401, 403):
+                      raise SystemExit("Live verification denied: HTTP " + str(e.code))
+                  print("Waiting for Pages response: HTTP", e.code, flush=True)
+              except Exception as e:
+                  print("Waiting for Pages response:", type(e).__name__, flush=True)
               time.sleep(10)
           else:
               raise SystemExit("Cloudflare has not served the latest static-site snapshot yet.")
