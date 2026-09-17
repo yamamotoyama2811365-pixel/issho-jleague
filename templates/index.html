@@ -4,8 +4,8 @@
   <div>
     <p class="eyebrow">J1 / J2 / J3 FAN PORTAL</p>
     <h1>一生Jリーグ。</h1>
-    <p class="lead">選手を調べる。スタジアムへ行く。クイズで競う。Jリーグの“次の一戦”をもっと楽しむための場所。</p>
-    <div class="hero-actions"><a class="btn primary" href="/players">全選手を見る</a><a class="btn" href="/quiz">10問クイズに挑戦</a></div>
+    <p class="lead">順位、試合結果、全選手、スタジアム遠征、クイズ。週末のJリーグを追いかけるための情報を1か所に。</p>
+    <div class="hero-actions"><a class="btn primary" href="/results">最新結果を見る</a><a class="btn" href="/standings">順位表を見る</a><a class="btn" href="/quiz">10問クイズ</a></div>
   </div>
   <div class="scoreboard">
     <div><b>{{ club_count }}</b><span>CLUBS</span></div>
@@ -13,12 +13,51 @@
     <div><b>{{ stadium_count }}</b><span>STADIUMS</span></div>
   </div>
 </section>
-<section class="grid3 feature-grid">
-  <article class="feature"><span>01</span><h2>全選手名鑑</h2><p>J1・J2・J3を横断して、クラブ、ポジション、背番号、出身地などから探せます。</p><a href="/players">選手検索へ →</a></article>
+
+<section class="section-head"><div><p class="eyebrow">LEAGUE TABLE</p><h2>いまの順位</h2></div><a href="/standings">全順位を見る →</a></section>
+<div class="league-board-grid">
+{% for league in ['J1','J2','J3'] %}
+<article class="panel league-board">
+  <div class="league-board-head"><strong>{{ league }}</strong><span>TOP 5</span></div>
+  {% for row in standings[league] %}
+  <a class="mini-standing" href="/club/{{ row.slug }}"><b>{{ row.rank }}</b><span>{{ row.name }}</span><strong>{{ row.points }}pt</strong></a>
+  {% else %}<p class="empty">順位データ準備中</p>{% endfor %}
+</article>
+{% endfor %}
+</div>
+
+<section class="section-head"><div><p class="eyebrow">LATEST RESULTS</p><h2>直近の試合結果</h2></div><a href="/results">試合結果一覧 →</a></section>
+<div class="results-list">
+{% for row in recent_results %}
+<a class="result-row" href="/club/{{ row.club_slug }}">
+  <time>{{ row.match_date }}</time>
+  <span class="league-chip">{{ row.league }}</span>
+  <strong>{{ row.club_name }}</strong>
+  <b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b>
+  <span>{{ row.opponent }}</span>
+  <small>{{ row.competition }}{% if row.venue %} / {{ row.venue }}{% endif %}</small>
+</a>
+{% else %}<p class="empty">試合結果データ準備中</p>{% endfor %}
+</div>
+
+<section class="section-head"><div><p class="eyebrow">PLAYER WATCH</p><h2>得点上位の選手</h2></div><a href="/players">全選手を見る →</a></section>
+<div class="scorer-grid">
+{% for p in top_scorers %}
+<a class="scorer-card" href="/player/{{ p.slug }}">
+  <span>{{ p.club.league }} / {{ p.club.name }}</span>
+  <strong>{{ p.name }}</strong>
+  <div><b>{{ p.goals or 0 }}</b> GOALS <em>{{ p.appearances or 0 }}試合</em></div>
+</a>
+{% endfor %}
+</div>
+
+<section class="grid3 feature-grid section-space">
+  <article class="feature"><span>01</span><h2>全60クラブ</h2><p>順位・勝点・直近戦績・所属選手・ホームスタジアムをクラブ単位で追えます。</p><a href="/clubs">クラブ一覧へ →</a></article>
   <article class="feature"><span>02</span><h2>スタジアム遠征</h2><p>座席エリアの独自図解、アクセス、スタグル、ホテル、観光まで1ページにまとめます。</p><a href="/stadiums">スタジアムへ →</a></article>
   <article class="feature"><span>03</span><h2>10問クイズ</h2><p>10問の正解数と回答時間で競争。ニックネームを保存してランキング掲載。</p><a href="/quiz">挑戦する →</a></article>
 </section>
-<section class="section-head"><div><p class="eyebrow">LEADERBOARD</p><h2>総合ランキング</h2></div><a href="/leaderboard">100位まで見る →</a></section>
+
+<section class="section-head"><div><p class="eyebrow">LEADERBOARD</p><h2>クイズ総合ランキング</h2></div><a href="/leaderboard">100位まで見る →</a></section>
 <div class="ranking-list">
 {% for row in top %}<div class="rank-row"><b>{{ loop.index }}</b><span>{{ row.nickname }}</span><strong>{{ row.score }}/10</strong><em>{{ '%.2f'|format(row.elapsed_ms/1000) }}秒</em></div>{% else %}<p class="empty">まだ記録がありません。最初の挑戦者になろう。</p>{% endfor %}
 </div>
