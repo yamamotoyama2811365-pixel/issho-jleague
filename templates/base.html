@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="J1・J2・J3のクラブ、選手、スタジアム、遠征情報、10問クイズとランキングをまとめたJリーグファン向けポータル。">
+  <meta name="description" content="J1・J2・J3の順位、試合結果、全クラブ、全選手、スタジアム遠征情報、10問クイズをまとめたJリーグファン向けポータル。">
   <title>{% block title %}MATCHDAY | 一生Jリーグ{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 </head>
@@ -12,6 +12,8 @@
   <div class="wrap header-inner">
     <a class="brand" href="/">MATCHDAY <span>一生Jリーグ</span></a>
     <nav>
+      <a href="/standings">順位表</a>
+      <a href="/results">試合結果</a>
       <a href="/clubs">クラブ</a>
       <a href="/players">全選手</a>
       <a href="/stadiums">スタジアム</a>
