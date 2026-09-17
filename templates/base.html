@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="J1・J2・J3の順位、試合結果、全クラブ、全選手、スタジアム遠征情報、10問クイズをまとめたJリーグファン向けポータル。">
+  <meta name="description" content="J1・J2・J3の試合日程、チケット、会場ガイド、全クラブ、全選手、順位、試合結果をまとめたJリーグファン向けポータル。">
   <title>{% block title %}MATCHDAY | 一生Jリーグ{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 </head>
@@ -12,19 +12,19 @@
   <div class="wrap header-inner">
     <a class="brand" href="/">MATCHDAY <span>一生Jリーグ</span></a>
     <nav>
-      <a href="/standings">順位表</a>
-      <a href="/results">試合結果</a>
+      <a class="nav-primary" href="/schedule">日程・チケット</a>
       <a href="/clubs">クラブ</a>
-      <a href="/players">全選手</a>
-      <a href="/stadiums">スタジアム</a>
-      <a href="/quiz">10問クイズ</a>
-      <a href="/leaderboard">ランキング</a>
+      <a href="/players">選手</a>
+      <a href="/stadiums">会場ガイド</a>
+      <a href="/standings">順位</a>
+      <a href="/results">結果</a>
+      <a href="/quiz">クイズ</a>
     </nav>
   </div>
 </header>
 <main class="wrap">{% block content %}{% endblock %}</main>
 <footer class="site-footer">
-  <div class="wrap">非公式ファンサイト。公式のロゴ・エンブレム・選手写真・座席図は転載せず、事実情報と独自図解を中心に構成します。</div>
+  <div class="wrap">非公式ファンサイト。チケット購入は公式販売ページへ案内します。公式ロゴ・エンブレム・選手写真・座席図は転載せず、事実情報と独自図解を中心に構成します。</div>
 </footer>
 {% block scripts %}{% endblock %}
 </body>
