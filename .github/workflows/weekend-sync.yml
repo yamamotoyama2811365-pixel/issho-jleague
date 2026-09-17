@@ -1,10 +1,12 @@
 name: Weekend J.League data sync
 
 on:
+  push:
+    branches: [main]
   schedule:
     # 23:30 JST = 14:30 UTC.
-    - cron: '30 14 * * 6' # Saturday: results + standings
-    - cron: '30 14 * * 0' # Sunday: results + standings + roster
+    - cron: '30 14 * * 6' # Saturday: fixtures + results + standings
+    - cron: '30 14 * * 0' # Sunday: fixtures + results + standings + roster
   workflow_dispatch:
 
 permissions:
@@ -42,6 +44,9 @@ jobs:
             exit 1
           fi
 
+      - name: Sync upcoming fixtures and ticket links
+        run: python scripts/sync_fixtures.py
+
       - name: Sync league standings
         run: python scripts/sync_standings.py
 
@@ -69,11 +74,13 @@ jobs:
           with engine.begin() as conn:
               standings = conn.execute(text('SELECT COUNT(*) FROM standings')).scalar_one()
               results = conn.execute(text('SELECT COUNT(*) FROM club_results')).scalar_one()
+              fixtures = conn.execute(text('SELECT COUNT(*) FROM fixtures WHERE match_date >= CURRENT_DATE')).scalar_one()
+              tickets = conn.execute(text('SELECT COUNT(*) FROM fixtures WHERE match_date >= CURRENT_DATE AND ticket_url IS NOT NULL')).scalar_one()
 
           print(
               f"clubs={clubs} players={players} clubs_with_players={clubs_with_players} "
-              f"standings={standings} results={results}"
+              f"standings={standings} results={results} upcoming_fixtures={fixtures} ticket_links={tickets}"
           )
-          if clubs < 60 or clubs_with_players < 60 or players < 1000 or standings < 60 or results < 50:
+          if clubs < 60 or clubs_with_players < 60 or players < 1000 or standings < 60 or results < 50 or fixtures < 1:
               raise SystemExit("Sync coverage check failed")
           PY
