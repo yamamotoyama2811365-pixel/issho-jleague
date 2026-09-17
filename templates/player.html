@@ -8,8 +8,10 @@
     <h1>{{ player.name }}</h1>
     <p>{{ player.position or '' }}</p>
     <div class="social-row">
-      {% for s in socials %}<a class="social-btn" href="{{ s.url }}" target="_blank" rel="nofollow noopener">{{ s.platform }}{% if s.handle %} <small>{{ s.handle }}</small>{% endif %}</a>{% endfor %}
-      {% if not socials %}<span class="social-pending">公式確認できたSNSから順次掲載</span>{% endif %}
+      {% set social_ns = namespace(count=0) %}
+      {% set blocked = ['@consaofficial','@hokkaido_consadole_sapporo','@hokkaidoconsadolesapporo','@user'] %}
+      {% for s in socials %}{% if s.handle not in blocked %}{% set social_ns.count = social_ns.count + 1 %}<a class="social-btn" href="{{ s.url }}" target="_blank" rel="nofollow noopener">{{ s.platform }}{% if s.handle %} <small>{{ s.handle }}</small>{% endif %}</a>{% endif %}{% endfor %}
+      {% if social_ns.count == 0 %}<span class="social-pending">クラブ公式等で確認できた個人SNSから順次掲載</span>{% endif %}
     </div>
   </div>
 </section>
@@ -42,5 +44,5 @@
 <section class="section-head"><div><p class="eyebrow">TEAMMATES</p><h2>チームメイト</h2></div><a href="/players?club={{ player.club.slug }}">全選手 →</a></section>
 <div class="scorer-grid">{% for p in teammates %}<a class="scorer-card" href="/player/{{ p.slug }}"><span>{{ p.position or '' }} #{{ p.number if p.number is not none else '—' }}</span><strong>{{ p.name }}</strong><div><b>{{ p.goals or 0 }}</b> GOALS</div></a>{% endfor %}</div>
 
-<div class="source-note">基本データ出典：<a href="{{ player.source_url }}" rel="nofollow noopener" target="_blank">Jリーグ公式 選手ページ</a>。SNSは本人またはクラブ公式等で確認できたアカウントのみ掲載します。</div>
+<div class="source-note">基本データ出典：<a href="{{ player.source_url }}" rel="nofollow noopener" target="_blank">Jリーグ公式 選手ページ</a>。SNSは本人またはクラブ公式等で確認できた個人アカウントのみ掲載します。</div>
 {% endblock %}
