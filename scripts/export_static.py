@@ -9,13 +9,16 @@ from __future__ import annotations
 
 import os
 import shutil
+import sys
 from pathlib import Path
 from xml.sax.saxutils import escape
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 # DATABASE_URL must be set by CI before importing the Flask app.
 from app import app, SessionLocal, Club, Player, Stadium  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public"
 STATIC_SRC = ROOT / "static"
 STATIC_DST = OUT / "static"
