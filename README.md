@@ -31,7 +31,7 @@ python app.py
 ## 全選手・スタジアム基本情報の同期
 
 ```bash
-python scripts/sync_jleague.py
+RUN_FULL_SYNC=1 python scripts/sync_jleague.py
 ```
 
 同期スクリプトは全60クラブの選手一覧ページを低頻度で順に読み、以下の事実項目だけを保存する設計です。
@@ -70,9 +70,16 @@ DBには次の追記欄を用意済みです。
 - 回答時間もサーバー側の開始時刻〜送信時刻で算出
 - 同じattempt_idは1回だけ保存
 
-## 本番公開に必要なもの
+## 本番配信構成
 
-1. GitHubリポジトリ
-2. Neon `DATABASE_URL`
-3. Render Web Service
-4. 初回 `python scripts/sync_jleague.py` 実行
+- 通常ページ: https://issho-jleague.pages.dev/
+- Cloudflare Pages: `issho-jleague`、GitHub `static-site` ブランチを配信。
+- ビルドコマンド: なし。ルート・公開ディレクトリ: `/`。
+- データ: Neon PostgreSQL。接続情報はGitHub Actions / RenderのSecretに保持。
+- `Build static CDN frontend` がHTMLを生成して `static-site` を更新し、Cloudflareが自動公開。
+- `Verify live Cloudflare Pages` が公開後の主要ページ、CSS、robots、サイトマップ、404を確認。
+- 選手検索・試合一覧の絞り込みは静的ページ内のJavaScriptで実行し、Renderへ問い合わせない。
+- クイズは暫定的に https://issho-jleague.onrender.com/quiz へ移動し、Render / Neonを利用。
+- Renderの通常デプロイでは全クラブ同期を実行しない。手動フル同期は `RUN_FULL_SYNC=1` の場合だけ。
+
+2026-09-17: Cloudflare Pagesへ本番公開。60クラブ・2,256選手・59スタジアム、2,384ページ。
