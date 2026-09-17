@@ -6,13 +6,6 @@ on:
     - cron: '30 14 * * 6' # Saturday: results + standings
     - cron: '30 14 * * 0' # Sunday: results + standings + roster
   workflow_dispatch:
-  # Temporary validation trigger. Removed after validation succeeds.
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/weekend-sync.yml'
-      - 'scripts/sync_competition_data.py'
-      - 'scripts/sync_standings.py'
 
 permissions:
   contents: read
