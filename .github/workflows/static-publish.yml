@@ -8,6 +8,7 @@ on:
       - 'app.py'
       - 'club_hub.py'
       - 'lineup_stats.py'
+      - 'fan_editorial.py'
       - 'fan_community.py'
       - 'data/**'
       - 'scripts/sync_club_content.py'

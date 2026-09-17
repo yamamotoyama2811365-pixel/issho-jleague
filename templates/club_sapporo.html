@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}コンサドーレ札幌｜次戦・選手・ホーム観戦ガイド | 一生Jリーグ{% endblock %}
 {% block description %}北海道コンサドーレ札幌の次戦プレビュー、日程・チケット、直近の戦績、選手、プレミストドームの席選び・アクセス・当日の楽しみ方をまとめた非公式ファンガイド。{% endblock %}
-{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=3"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=4"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
 {% block content %}
 {% set next = hub.next_match %}
 <div class="sapporo-hub">
@@ -17,7 +17,7 @@
     <span class="hero-footnote">一生Jリーグによる非公式ファンガイド</span>
   </section>
 
-  <nav class="club-jump" aria-label="コンサドーレのページ内メニュー"><a href="#next-match">次の試合</a><a href="#team-form">戦績・順位</a><a href="#club-schedule">日程</a><a href="#club-news">ニュース</a><a href="#squad">選手</a><a href="#home-guide">観戦ガイド</a><a href="#club-voices">人・SNS</a><a href="#fan-messages">応援</a><a href="#fan-ranking">閲覧ランキング</a></nav>
+  <nav class="club-jump" aria-label="コンサドーレのページ内メニュー"><a href="#next-match">次の試合</a><a href="#team-updates">最新動向</a><a href="#match-recap">振り返り</a><a href="#match-comments">コメント</a><a href="#players-to-watch">注目選手</a><a href="#team-form">戦績・順位</a><a href="#club-schedule">日程</a><a href="#club-news">ニュース</a><a href="#squad">選手</a><a href="#home-guide">観戦ガイド</a><a href="#club-voices">人・SNS</a><a href="#fan-messages">応援</a><a href="#fan-ranking">閲覧ランキング</a></nav>
 
   {% if next %}
   <section id="next-match" class="hub-section">
@@ -44,6 +44,8 @@
     </div>
   </section>
   {% endif %}
+
+  {% include '_sapporo_editorial.html' %}
 
   <section id="team-form" class="hub-section">
     <div class="hub-heading"><div><p class="hub-kicker">WHERE WE STAND</p><h2>チームの現在地</h2></div><a href="/standings#j2">J2の全順位 →</a></div>

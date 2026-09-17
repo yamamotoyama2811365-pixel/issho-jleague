@@ -6,6 +6,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import quote
 from lineup_stats import starting_rates
+from fan_editorial import build_editorial
 
 ROOT = Path(__file__).resolve().parent
 JST = timezone(timedelta(hours=9))
@@ -96,4 +97,5 @@ def build_sapporo_hub(standing, results, league_rows, roster, today=None):
                 matches=matches, next_match=next_match, comparison=comparison, form=form,
                 league_results=league_results, nearby=nearby, matchday=active_event,
                 player_checked=newest_player, starting=starting, ordered_roster=ordered_roster,
+                editorial=build_editorial(content, roster),
                 standing_checked=str(standing.get('updated_at',''))[:10] if standing else '')

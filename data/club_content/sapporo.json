@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-17T22:30+09:00",
+  "checked_at": "2026-09-17T22:51+09:00",
   "news": [
     {
       "title": "9/19(土)大分戦：ご来場の北海道コンサドーレ札幌サポーターの皆様へ",
@@ -52,6 +52,8 @@
       "round": "第1節",
       "note": "",
       "completed": true,
+      "home_score": 2,
+      "away_score": 0,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260808/",
       "ticket_url": null,
       "event_url": "https://www.consadole-sapporo.jp/game_event/20260808_/"
@@ -69,6 +71,8 @@
       "round": "第2節",
       "note": "",
       "completed": true,
+      "home_score": 2,
+      "away_score": 1,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260815/",
       "ticket_url": null,
       "event_url": null
@@ -86,6 +90,8 @@
       "round": "第3節",
       "note": "",
       "completed": true,
+      "home_score": 1,
+      "away_score": 4,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260822/",
       "ticket_url": null,
       "event_url": "https://www.consadole-sapporo.jp/game_event/20260822_/"
@@ -103,6 +109,8 @@
       "round": "2回戦",
       "note": "",
       "completed": true,
+      "home_score": 1,
+      "away_score": 3,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260826/",
       "ticket_url": null,
       "event_url": null
@@ -120,6 +128,8 @@
       "round": "第4節",
       "note": "",
       "completed": true,
+      "home_score": 2,
+      "away_score": 1,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260829/",
       "ticket_url": null,
       "event_url": null
@@ -137,6 +147,8 @@
       "round": "１回戦",
       "note": "",
       "completed": true,
+      "home_score": 0,
+      "away_score": 1,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260902/",
       "ticket_url": null,
       "event_url": null
@@ -154,6 +166,8 @@
       "round": "第5節",
       "note": "",
       "completed": true,
+      "home_score": 1,
+      "away_score": 4,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260906/",
       "ticket_url": null,
       "event_url": "https://www.consadole-sapporo.jp/game_event/20260906/"
@@ -171,6 +185,8 @@
       "round": "第6節",
       "note": "",
       "completed": true,
+      "home_score": 1,
+      "away_score": 1,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260913/",
       "ticket_url": null,
       "event_url": null
@@ -188,6 +204,8 @@
       "round": "第7節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260919/",
       "ticket_url": "https://www.jleague-ticket.jp/sales/perform/2626908/001",
       "event_url": "https://www.consadole-sapporo.jp/game_event/20260919/"
@@ -205,6 +223,8 @@
       "round": "第8節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20260926/",
       "ticket_url": null,
       "event_url": null
@@ -222,6 +242,8 @@
       "round": "２回戦",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/%ef%bd%8a%e3%83%aa%e3%83%bc%e3%82%b0-%e3%83%a4%e3%83%9e%e3%82%b6%e3%82%ad%e3%83%93%e3%82%b9%e3%82%b1%e3%83%83%e3%83%88-%e3%83%ab%e3%83%b4%e3%82%a1%e3%83%b3%e3%82%ab%e3%83%83%e3%83%97%ef%bc%92%e5%9b%9e/",
       "ticket_url": "https://www.jleague-ticket.jp/sales/perform/2635924/001",
       "event_url": "https://www.consadole-sapporo.jp/game_event/20260929/"
@@ -239,6 +261,8 @@
       "round": "第9節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261004/",
       "ticket_url": "https://www.jleague-ticket.jp/sales/perform/2631985/001",
       "event_url": "https://www.consadole-sapporo.jp/game_event/20261004/"
@@ -256,6 +280,8 @@
       "round": "第10節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261010/",
       "ticket_url": null,
       "event_url": null
@@ -273,6 +299,8 @@
       "round": "第11節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261017/",
       "ticket_url": "https://www.jleague-ticket.jp/sales/perform/2634054/001",
       "event_url": "https://www.consadole-sapporo.jp/game_event/20261017/"
@@ -290,6 +318,8 @@
       "round": "第12節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261021/",
       "ticket_url": null,
       "event_url": null
@@ -307,6 +337,8 @@
       "round": "第13節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261025/",
       "ticket_url": null,
       "event_url": null
@@ -324,6 +356,8 @@
       "round": "第14節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261031/",
       "ticket_url": "https://www.jleague-ticket.jp/sales/perform/2634332/001",
       "event_url": "https://www.consadole-sapporo.jp/game_event/20261031/"
@@ -341,6 +375,8 @@
       "round": "第15節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261103/",
       "ticket_url": null,
       "event_url": null
@@ -358,6 +394,8 @@
       "round": "第16節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261108/",
       "ticket_url": null,
       "event_url": null
@@ -375,6 +413,8 @@
       "round": "第17節",
       "note": "ルヴァンカップの結果により日程/会場の変更あり",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261115/",
       "ticket_url": null,
       "event_url": null
@@ -392,6 +432,8 @@
       "round": "第18節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261121/",
       "ticket_url": null,
       "event_url": null
@@ -409,6 +451,8 @@
       "round": "第19節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261125/",
       "ticket_url": null,
       "event_url": null
@@ -426,6 +470,8 @@
       "round": "第20節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261129/",
       "ticket_url": null,
       "event_url": null
@@ -443,6 +489,8 @@
       "round": "第21節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261205/",
       "ticket_url": null,
       "event_url": null
@@ -460,6 +508,8 @@
       "round": "第22節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20261212/",
       "ticket_url": null,
       "event_url": null
@@ -477,6 +527,8 @@
       "round": "第23節",
       "note": "※2/20(土) or 2/21(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270220/",
       "ticket_url": null,
       "event_url": null
@@ -494,6 +546,8 @@
       "round": "第24節",
       "note": "※2/27(土) or 2/28(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270227/",
       "ticket_url": null,
       "event_url": null
@@ -511,6 +565,8 @@
       "round": "第25節",
       "note": "※3/6(土) or 3/7(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270306/",
       "ticket_url": null,
       "event_url": null
@@ -528,6 +584,8 @@
       "round": "第26節",
       "note": "※3/13(土) or 3/14(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270313/",
       "ticket_url": null,
       "event_url": null
@@ -545,6 +603,8 @@
       "round": "第27節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270317/",
       "ticket_url": null,
       "event_url": null
@@ -562,6 +622,8 @@
       "round": "第28節",
       "note": "※3/20(土) or 3/21(日・祝)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270320/",
       "ticket_url": null,
       "event_url": null
@@ -579,6 +641,8 @@
       "round": "第29節",
       "note": "※3/27(土) or 3/28(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270327/",
       "ticket_url": null,
       "event_url": null
@@ -596,6 +660,8 @@
       "round": "第30節",
       "note": "※4/3(土) or 4/4(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270403/",
       "ticket_url": null,
       "event_url": null
@@ -613,6 +679,8 @@
       "round": "第31節",
       "note": "※4/10(土) or 4/11(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270410/",
       "ticket_url": null,
       "event_url": null
@@ -630,6 +698,8 @@
       "round": "第32節",
       "note": "※4/17(土) or 4/18(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270417/",
       "ticket_url": null,
       "event_url": null
@@ -647,6 +717,8 @@
       "round": "第33節",
       "note": "※4/24(土) or 4/25(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270424/",
       "ticket_url": null,
       "event_url": null
@@ -664,6 +736,8 @@
       "round": "第34節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270429/",
       "ticket_url": null,
       "event_url": null
@@ -681,6 +755,8 @@
       "round": "第35節",
       "note": "※5/3(月・祝) or 5/4(火・祝)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270503/",
       "ticket_url": null,
       "event_url": null
@@ -698,6 +774,8 @@
       "round": "第36節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270509/",
       "ticket_url": null,
       "event_url": null
@@ -715,6 +793,8 @@
       "round": "第37節",
       "note": "※5/15(土) or 5/16(日)",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270515/",
       "ticket_url": null,
       "event_url": null
@@ -732,6 +812,8 @@
       "round": "第38節",
       "note": "",
       "completed": false,
+      "home_score": null,
+      "away_score": null,
       "source_url": "https://www.consadole-sapporo.jp/game/info/20270523/",
       "ticket_url": null,
       "event_url": null
@@ -1014,5 +1096,1084 @@
         "name": "大森　真吾"
       }
     ]
+  },
+  "match_reports": {
+    "https://www.consadole-sapporo.jp/game/info/20260808/": {
+      "starters": [
+        {
+          "number": 24,
+          "name": "田川　知樹"
+        },
+        {
+          "number": 47,
+          "name": "西野　奨太"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 2,
+          "name": "髙尾　瑠"
+        },
+        {
+          "number": 3,
+          "name": "パク　ミンギュ"
+        },
+        {
+          "number": 34,
+          "name": "木實　快斗"
+        },
+        {
+          "number": 31,
+          "name": "堀米　悠斗"
+        },
+        {
+          "number": 19,
+          "name": "ティラパット"
+        },
+        {
+          "number": 70,
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "number": 71,
+          "name": "白井　陽斗"
+        },
+        {
+          "number": 38,
+          "name": "唐山　翔自"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "15",
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "side": "home",
+          "minute": "58",
+          "name": "白井　陽斗"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "58",
+          "incoming": "木戸　柊摩",
+          "outgoing": "堀米　悠斗"
+        },
+        {
+          "side": "home",
+          "minute": "74",
+          "incoming": "大森　真吾",
+          "outgoing": "唐山　翔自"
+        },
+        {
+          "side": "home",
+          "minute": "74",
+          "incoming": "宮澤　裕樹",
+          "outgoing": "木實　快斗"
+        },
+        {
+          "side": "home",
+          "minute": "88",
+          "incoming": "長谷川　竜也",
+          "outgoing": "ヴィニ　ペイショット"
+        },
+        {
+          "side": "home",
+          "minute": "88",
+          "incoming": "キングロード　サフォ",
+          "outgoing": "ティラパット"
+        },
+        {
+          "side": "away",
+          "minute": "61",
+          "incoming": "宮崎　純真",
+          "outgoing": "重廣　卓也"
+        },
+        {
+          "side": "away",
+          "minute": "61",
+          "incoming": "稲見　哲行",
+          "outgoing": "柳澤　亘"
+        },
+        {
+          "side": "away",
+          "minute": "76",
+          "incoming": "渡　大生",
+          "outgoing": "高木　友也"
+        },
+        {
+          "side": "away",
+          "minute": "76",
+          "incoming": "岩尾　憲",
+          "outgoing": "児玉　駿斗"
+        },
+        {
+          "side": "away",
+          "minute": "88",
+          "incoming": "髙田　颯也",
+          "outgoing": "ルーカス　バルセロス"
+        }
+      ],
+      "video": "Q-Un6IT8zo4"
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260815/": {
+      "starters": [
+        {
+          "number": 24,
+          "name": "田川　知樹"
+        },
+        {
+          "number": 47,
+          "name": "西野　奨太"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 2,
+          "name": "髙尾　瑠"
+        },
+        {
+          "number": 3,
+          "name": "パク　ミンギュ"
+        },
+        {
+          "number": 31,
+          "name": "堀米　悠斗"
+        },
+        {
+          "number": 34,
+          "name": "木實　快斗"
+        },
+        {
+          "number": 19,
+          "name": "ティラパット"
+        },
+        {
+          "number": 70,
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "number": 71,
+          "name": "白井　陽斗"
+        },
+        {
+          "number": 38,
+          "name": "唐山　翔自"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "19",
+          "name": "奥村　仁"
+        },
+        {
+          "side": "home",
+          "minute": "46",
+          "name": "シマブク　カズヨシ"
+        },
+        {
+          "side": "away",
+          "minute": "36",
+          "name": "堀米　悠斗"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "73",
+          "incoming": "桑山　侃士",
+          "outgoing": "笠井　佳祐"
+        },
+        {
+          "side": "home",
+          "minute": "73",
+          "incoming": "佐藤　海宏",
+          "outgoing": "シマブク　カズヨシ"
+        },
+        {
+          "side": "home",
+          "minute": "76",
+          "incoming": "マテウス　モラエス",
+          "outgoing": "若月　大和"
+        },
+        {
+          "side": "home",
+          "minute": "90+2",
+          "incoming": "星　雄次",
+          "outgoing": "大西　悠介"
+        },
+        {
+          "side": "away",
+          "minute": "65",
+          "incoming": "スパチョーク",
+          "outgoing": "ティラパット"
+        },
+        {
+          "side": "away",
+          "minute": "65",
+          "incoming": "木戸　柊摩",
+          "outgoing": "堀米　悠斗"
+        },
+        {
+          "side": "away",
+          "minute": "65",
+          "incoming": "宮澤　裕樹",
+          "outgoing": "木實　快斗"
+        },
+        {
+          "side": "away",
+          "minute": "82",
+          "incoming": "キングロード　サフォ",
+          "outgoing": "白井　陽斗"
+        },
+        {
+          "side": "away",
+          "minute": "84",
+          "incoming": "大森　真吾",
+          "outgoing": "ヴィニ　ペイショット"
+        }
+      ],
+      "video": "9uNYV0iKmAQ"
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260822/": {
+      "starters": [
+        {
+          "number": 24,
+          "name": "田川　知樹"
+        },
+        {
+          "number": 47,
+          "name": "西野　奨太"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 17,
+          "name": "内田　瑞己"
+        },
+        {
+          "number": 3,
+          "name": "パク　ミンギュ"
+        },
+        {
+          "number": 18,
+          "name": "木戸　柊摩"
+        },
+        {
+          "number": 34,
+          "name": "木實　快斗"
+        },
+        {
+          "number": 19,
+          "name": "ティラパット"
+        },
+        {
+          "number": 70,
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "number": 71,
+          "name": "白井　陽斗"
+        },
+        {
+          "number": 38,
+          "name": "唐山　翔自"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "90+5",
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "side": "away",
+          "minute": "9",
+          "name": "カルリーニョス　ジュニオ"
+        },
+        {
+          "side": "away",
+          "minute": "31",
+          "name": "豊川　雄太"
+        },
+        {
+          "side": "away",
+          "minute": "49",
+          "name": "カルリーニョス　ジュニオ"
+        },
+        {
+          "side": "away",
+          "minute": "78",
+          "name": "泉　柊椰"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "56",
+          "incoming": "キングロード　サフォ",
+          "outgoing": "ティラパット"
+        },
+        {
+          "side": "home",
+          "minute": "56",
+          "incoming": "大森　真吾",
+          "outgoing": "白井　陽斗"
+        },
+        {
+          "side": "home",
+          "minute": "74",
+          "incoming": "アマドゥ　バカヨコ",
+          "outgoing": "唐山　翔自"
+        },
+        {
+          "side": "home",
+          "minute": "74",
+          "incoming": "宮澤　裕樹",
+          "outgoing": "木戸　柊摩"
+        },
+        {
+          "side": "home",
+          "minute": "80",
+          "incoming": "長谷川　竜也",
+          "outgoing": "木實　快斗"
+        },
+        {
+          "side": "away",
+          "minute": "61",
+          "incoming": "マギー　ジェラニー　蓮",
+          "outgoing": "カルリーニョス　ジュニオ"
+        },
+        {
+          "side": "away",
+          "minute": "61",
+          "incoming": "スファナット　ムエアンタ",
+          "outgoing": "豊川　雄太"
+        },
+        {
+          "side": "away",
+          "minute": "74",
+          "incoming": "杉本　健勇",
+          "outgoing": "カプリーニ"
+        },
+        {
+          "side": "away",
+          "minute": "74",
+          "incoming": "中山　昂大",
+          "outgoing": "小島　幹敏"
+        },
+        {
+          "side": "away",
+          "minute": "85",
+          "incoming": "日髙　元",
+          "outgoing": "泉　柊椰"
+        }
+      ],
+      "video": "r1NTcqOUOYY"
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260826/": {
+      "starters": [
+        {
+          "number": 1,
+          "name": "菅野 孝憲"
+        },
+        {
+          "number": 2,
+          "name": "髙尾 瑠"
+        },
+        {
+          "number": 28,
+          "name": "岡田 大和"
+        },
+        {
+          "number": 29,
+          "name": "キム ゴヌン"
+        },
+        {
+          "number": 43,
+          "name": "野瀬翔也"
+        },
+        {
+          "number": 25,
+          "name": "大﨑 玲央"
+        },
+        {
+          "number": 50,
+          "name": "浦上 仁騎"
+        },
+        {
+          "number": 11,
+          "name": "青木 亮太"
+        },
+        {
+          "number": 16,
+          "name": "長谷川 竜也"
+        },
+        {
+          "number": 23,
+          "name": "大森 真吾"
+        },
+        {
+          "number": 35,
+          "name": "原 康介"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "30 ‘",
+          "name": "髙尾 瑠"
+        },
+        {
+          "side": "away",
+          "minute": "59 ‘",
+          "name": "スタチオーリ ミケーレ"
+        },
+        {
+          "side": "away",
+          "minute": "70 ‘",
+          "name": "スタチオーリ ミケーレ"
+        },
+        {
+          "side": "away",
+          "minute": "81 ‘",
+          "name": "内藤 大和"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "HT ‘",
+          "incoming": "キングロード サフォ",
+          "outgoing": "大森 真吾"
+        },
+        {
+          "side": "home",
+          "minute": "76 ‘",
+          "incoming": "堀米 悠斗",
+          "outgoing": "大﨑 玲央"
+        },
+        {
+          "side": "home",
+          "minute": "76 ‘",
+          "incoming": "イッティモン",
+          "outgoing": "原 康介"
+        },
+        {
+          "side": "home",
+          "minute": "76 ‘",
+          "incoming": "アマドゥ バカヨコ",
+          "outgoing": "青木 亮太"
+        },
+        {
+          "side": "home",
+          "minute": "80 ‘",
+          "incoming": "福森 晃斗",
+          "outgoing": "野瀬 翔也"
+        },
+        {
+          "side": "away",
+          "minute": "74 ‘",
+          "incoming": "井上 樹",
+          "outgoing": "末木 裕也"
+        },
+        {
+          "side": "away",
+          "minute": "74 ‘",
+          "incoming": "村上 千歩",
+          "outgoing": "水野 颯太"
+        },
+        {
+          "side": "away",
+          "minute": "74 ‘",
+          "incoming": "佐藤 和弘",
+          "outgoing": "平塚 悠知"
+        },
+        {
+          "side": "away",
+          "minute": "74 ‘",
+          "incoming": "内藤 大和",
+          "outgoing": "スタチオーリ ミケーレ"
+        },
+        {
+          "side": "away",
+          "minute": "79 ‘",
+          "incoming": "福元 竣",
+          "outgoing": "山本 英臣"
+        }
+      ],
+      "video": null
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260829/": {
+      "starters": [
+        {
+          "number": 24,
+          "name": "田川　知樹"
+        },
+        {
+          "number": 47,
+          "name": "西野　奨太"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 17,
+          "name": "内田　瑞己"
+        },
+        {
+          "number": 3,
+          "name": "パク　ミンギュ"
+        },
+        {
+          "number": 18,
+          "name": "木戸　柊摩"
+        },
+        {
+          "number": 31,
+          "name": "堀米　悠斗"
+        },
+        {
+          "number": 19,
+          "name": "ティラパット"
+        },
+        {
+          "number": 70,
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "number": 38,
+          "name": "唐山　翔自"
+        },
+        {
+          "number": 7,
+          "name": "スパチョーク"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "55",
+          "name": "内藤　大和"
+        },
+        {
+          "side": "home",
+          "minute": "64",
+          "name": "藤井　一志"
+        },
+        {
+          "side": "away",
+          "minute": "3",
+          "name": "スパチョーク"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "62",
+          "incoming": "大島　康樹",
+          "outgoing": "佐藤　和弘"
+        },
+        {
+          "side": "home",
+          "minute": "73",
+          "incoming": "和田　拓也",
+          "outgoing": "村上　千歩"
+        },
+        {
+          "side": "home",
+          "minute": "79",
+          "incoming": "福元　竣",
+          "outgoing": "井上　樹"
+        },
+        {
+          "side": "home",
+          "minute": "79",
+          "incoming": "山本　英臣",
+          "outgoing": "藤井　一志"
+        },
+        {
+          "side": "home",
+          "minute": "79",
+          "incoming": "スタチオーリ　ミケーレ",
+          "outgoing": "内藤　大和"
+        },
+        {
+          "side": "away",
+          "minute": "59",
+          "incoming": "真田　蓮司",
+          "outgoing": "堀米　悠斗"
+        },
+        {
+          "side": "away",
+          "minute": "59",
+          "incoming": "白井　陽斗",
+          "outgoing": "スパチョーク"
+        },
+        {
+          "side": "away",
+          "minute": "65",
+          "incoming": "長谷川　竜也",
+          "outgoing": "ティラパット"
+        },
+        {
+          "side": "away",
+          "minute": "75",
+          "incoming": "宮澤　裕樹",
+          "outgoing": "パク　ミンギュ"
+        },
+        {
+          "side": "away",
+          "minute": "75",
+          "incoming": "アマドゥ　バカヨコ",
+          "outgoing": "木戸　柊摩"
+        }
+      ],
+      "video": "WrN8-9RO3BQ"
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260902/": {
+      "starters": [
+        {
+          "number": 1,
+          "name": "菅野　孝憲"
+        },
+        {
+          "number": 43,
+          "name": "野瀬　翔也"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 2,
+          "name": "髙尾　瑠"
+        },
+        {
+          "number": 28,
+          "name": "岡田　大和"
+        },
+        {
+          "number": 25,
+          "name": "大﨑　玲央"
+        },
+        {
+          "number": 29,
+          "name": "キム　ゴヌン"
+        },
+        {
+          "number": 19,
+          "name": "ティラパット"
+        },
+        {
+          "number": 35,
+          "name": "原　康介"
+        },
+        {
+          "number": 20,
+          "name": "アマドゥ　バカヨコ"
+        },
+        {
+          "number": 11,
+          "name": "青木　亮太"
+        }
+      ],
+      "goals": [
+        {
+          "side": "away",
+          "minute": "89",
+          "name": "長谷川　竜也"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "46*",
+          "incoming": "圓道　将良",
+          "outgoing": "吉尾　虹樹"
+        },
+        {
+          "side": "home",
+          "minute": "67",
+          "incoming": "河村　慶人",
+          "outgoing": "外山　鉄馬"
+        },
+        {
+          "side": "home",
+          "minute": "81",
+          "incoming": "髙橋　旺良",
+          "outgoing": "中山　桂吾"
+        },
+        {
+          "side": "home",
+          "minute": "81",
+          "incoming": "江川　慶城",
+          "outgoing": "武　星弥"
+        },
+        {
+          "side": "home",
+          "minute": "90+1",
+          "incoming": "ターレス",
+          "outgoing": "川島　功奨"
+        },
+        {
+          "side": "away",
+          "minute": "55",
+          "incoming": "白井　陽斗",
+          "outgoing": "ティラパット"
+        },
+        {
+          "side": "away",
+          "minute": "55",
+          "incoming": "真田　蓮司",
+          "outgoing": "大﨑　玲央"
+        },
+        {
+          "side": "away",
+          "minute": "71",
+          "incoming": "長谷川　竜也",
+          "outgoing": "青木　亮太"
+        },
+        {
+          "side": "away",
+          "minute": "81",
+          "incoming": "川原　颯斗",
+          "outgoing": "キム　ゴヌン"
+        }
+      ],
+      "video": "3UzbQMl2sVI"
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260906/": {
+      "starters": [
+        {
+          "number": 24,
+          "name": "田川　知樹"
+        },
+        {
+          "number": 43,
+          "name": "野瀬　翔也"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 17,
+          "name": "内田　瑞己"
+        },
+        {
+          "number": 3,
+          "name": "パク　ミンギュ"
+        },
+        {
+          "number": 30,
+          "name": "真田　蓮司"
+        },
+        {
+          "number": 10,
+          "name": "宮澤　裕樹"
+        },
+        {
+          "number": 19,
+          "name": "ティラパット"
+        },
+        {
+          "number": 70,
+          "name": "ヴィニ　ペイショット"
+        },
+        {
+          "number": 7,
+          "name": "スパチョーク"
+        },
+        {
+          "number": 38,
+          "name": "唐山　翔自"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "52",
+          "name": "白井　陽斗"
+        },
+        {
+          "side": "away",
+          "minute": "28",
+          "name": "小池　裕太"
+        },
+        {
+          "side": "away",
+          "minute": "38",
+          "name": "西谷　和希"
+        },
+        {
+          "side": "away",
+          "minute": "56",
+          "name": "小池　裕太"
+        },
+        {
+          "side": "away",
+          "minute": "58",
+          "name": "西谷　和希"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "46*",
+          "incoming": "長谷川　竜也",
+          "outgoing": "スパチョーク"
+        },
+        {
+          "side": "home",
+          "minute": "46*",
+          "incoming": "白井　陽斗",
+          "outgoing": "ティラパット"
+        },
+        {
+          "side": "home",
+          "minute": "60",
+          "incoming": "荒野　拓馬",
+          "outgoing": "宮澤　裕樹"
+        },
+        {
+          "side": "home",
+          "minute": "60",
+          "incoming": "アマドゥ　バカヨコ",
+          "outgoing": "唐山　翔自"
+        },
+        {
+          "side": "home",
+          "minute": "72",
+          "incoming": "マリオ　セルジオ",
+          "outgoing": "真田　蓮司"
+        },
+        {
+          "side": "away",
+          "minute": "67",
+          "incoming": "鈴木　武蔵",
+          "outgoing": "トクマック　グェン"
+        },
+        {
+          "side": "away",
+          "minute": "72",
+          "incoming": "山下　敬大",
+          "outgoing": "吉田　篤志"
+        },
+        {
+          "side": "away",
+          "minute": "72",
+          "incoming": "升掛　友護",
+          "outgoing": "西谷　和希"
+        },
+        {
+          "side": "away",
+          "minute": "85",
+          "incoming": "加藤　丈",
+          "outgoing": "森　俊貴"
+        },
+        {
+          "side": "away",
+          "minute": "85",
+          "incoming": "加藤　大",
+          "outgoing": "小池　裕太"
+        }
+      ],
+      "video": "o0mZ7xWHOUg"
+    },
+    "https://www.consadole-sapporo.jp/game/info/20260913/": {
+      "starters": [
+        {
+          "number": 24,
+          "name": "田川　知樹"
+        },
+        {
+          "number": 43,
+          "name": "野瀬　翔也"
+        },
+        {
+          "number": 47,
+          "name": "西野　奨太"
+        },
+        {
+          "number": 2,
+          "name": "髙尾　瑠"
+        },
+        {
+          "number": 17,
+          "name": "内田　瑞己"
+        },
+        {
+          "number": 55,
+          "name": "梅津　龍之介"
+        },
+        {
+          "number": 18,
+          "name": "木戸　柊摩"
+        },
+        {
+          "number": 71,
+          "name": "白井　陽斗"
+        },
+        {
+          "number": 16,
+          "name": "長谷川　竜也"
+        },
+        {
+          "number": 27,
+          "name": "荒野　拓馬"
+        },
+        {
+          "number": 23,
+          "name": "大森　真吾"
+        }
+      ],
+      "goals": [
+        {
+          "side": "home",
+          "minute": "26",
+          "name": "武田　英寿"
+        },
+        {
+          "side": "away",
+          "minute": "22",
+          "name": "大森　真吾"
+        }
+      ],
+      "substitutions": [
+        {
+          "side": "home",
+          "minute": "68",
+          "incoming": "小林　心",
+          "outgoing": "岩渕　弘人"
+        },
+        {
+          "side": "home",
+          "minute": "68",
+          "incoming": "鎌田　大夢",
+          "outgoing": "荒木　駿太"
+        },
+        {
+          "side": "home",
+          "minute": "80",
+          "incoming": "浅倉　廉",
+          "outgoing": "松井　蓮之"
+        },
+        {
+          "side": "home",
+          "minute": "90+4",
+          "incoming": "中田　有祐",
+          "outgoing": "小林　心"
+        },
+        {
+          "side": "home",
+          "minute": "90+4",
+          "incoming": "南　創太",
+          "outgoing": "杉山　耀建"
+        },
+        {
+          "side": "home",
+          "minute": "90+4",
+          "incoming": "菅田　真啓",
+          "outgoing": "中島　元彦"
+        },
+        {
+          "side": "away",
+          "minute": "62",
+          "incoming": "青木　亮太",
+          "outgoing": "白井　陽斗"
+        },
+        {
+          "side": "away",
+          "minute": "62",
+          "incoming": "ティラパット",
+          "outgoing": "長谷川　竜也"
+        },
+        {
+          "side": "away",
+          "minute": "77",
+          "incoming": "唐山　翔自",
+          "outgoing": "荒野　拓馬"
+        },
+        {
+          "side": "away",
+          "minute": "77",
+          "incoming": "堀米　悠斗",
+          "outgoing": "木戸　柊摩"
+        },
+        {
+          "side": "away",
+          "minute": "82",
+          "incoming": "ヴィニ　ペイショット",
+          "outgoing": "大森　真吾"
+        },
+        {
+          "side": "away",
+          "minute": "90+4",
+          "incoming": "アマドゥ　バカヨコ",
+          "outgoing": "ティラパット"
+        }
+      ],
+      "video": "cEOnNGJIsLA"
+    }
+  },
+  "team_updates": [
+    {
+      "title": "原康介選手 期限付き移籍のお知らせ",
+      "date": "2026-09-16",
+      "url": "https://www.consadole-sapporo.jp/news/2026/09/10272/",
+      "category": "加入・移籍・契約",
+      "summary": "原康介選手がギラヴァンツ北九州へ期限付き移籍。期間は2026年9月17日〜2027年6月30日。期間中、札幌との公式戦には出場できない契約。",
+      "checked_at": "2026-09-17T22:51+09:00"
+    },
+    {
+      "title": "スパチョーク選手 ティラパット選手 タイ代表選出のお知らせ",
+      "date": "2026-09-14",
+      "url": "https://www.consadole-sapporo.jp/news/2026/09/10192/",
+      "category": "代表選出",
+      "summary": "スパチョーク選手とティラパット選手のタイ代表選出をクラブが発表。",
+      "checked_at": "2026-09-17T22:51+09:00"
+    },
+    {
+      "title": "木實 快斗選手 U-19日本代表 離脱のお知らせ",
+      "date": "2026-09-04",
+      "url": "https://www.consadole-sapporo.jp/news/2026/09/9394/",
+      "category": "負傷・復帰",
+      "summary": "木實快斗選手が怪我によりU-19日本代表を離脱すると発表。発表時点の情報であり、現在の回復状況や次節の出場可否を示すものではありません。",
+      "checked_at": "2026-09-17T22:51+09:00"
+    }
+  ],
+  "comments": [
+    {
+      "name": "大森 真吾",
+      "role": "FW 23",
+      "text": "リーグ戦で得点できたことに手応え。クロスに入る動きとヘディングは練習で取り組んでおり、監督から求められたプレーで期待に応えられたと振り返った。",
+      "kind": "要約",
+      "date": "2026-09-13",
+      "source_url": "https://www.jleague.jp/match/j2/2026/091304/review/"
+    },
+    {
+      "name": "川井 健太",
+      "role": "監督",
+      "text": "難しいアウェイで得た勝点1と、後押ししたサポーターを評価。先発7人の変更は、敗戦への反応だけでなくチームのバランスを考えた選択と説明し、次のホーム戦で勝点3につなげたいと語った。",
+      "kind": "要約",
+      "date": "2026-09-13",
+      "source_url": "https://www.jleague.jp/match/j2/2026/091304/review/"
+    }
+  ],
+  "comments_match": {
+    "date": "2026-09-13",
+    "opponent": "仙台"
   }
 }
