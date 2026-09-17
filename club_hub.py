@@ -66,7 +66,7 @@ def build_sapporo_hub(standing, results, league_rows, roster, today=None):
     league_results = []
     for source in results:
         competition = unicodedata.normalize('NFKC', source.get('competition') or '')
-        if 'J2リーグ' not in competition or source.get('club_score') is None or source.get('opponent_score') is None:
+        if not re.search(r'J2(?![0-9])', competition) or source.get('club_score') is None or source.get('opponent_score') is None:
             continue
         row = dict(source)
         difference = row['club_score'] - row['opponent_score']

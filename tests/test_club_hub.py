@@ -17,7 +17,7 @@ class ClubHubTests(unittest.TestCase):
         self.assertIsNone(calendar_link(dict(match, kickoff=None), '2026-09-17T19:00+09:00'))
 
     def test_recent_form_excludes_cups_and_expires_matchday_event(self):
-        results = [dict(competition='明治安田Ｊ２リーグ', club_score=1, opponent_score=1, match_date='2026-09-13')]
+        results = [dict(competition='明治安田Ｊ２', club_score=1, opponent_score=1, match_date='2026-09-13')]
         results += [dict(competition='ルヴァンカップ', club_score=9, opponent_score=0, match_date='2026-09-12')]
         results += [dict(competition='明治安田Ｊ２リーグ', club_score=1, opponent_score=3, match_date='2026-09-06')]
         hub = build_sapporo_hub(None, results, [], [], today='2026-09-17')
