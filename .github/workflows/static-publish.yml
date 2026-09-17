@@ -77,7 +77,12 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout --orphan static-site
           git rm -rf .
+          # Remove generated/ignored build files from this disposable checkout.
+          # Otherwise public/ is copied into itself and Python caches get published.
+          git clean -fdx
           cp -a /tmp/issho-static/. .
+          test ! -e public
+          test ! -e __pycache__
           git add -A
           git commit -m "Publish static fan frontend ${GITHUB_SHA::7}"
           git push --force origin static-site
