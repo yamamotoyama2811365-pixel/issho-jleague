@@ -3,7 +3,7 @@
 {% block content %}
 <section class="page-head"><p class="eyebrow">MATCHDAY PLANNER</p><h1>試合日程・チケット</h1><p>次にいつ、どこで観るか。対戦カードからチケット購入、会場ガイドまで一気に。</p></section>
 
-<form class="filterbar schedule-filter" method="get">
+<form class="filterbar schedule-filter" method="get" data-static-filter>
   <select name="league"><option value="">J1・J2・J3すべて</option>{% for l in ['J1','J2','J3'] %}<option value="{{ l }}" {% if league==l %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
   <select name="club"><option value="">全クラブ</option>{% for c in clubs %}<option value="{{ c.slug }}" {% if club_slug==c.slug %}selected{% endif %}>{{ c.league }} {{ c.name }}</option>{% endfor %}</select>
   <button class="btn primary" type="submit">日程を見る</button>
@@ -13,7 +13,7 @@
 
 <div class="fixture-stack">
 {% for f in fixtures %}
-<article class="fixture-card">
+<article class="fixture-card" data-filter-row data-league="{{ f.league }}" data-clubs="{{ f.home_slug }} {{ f.away_slug }}">
   <div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span><em>{{ f.league }}</em></div>
   <div class="fixture-main">
     <small>{{ f.competition or f.league }}</small>

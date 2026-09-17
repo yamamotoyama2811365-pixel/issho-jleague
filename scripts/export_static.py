@@ -47,7 +47,10 @@ def render_route(route: str) -> str:
         response = client.get(route, follow_redirects=True)
     if response.status_code != 200:
         raise RuntimeError(f"static export failed: {route} -> {response.status_code}")
-    write_route(route, response.data)
+    data = response.data
+    if route in {"/players", "/schedule", "/results"}:
+        data = data.replace(b"</head>", b'<script src="/static/filters.js" defer></script></head>', 1)
+    write_route(route, data)
     return route
 
 
@@ -164,6 +167,7 @@ def write_sitemap(urls: list[str]) -> None:
 
 
 def main() -> None:
+    app.config["STATIC_EXPORT"] = True
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)

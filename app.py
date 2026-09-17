@@ -213,7 +213,7 @@ def fixtures_for(club_id=None, stadium_id=None, limit=20, league=None):
         LEFT JOIN stadiums s ON s.id = f.stadium_id
         WHERE {' AND '.join(where)}
         ORDER BY f.match_date, f.kickoff NULLS LAST
-        LIMIT :limit
+        {'LIMIT :limit' if limit is not None else ''}
     """, params)
 
 
@@ -379,7 +379,7 @@ def schedule_page():
             club_id = c.id if c else None
     rows = fixtures_for(
         club_id=club_id,
-        limit=160,
+        limit=None if app.config.get("STATIC_EXPORT") else 160,
         league=league if league in {"J1", "J2", "J3"} else None,
     )
     return render_template("schedule.html", fixtures=rows, clubs=clubs, league=league, club_slug=club_slug)
@@ -416,7 +416,7 @@ def results_page():
         FROM club_results cr JOIN clubs c ON c.id = cr.club_id
         {where_sql}
         ORDER BY cr.match_date DESC, cr.id DESC
-        LIMIT :limit
+        {'' if app.config.get('STATIC_EXPORT') else 'LIMIT :limit'}
     """, params)
     with SessionLocal() as db:
         clubs = db.scalars(select(Club).order_by(Club.league, Club.name)).all()
