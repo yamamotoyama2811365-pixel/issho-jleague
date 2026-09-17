@@ -1,0 +1,83 @@
+name: Build static CDN frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app.py'
+      - 'templates/**'
+      - 'static/**'
+      - 'scripts/export_static.py'
+      - '.github/workflows/static-publish.yml'
+  schedule:
+    # Run after weekend data sync. 00:20 JST Sunday/Monday = 15:20 UTC Saturday/Sunday.
+    - cron: '20 15 * * 6,0'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: issho-jleague-static-publish
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      STATIC_SITE_URL: https://issho-jleague.pages.dev
+      DYNAMIC_ORIGIN: https://issho-jleague.onrender.com
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify database secret
+        shell: bash
+        run: |
+          test -n "$DATABASE_URL" || { echo 'DATABASE_URL secret missing'; exit 1; }
+
+      - name: Export static site
+        run: python scripts/export_static.py
+
+      - name: Validate static output
+        shell: bash
+        run: |
+          test -s public/index.html
+          test -s public/schedule/index.html
+          test -s public/clubs/index.html
+          test -s public/players/index.html
+          test -s public/sitemap.xml
+          pages=$(find public -name index.html | wc -l)
+          echo "static pages=$pages"
+          test "$pages" -ge 2200
+
+      - name: Prepare publish tree
+        shell: bash
+        run: |
+          rm -rf /tmp/issho-static
+          mkdir -p /tmp/issho-static
+          cp -a public/. /tmp/issho-static/
+          touch /tmp/issho-static/.nojekyll
+
+      - name: Publish static-site branch
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout --orphan static-site
+          git rm -rf .
+          cp -a /tmp/issho-static/. .
+          git add -A
+          git commit -m "Publish static fan frontend ${GITHUB_SHA::7}"
+          git push --force origin static-site
