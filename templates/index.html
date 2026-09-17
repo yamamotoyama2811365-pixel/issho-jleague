@@ -2,10 +2,10 @@
 {% block content %}
 <section class="hero">
   <div>
-    <p class="eyebrow">J1 / J2 / J3 FAN PORTAL</p>
+    <p class="eyebrow">J1 / J2 / J3 MATCHDAY PORTAL</p>
     <h1>一生Jリーグ。</h1>
-    <p class="lead">順位、試合結果、全選手、スタジアム遠征、クイズ。週末のJリーグを追いかけるための情報を1か所に。</p>
-    <div class="hero-actions"><a class="btn primary" href="/results">最新結果を見る</a><a class="btn" href="/standings">順位表を見る</a><a class="btn" href="/quiz">10問クイズ</a></div>
+    <p class="lead">次の試合を見つける。チケットを買う。会場を調べる。好きな選手を追う。Jリーグファンの週末を1か所で。</p>
+    <div class="hero-actions"><a class="btn primary" href="/schedule">次の試合・チケット</a><a class="btn" href="/clubs">推しクラブを見る</a><a class="btn" href="/players">選手を探す</a></div>
   </div>
   <div class="scoreboard">
     <div><b>{{ club_count }}</b><span>CLUBS</span></div>
@@ -14,51 +14,36 @@
   </div>
 </section>
 
-<section class="section-head"><div><p class="eyebrow">LEAGUE TABLE</p><h2>いまの順位</h2></div><a href="/standings">全順位を見る →</a></section>
+<section class="section-head"><div><p class="eyebrow">NEXT MATCHES</p><h2>次に観に行ける試合</h2></div><a href="/schedule">全日程・チケット →</a></section>
+<div class="fixture-stack home-fixtures">
+{% for f in next_fixtures %}
+<article class="fixture-card">
+  <div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span><em>{{ f.league }}</em></div>
+  <div class="fixture-main"><small>{{ f.competition or f.league }}</small><h3><a href="/club/{{ f.home_slug }}">{{ f.home_name }}</a> <b>vs</b> <a href="/club/{{ f.away_slug }}">{{ f.away_name }}</a></h3><p>{{ f.venue or '会場確認中' }}</p></div>
+  <div class="fixture-actions">{% if f.ticket_url %}<a class="btn primary" href="{{ f.ticket_url }}" target="_blank" rel="nofollow noopener">チケットを買う</a>{% else %}<span class="ticket-wait">販売情報待ち</span>{% endif %}{% if f.stadium_slug %}<a class="btn" href="/stadium/{{ f.stadium_slug }}">会場ガイド</a>{% endif %}</div>
+</article>
+{% else %}<p class="empty">次回の自動同期で今後の日程を表示します。</p>{% endfor %}
+</div>
+
+<section class="section-head"><div><p class="eyebrow">FOLLOW YOUR CLUB</p><h2>推しクラブの現在地</h2></div><a href="/clubs">全60クラブ →</a></section>
 <div class="league-board-grid">
 {% for league in ['J1','J2','J3'] %}
 <article class="panel league-board">
   <div class="league-board-head"><strong>{{ league }}</strong><span>TOP 5</span></div>
-  {% for row in standings[league] %}
-  <a class="mini-standing" href="/club/{{ row.slug }}"><b>{{ row.rank }}</b><span>{{ row.name }}</span><strong>{{ row.points }}pt</strong></a>
-  {% else %}<p class="empty">順位データ準備中</p>{% endfor %}
+  {% for row in standings[league] %}<a class="mini-standing" href="/club/{{ row.slug }}"><b>{{ row.rank }}</b><span>{{ row.name }}</span><strong>{{ row.points }}pt</strong></a>{% else %}<p class="empty">順位データ準備中</p>{% endfor %}
 </article>
 {% endfor %}
 </div>
 
-<section class="section-head"><div><p class="eyebrow">LATEST RESULTS</p><h2>直近の試合結果</h2></div><a href="/results">試合結果一覧 →</a></section>
-<div class="results-list">
-{% for row in recent_results %}
-<a class="result-row" href="/club/{{ row.club_slug }}">
-  <time>{{ row.match_date }}</time>
-  <span class="league-chip">{{ row.league }}</span>
-  <strong>{{ row.club_name }}</strong>
-  <b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b>
-  <span>{{ row.opponent }}</span>
-  <small>{{ row.competition }}{% if row.venue %} / {{ row.venue }}{% endif %}</small>
-</a>
-{% else %}<p class="empty">試合結果データ準備中</p>{% endfor %}
-</div>
+<section class="section-head"><div><p class="eyebrow">PLAYER WATCH</p><h2>いま得点している選手</h2></div><a href="/players">全選手を見る →</a></section>
+<div class="scorer-grid">{% for p in top_scorers %}<a class="scorer-card" href="/player/{{ p.slug }}"><span>{{ p.club.league }} / {{ p.club.name }}</span><strong>{{ p.name }}</strong><div><b>{{ p.goals or 0 }}</b> GOALS <em>{{ p.appearances or 0 }}試合</em></div></a>{% endfor %}</div>
 
-<section class="section-head"><div><p class="eyebrow">PLAYER WATCH</p><h2>得点上位の選手</h2></div><a href="/players">全選手を見る →</a></section>
-<div class="scorer-grid">
-{% for p in top_scorers %}
-<a class="scorer-card" href="/player/{{ p.slug }}">
-  <span>{{ p.club.league }} / {{ p.club.name }}</span>
-  <strong>{{ p.name }}</strong>
-  <div><b>{{ p.goals or 0 }}</b> GOALS <em>{{ p.appearances or 0 }}試合</em></div>
-</a>
-{% endfor %}
-</div>
+<section class="section-head"><div><p class="eyebrow">LATEST RESULTS</p><h2>直近の試合結果</h2></div><a href="/results">結果一覧 →</a></section>
+<div class="results-list">{% for row in recent_results %}<a class="result-row" href="/club/{{ row.club_slug }}"><time>{{ row.match_date }}</time><span class="league-chip">{{ row.league }}</span><strong>{{ row.club_name }}</strong><b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b><span>{{ row.opponent }}</span><small>{{ row.competition }}{% if row.venue %} / {{ row.venue }}{% endif %}</small></a>{% else %}<p class="empty">試合結果データ準備中</p>{% endfor %}</div>
 
 <section class="grid3 feature-grid section-space">
-  <article class="feature"><span>01</span><h2>全60クラブ</h2><p>順位・勝点・直近戦績・所属選手・ホームスタジアムをクラブ単位で追えます。</p><a href="/clubs">クラブ一覧へ →</a></article>
-  <article class="feature"><span>02</span><h2>スタジアム遠征</h2><p>座席エリアの独自図解、アクセス、スタグル、ホテル、観光まで1ページにまとめます。</p><a href="/stadiums">スタジアムへ →</a></article>
-  <article class="feature"><span>03</span><h2>10問クイズ</h2><p>10問の正解数と回答時間で競争。ニックネームを保存してランキング掲載。</p><a href="/quiz">挑戦する →</a></article>
+  <article class="feature"><span>01</span><h2>試合を観に行く</h2><p>試合日程からチケット購入、会場アクセス、座席・スタグルまでつなげます。</p><a href="/schedule">日程・チケット →</a></article>
+  <article class="feature"><span>02</span><h2>選手を追う</h2><p>全選手名鑑に、確認済みSNS、次戦、所属クラブの戦績を紐づけます。</p><a href="/players">選手検索 →</a></article>
+  <article class="feature"><span>03</span><h2>Jリーグで遊ぶ</h2><p>10問クイズの正解数と回答時間で競争。ランキングでファン同士が遊べます。</p><a href="/quiz">10問クイズ →</a></article>
 </section>
-
-<section class="section-head"><div><p class="eyebrow">LEADERBOARD</p><h2>クイズ総合ランキング</h2></div><a href="/leaderboard">100位まで見る →</a></section>
-<div class="ranking-list">
-{% for row in top %}<div class="rank-row"><b>{{ loop.index }}</b><span>{{ row.nickname }}</span><strong>{{ row.score }}/10</strong><em>{{ '%.2f'|format(row.elapsed_ms/1000) }}秒</em></div>{% else %}<p class="empty">まだ記録がありません。最初の挑戦者になろう。</p>{% endfor %}
-</div>
 {% endblock %}
