@@ -20,17 +20,19 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from app import SessionLocal, Club, Player, PlayerSocial, init_db  # noqa: E402
 
-HEADERS = {"User-Agent": "IsshoJLeague/1.0 (+verified player social sync)", "Accept-Language": "ja,en;q=0.5"}
+HEADERS = {"User-Agent": "IsshoJLeague/1.1 (+verified player social sync)", "Accept-Language": "ja,en;q=0.5"}
 SUPPORTED = {
-    "x.com": "X",
-    "twitter.com": "X",
-    "www.twitter.com": "X",
-    "instagram.com": "Instagram",
-    "www.instagram.com": "Instagram",
-    "tiktok.com": "TikTok",
-    "www.tiktok.com": "TikTok",
-    "youtube.com": "YouTube",
-    "www.youtube.com": "YouTube",
+    "x.com": "X", "twitter.com": "X", "www.twitter.com": "X",
+    "instagram.com": "Instagram", "www.instagram.com": "Instagram",
+    "tiktok.com": "TikTok", "www.tiktok.com": "TikTok",
+    "youtube.com": "YouTube", "www.youtube.com": "YouTube",
+}
+# プロフィール下部などに混ざるクラブ共通SNS。選手個人SNSとしては保存しない。
+BLOCKED_HANDLES = {
+    "@consaofficial",
+    "@hokkaido_consadole_sapporo",
+    "@hokkaidoconsadolesapporo",
+    "@user",  # youtube.com/user/consadolesapporotv
 }
 
 
@@ -58,7 +60,10 @@ def handle_from(url):
     path = parsed.path.strip("/")
     if not path:
         return None
-    first = path.split("/")[0]
+    parts = path.split("/")
+    first = parts[0]
+    if first == "user" and len(parts) > 1:
+        first = parts[1]
     if first in {"intent", "share", "watch", "channel"}:
         return None
     return "@" + first.lstrip("@")
@@ -83,28 +88,20 @@ def social_links_under_sns_heading(soup):
             href = "https:" + href
         host = urlparse(href).netloc.lower()
         platform = SUPPORTED.get(host)
-        if platform and href not in seen:
+        handle = handle_from(href)
+        if platform and href not in seen and handle not in BLOCKED_HANDLES:
             seen.add(href)
             out.append((platform, href))
     return out
-
-
-def match_player(page_text, players):
-    hay = norm(page_text)
-    hits = []
-    for p in players:
-        needle = norm(p.name)
-        pos = hay.find(needle)
-        if pos >= 0:
-            hits.append((pos, -len(needle), p))
-    hits.sort(key=lambda x: (x[0], x[1]))
-    return hits[0][2] if hits else None
 
 
 def save_verified(player_id, links, source_url):
     added = 0
     with SessionLocal() as db:
         for platform, url in links:
+            handle = handle_from(url)
+            if handle in BLOCKED_HANDLES:
+                continue
             exists = db.scalar(select(PlayerSocial).where(
                 PlayerSocial.player_id == player_id,
                 PlayerSocial.platform == platform,
@@ -117,7 +114,7 @@ def save_verified(player_id, links, source_url):
                 player_id=player_id,
                 platform=platform,
                 url=url,
-                handle=handle_from(url),
+                handle=handle,
                 source_url=source_url,
             ))
             added += 1
@@ -138,7 +135,6 @@ def sync_consadole():
         if not club:
             raise RuntimeError("sapporo club not found")
         players = db.scalars(select(Player).where(Player.club_id == club.id)).all()
-        # セッション外でも参照できる素朴な属性だけ利用する。
         player_rows = [{"id": p.id, "name": p.name} for p in players]
 
     profile_urls = []
@@ -158,9 +154,7 @@ def sync_consadole():
         pr = s.get(url, timeout=25)
         pr.raise_for_status()
         psoup = BeautifulSoup(pr.text, "html.parser")
-        page_text = clean(psoup.get_text(" "))
-        # dictをPlayer風の小オブジェクトとして扱う代わりに局所照合。
-        hay = norm(page_text)
+        hay = norm(clean(psoup.get_text(" ")))
         candidates = []
         for row in player_rows:
             needle = norm(row["name"])
@@ -176,10 +170,10 @@ def sync_consadole():
             continue
         matched_profiles += 1
         total_links += save_verified(player["id"], links, url)
-        print(f"札幌 {player['name']}: verified_socials={len(links)}", flush=True)
+        print(f"札幌 {player['name']}: verified_personal_socials={len(links)}", flush=True)
 
     print(
-        f"Consadole profiles={len(profile_urls)} matched_with_social={matched_profiles} new_links={total_links}",
+        f"Consadole profiles={len(profile_urls)} matched_with_personal_social={matched_profiles} new_links={total_links}",
         flush=True,
     )
     return matched_profiles
