@@ -1,12 +1,10 @@
 name: Weekend J.League data sync
 
 on:
-  push:
-    branches: [main]
   schedule:
     # 23:30 JST = 14:30 UTC.
-    - cron: '30 14 * * 6' # Saturday: fixtures + results + standings
-    - cron: '30 14 * * 0' # Sunday: fixtures + results + standings + roster + socials
+    - cron: '30 14 * * 6' # Saturday: fixtures + tickets + results + standings
+    - cron: '30 14 * * 0' # Sunday: fixtures + tickets + results + standings + roster + socials
   workflow_dispatch:
 
 permissions:
@@ -60,7 +58,7 @@ jobs:
         run: python scripts/sync_jleague.py
 
       - name: Sync verified player social links
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.schedule == '30 14 * * 0'
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 14 * * 0'
         run: python scripts/sync_player_socials.py
 
       - name: Verify sync coverage
