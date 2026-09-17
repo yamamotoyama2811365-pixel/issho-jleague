@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}試合結果 | 一生Jリーグ{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">RESULTS</p><h1>試合結果</h1><p>J1・J2・J3の直近結果をクラブ別・リーグ別に確認。</p></section>
+<form class="filterbar result-filter" method="get"><select name="league"><option value="">全リーグ</option>{% for l in ['J1','J2','J3'] %}<option value="{{ l }}" {% if league==l %}selected{% endif %}>{{ l }}</option>{% endfor %}</select><select name="club"><option value="">全クラブ</option>{% for c in clubs %}<option value="{{ c.slug }}" {% if club_slug==c.slug %}selected{% endif %}>{{ c.league }} {{ c.name }}</option>{% endfor %}</select><button class="btn primary" type="submit">絞り込む</button></form>
+<div class="results-list large-results">
+{% for row in rows %}
+<a class="result-row" href="/club/{{ row.club_slug }}"><time>{{ row.match_date }}</time><span class="league-chip">{{ row.league }}</span><strong>{{ row.club_name }}</strong><b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b><span>{{ row.opponent }}</span><small>{{ row.competition }}{% if row.venue %} / {{ row.venue }}{% endif %}{% if row.attendance %} / {{ '{:,}'.format(row.attendance) }}人{% endif %}</small></a>
+{% else %}<p class="empty">該当する試合結果がありません。</p>{% endfor %}
+</div>
+{% endblock %}
