@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}コンサドーレ札幌｜次戦・選手・ホーム観戦ガイド | 一生Jリーグ{% endblock %}
+{% block description %}北海道コンサドーレ札幌の次戦プレビュー、日程・チケット、直近の戦績、選手、プレミストドームの席選び・アクセス・当日の楽しみ方をまとめた非公式ファンガイド。{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=1"><script src="/static/sapporo.js?v=1" defer></script>{% endblock %}
+{% block content %}
+{% set next = hub.next_match %}
+<div class="sapporo-hub">
+  <div class="hub-breadcrumb"><a href="/clubs#j2">クラブを探す</a><span>/</span><span>北海道コンサドーレ札幌</span></div>
+  <section class="consadole-hero" aria-labelledby="club-title">
+    <div class="hero-word" aria-hidden="true">SAPPORO</div>
+    <div class="hero-copy"><p class="hub-kicker">HOKKAIDO / SAPPORO · FAN GUIDE</p><h1 id="club-title">北海道<br>コンサドーレ札幌</h1><p class="hero-message">赤黒と、次の週末へ。</p><p class="hero-caption">試合を知る。選手を追う。スタジアムで会おう。</p></div>
+    <div class="hero-status">
+      <span class="hub-chip">{{ club.league }} 現在の順位</span>
+      {% if standing %}<div class="hero-rank"><strong>{{ standing.rank }}</strong><span>位 <b>/ 20</b></span></div><p><b>{{ standing.points }}</b> 勝点 <span>·</span> {{ standing.played }} 試合</p><div class="hero-record"><span>{{ standing.wins }} 勝</span><span>{{ standing.draws }} 分</span><span>{{ standing.losses }} 敗</span></div>{% else %}<p>順位を確認中</p>{% endif %}
+      <a href="#team-form">チームの現在地を見る ↗</a>
+    </div>
+    <span class="hero-footnote">一生Jリーグによる非公式ファンガイド</span>
+  </section>
+
+  <nav class="club-jump" aria-label="コンサドーレのページ内メニュー"><a href="#next-match">次の試合</a><a href="#team-form">戦績・順位</a><a href="#club-schedule">日程</a><a href="#club-news">ニュース</a><a href="#squad">選手</a><a href="#home-guide">観戦ガイド</a></nav>
+
+  {% if next %}
+  <section id="next-match" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">NEXT MATCH</p><h2>次の90分。</h2></div><span class="hub-update">日程確認 {{ hub.checked_at }} JST</span></div>
+    <div class="next-layout">
+      <article class="next-main">
+        <div class="match-meta"><span class="location-tag {{ next.home_away|lower }}">{{ next.home_away }}</span><span>{{ next.competition }} {{ next.round }}</span></div>
+        <time class="match-day" datetime="{{ next.date }}">{{ next.date_label }} <span>{{ next.kickoff or '時間未定' }}{% if next.kickoff %}<small> KICK OFF</small>{% endif %}</span></time>
+        <h3><span>北海道コンサドーレ札幌</span><small>VS</small><strong>{{ next.opponent_name }}</strong></h3>
+        <dl class="match-details"><div><dt>会場</dt><dd>{{ next.venue_full }}</dd></div><div><dt>放送・配信</dt><dd>{{ next.broadcast or '公式で確認' }}</dd></div></dl>
+        {% if next.note %}<p class="hub-note">{{ next.note }}</p>{% endif %}
+        <div class="hub-actions">{% if next.ticket_url %}<a class="hub-button red" href="{{ next.ticket_url }}" target="_blank" rel="noopener">チケットを買う ↗</a>{% endif %}{% if next.calendar %}<a class="hub-button" href="{{ next.calendar }}" download="consadole-{{ next.date }}.ics">カレンダーに保存 ＋</a>{% endif %}</div>
+        <div class="match-foot"><a href="{{ next.source_url }}" target="_blank" rel="noopener">公式の試合情報 ↗</a>{% if next.event_url %}<a href="{{ next.event_url }}" target="_blank" rel="noopener">当日のイベント ↗</a>{% endif %}</div>
+      </article>
+      <aside class="match-preview">
+        <p class="hub-kicker">MATCH PREVIEW</p><h3>数字から見る、次の相手。</h3>
+        {% if standing and hub.comparison %}
+        <div class="comparison-head"><strong>札幌</strong><span>リーグ戦</span><strong>{{ next.opponent }}</strong></div>
+        {% for key, label, suffix in [('rank','順位','位'),('points','勝点',''),('goals_for','得点',''),('goals_against','失点','')] %}<div class="comparison-row"><b>{{ standing[key] }}{{ suffix }}</b><span>{{ label }}</span><b>{{ hub.comparison[key] }}{{ suffix }}</b></div>{% endfor %}
+        <p class="hub-note">札幌 {{ standing.played }}試合 / {{ next.opponent }} {{ hub.comparison.played }}試合消化</p>
+        {% else %}<p>対戦相手と試合の詳細は、クラブ公式のプレビューへ。</p>{% endif %}
+        {% if hub.league_results %}<div class="preview-take"><b>今回、注目したいこと</b><p>札幌は直近{{ hub.league_results|length }}試合のリーグ戦で{{ hub.form.gf }}得点・{{ hub.form.ga }}失点。{% if hub.form.ga > hub.form.gf %}失点をどこまで抑え、得点を勝点につなげられるか。{% else %}積み上げてきた得点力を、次の試合でも発揮できるか。{% endif %}</p><small>掲載データからの編集メモ</small></div>{% endif %}
+      </aside>
+    </div>
+  </section>
+  {% endif %}
+
+  <section id="team-form" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">WHERE WE STAND</p><h2>チームの現在地</h2></div><a href="/standings#j2">J2の全順位 →</a></div>
+    <div class="form-layout">
+      <article class="hub-panel"><div class="panel-heading"><h3>リーグ戦、直近{{ hub.league_results|length }}試合</h3><span>新しい試合から</span></div>
+        {% if hub.league_results %}<div class="form-summary"><div class="form-badges">{% for r in hub.league_results %}<span class="form-badge {{ r.outcome }}" title="{{ r.date_label }} {{ r.opponent }} {{ r.club_score }}-{{ r.opponent_score }}">{{ r.label }}</span>{% endfor %}</div><p>{{ hub.form.win }}勝 {{ hub.form.draw }}分 {{ hub.form.loss }}敗 <span>／ {{ hub.form.gf }}得点 {{ hub.form.ga }}失点</span></p></div>{% endif %}
+        <div class="hub-results">{% for r in hub.league_results %}<div class="hub-result"><time>{{ r.date_label }}</time><span class="outcome {{ r.outcome }}">{{ r.label }}</span><span>{{ r.opponent }}</span><b>{{ r.club_score }} <i>−</i> {{ r.opponent_score }}</b><small>{{ r.venue or '' }}</small></div>{% else %}<p>リーグ戦の結果を確認中です。</p>{% endfor %}</div>
+        <a class="hub-inline" href="/results?club=sapporo">カップ戦を含む結果も見る →</a>
+      </article>
+      <article class="hub-panel nearby-panel"><div class="panel-heading"><h3>札幌と近隣順位のクラブ</h3><span>J2</span></div>
+        <div class="nearby-label"><span>順位・クラブ</span><span>勝点 / 得失点</span></div>
+        {% for r in hub.nearby %}<a class="nearby-row {% if r.slug == 'sapporo' %}is-sapporo{% endif %}" href="/club/{{ r.slug }}"><b>{{ r.rank }}</b><strong>{{ r.name }}</strong><span>{{ r.points }}<small>{{ '%+d'|format(r.goal_diff or 0) }}</small></span></a>{% endfor %}
+        {% if standing %}<div class="season-totals"><div><b>{{ standing.goals_for }}</b><span>シーズン得点</span></div><div><b>{{ standing.goals_against }}</b><span>シーズン失点</span></div><div><b>{{ '%+d'|format(standing.goal_diff or 0) }}</b><span>得失点差</span></div></div>{% endif %}
+        <p class="hub-note">順位データ更新 {{ hub.standing_checked or '確認中' }}<br><a href="https://www.jleague.jp/standings/j2/" target="_blank" rel="noopener">Jリーグ公式で確認 ↗</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section id="club-schedule" class="hub-section" data-hub-filter="schedule">
+    <div class="hub-heading"><div><p class="hub-kicker">PLAN YOUR MATCHDAY</p><h2>赤黒の予定を、カレンダーに。</h2></div><a href="https://www.consadole-sapporo.jp/game/list/" target="_blank" rel="noopener">公式の全日程 ↗</a></div>
+    <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="開催地で日程を絞り込む"><button type="button" data-filter="all" aria-pressed="true">すべて</button><button type="button" data-filter="HOME" aria-pressed="false">HOME</button><button type="button" data-filter="AWAY" aria-pressed="false">AWAY</button></div><span data-filter-count aria-live="polite"></span></div>
+    <div class="hub-fixtures">{% for m in hub.matches %}<article class="schedule-row" data-filter-item data-category="{{ m.home_away }}"><div class="schedule-when"><time>{{ m.date[:4] }}<b>{{ m.date_label }}</b></time><span>{{ m.kickoff or '時間未定' }}</span></div><div class="schedule-versus"><small><span class="location-tag {{ m.home_away|lower }}">{{ m.home_away }}</span>{{ m.competition }} {{ m.round }}</small><h3>vs {{ m.opponent_name }}</h3><p>{{ m.venue_full }} <span>· {{ m.broadcast or '配信確認中' }}</span></p>{% if m.note %}<p class="schedule-change">{{ m.note }}</p>{% endif %}</div><div class="schedule-links">{% if m.ticket_url %}<a href="{{ m.ticket_url }}" target="_blank" rel="noopener">チケット ↗</a>{% endif %}{% if m.calendar %}<a href="{{ m.calendar }}" download="consadole-{{ m.date }}.ics">予定を保存 ＋</a>{% endif %}<a href="{{ m.source_url }}" target="_blank" rel="noopener">試合情報 ↗</a></div></article>{% endfor %}</div>
+    <button type="button" class="hub-more" data-filter-more hidden>残りの日程を見る</button><p class="hub-note">開始時刻は日本時間。日程変更の注記がある試合・時刻未定の試合は、カレンダー保存の対象外です。</p>
+  </section>
+
+  <section id="club-news" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">FROM THE CLUB</p><h2>いま、知っておきたいこと。</h2></div><span class="hub-update">クラブ公式のお知らせ</span></div>
+    <div class="club-news-grid">{% for n in hub.news %}<a class="club-news-card" href="{{ n.url }}" target="_blank" rel="noopener"><div><time>{{ n.date }}</time><span>{{ n.category }}</span></div><h3>{{ n.title }}</h3><span class="news-arrow">公式で読む ↗</span></a>{% endfor %}</div><p class="hub-note">取得 {{ hub.checked_at }} JST · <a href="{{ hub.guide.official_url }}" target="_blank" rel="noopener">最新のお知らせはクラブ公式へ ↗</a></p>
+  </section>
+
+  <section id="squad" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">KNOW YOUR RED & BLACK</p><h2>名前がわかると、もっと熱くなる。</h2></div><span class="hub-update">登録 {{ roster|length }}選手</span></div>
+    {% if top_scorers %}<h3 class="scorers-label">チームの得点上位</h3><div class="hub-scorers">{% for p in top_scorers[:3] %}<a href="/player/{{ p.slug }}"><div class="player-shirt-number" aria-hidden="true">{{ p.number if p.number is not none else '—' }}</div><div class="scorer-name"><small>{{ p.position or '' }} / #{{ p.number if p.number is not none else '—' }}</small><h3>{{ p.name }}</h3><p><strong>{{ p.goals }}</strong> 得点 <span>{{ p.appearances if p.appearances is not none else '—' }}試合出場</span></p><span class="hub-inline">選手プロフィール →</span></div></a>{% endfor %}</div>{% endif %}
+    <div class="squad-directory" data-hub-filter="players">
+      <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="ポジションで選手を絞り込む"><button type="button" data-filter="all" aria-pressed="true">全選手</button>{% for pos in ['GK','DF','MF','FW'] %}<button type="button" data-filter="{{ pos }}" aria-pressed="false">{{ pos }}</button>{% endfor %}</div><label class="player-search">名前・背番号で探す<input type="search" data-player-search placeholder="例：西野、47" autocomplete="off"></label></div>
+      <p class="hub-note" data-filter-count aria-live="polite"></p><div class="hub-roster">{% for p in roster %}<a class="hub-player" href="/player/{{ p.slug }}" data-filter-item data-category="{{ p.position or '' }}" data-search="{{ p.name }} {{ p.number if p.number is not none else '' }}"><b>{{ p.number if p.number is not none else '—' }}</b><div><small>{{ p.position or '—' }}</small><strong>{{ p.name }}</strong><span>{{ p.appearances if p.appearances is not none else '—' }} 出場 <i>·</i> {{ p.goals if p.goals is not none else '—' }} 得点</span></div><span aria-hidden="true">↗</span></a>{% endfor %}</div><button type="button" class="hub-more" data-filter-more hidden>全選手を表示</button>
+    </div><p class="hub-note">選手データ更新 {{ hub.player_checked or '確認中' }} · 出場・得点は取得済みのJリーグ公式データ。「—」は未取得です。</p>
+  </section>
+
+  <section id="home-guide" class="hub-section home-guide">
+    <div class="hub-heading"><div><p class="hub-kicker">MAKE IT A MATCHDAY</p><h2>90分の、その前も楽しい。</h2><p>プレミストドームで過ごす、ホームゲームの一日。</p></div><span class="guide-stamp">HOME<br><b>GUIDE</b></span></div>
+    {% if hub.matchday %}<article class="event-special"><div class="event-title"><span class="hub-chip">{{ hub.matchday.date[5:]|replace('-','/') }} 大分戦の楽しみ</span><h3>早めに着いて、<br>カレーから始めよう。</h3><p>この日は屋外テラスでカレーフェス。試合が始まる前に、ごはんも応援の準備も。</p><a href="{{ hub.matchday.source_url }}" target="_blank" rel="noopener">当日の公式イベント一覧 ↗</a></div><ol class="matchday-timeline">{% for t in hub.matchday.timeline %}<li><time>{{ t.time }}</time><span>{{ t.label }}</span></li>{% endfor %}</ol></article>
+    <div class="food-grid">{% for f in hub.matchday.food %}<article><p class="food-index">0{{ loop.index }} / MATCHDAY FOOD</p><h4>{{ f.name }}</h4><strong>{{ f.price }}</strong><p>{{ f.text }}</p><small>{{ f.where }}</small></article>{% endfor %}</div><p class="guide-note">9/19開催分の案内。販売・実施内容は変更される場合があります。<a href="{{ hub.matchday.food_url }}" target="_blank" rel="noopener">公式のカレーフェス詳細 ↗</a></p>{% endif %}
+
+    <div class="guide-columns">
+      <article class="guide-card"><p class="hub-kicker">01 / FIND YOUR SEAT</p><h3>どんなふうに、応援する？</h3><div data-hub-tabs><nav class="guide-tabs" aria-label="目的別の席選び">{% for s in hub.guide.seats %}<a href="#seat-{{ s.key }}" data-hub-tab="seat-{{ s.key }}">{{ s.label }}</a>{% endfor %}</nav>{% for s in hub.guide.seats %}<div id="seat-{{ s.key }}" data-hub-panel><h4>{{ s.name }}</h4><p class="seat-price">{{ s.price }}</p><p>{{ s.text }}</p></div>{% endfor %}</div><a class="guide-link" href="{{ hub.guide.prices_url }}" target="_blank" rel="noopener">公式の座席図・価格を確認 ↗</a><p class="guide-note">プレミストドームの通常価格を参考に掲載（{{ hub.guide.checked_on }}確認）。試合・販売条件によって異なる場合があります。</p></article>
+      <article class="guide-card"><p class="hub-kicker">02 / GET TO THE DOME</p><h3>行き方も、帰り道も。</h3><div data-hub-tabs><nav class="guide-tabs" aria-label="交通手段別のアクセス"><a href="#access-subway" data-hub-tab="access-subway">地下鉄</a><a href="#access-airport" data-hub-tab="access-airport">新千歳空港</a><a href="#access-car" data-hub-tab="access-car">車</a></nav><div id="access-subway" data-hub-panel><h4>東豊線「福住」駅、3番出口へ。</h4><div class="access-route"><span>さっぽろ</span><small>地下鉄 約13分 →</small><span>福住</span><small>徒歩 約10分 →</small><strong>ドーム</strong></div><p>地下鉄は終点まで。試合日は駅と会場の間も混み合うので、移動時間に余裕を足しておきましょう。</p><a class="guide-link" href="https://www.sapporo-dome.co.jp/access/subway/" target="_blank" rel="noopener">地下鉄・徒歩ルートの公式案内 ↗</a></div><div id="access-airport" data-hub-panel><h4>空港連絡バス、またはJR＋地下鉄。</h4><p>空港からの連絡バスは約45分が目安。道路状況で前後します。鉄道ならJRで札幌へ、東豊線に乗り換えて福住駅へ。</p><p>帰りの飛行機は、試合後の退場・徒歩・乗り換えの時間も含めて計画を。</p><a class="guide-link" href="https://www.sapporo-dome.co.jp/access/airport/" target="_blank" rel="noopener">空港アクセスと運行案内 ↗</a></div><div id="access-car" data-hub-panel><h4>出発前に、当日の駐車場案内を。</h4><p>試合日の駐車券・利用条件は、対象試合の公式案内で確認してください。満車や周辺の混雑を避けるには、公共交通機関も候補に。</p><p>所在地：札幌市豊平区羊ケ丘1番地</p><a class="guide-link" href="https://www.consadole-sapporo.jp/guide/stadium-access/" target="_blank" rel="noopener">クラブ公式のスタジアムアクセス ↗</a></div></div></article>
+    </div>
+    <div class="guide-faq"><h3>出かける前の、小さな確認。</h3><details><summary>子どものチケットは必要？</summary><p>未就学児は、大人1名につき1名まで膝上観戦なら無料。席を使う場合はチケットが必要です。購入時に対象席種・条件を公式で確認してください。</p><a href="{{ hub.guide.prices_url }}" target="_blank" rel="noopener">席種・料金の公式案内 ↗</a></details><details><summary>初めての観戦。何を準備すればいい？</summary><p>チケットの表示・受取方法、入場ゲート、荷物のルールを出発前に確認。スマートフォンで入場するなら充電にも余裕を。屋外イベントに立ち寄る日は、天気に合わせた上着もあると便利です。</p><a href="{{ hub.guide.guide_url }}" target="_blank" rel="noopener">はじめての観戦ガイド ↗</a></details><details><summary>ホームゲームは毎回プレミストドーム？</summary><p>試合によって会場が変わります。このページの各試合に記載した会場を確認してから、アクセスやチケットを選んでください。この観戦ガイドはプレミストドーム向けです。</p><a href="#club-schedule">試合ごとの会場を確認 →</a></details></div>
+  </section>
+
+  <section class="club-everyday"><div><p class="hub-kicker">BEYOND THE 90 MINUTES</p><h2>試合のない日も、コンサドーレ。</h2></div><div class="everyday-links"><a href="{{ hub.guide.training_url }}" target="_blank" rel="noopener"><strong>練習スケジュール ↗</strong><span>公開日・場所・見学条件を公式で確認</span></a><a href="{{ hub.guide.club_tv_url }}" target="_blank" rel="noopener"><strong>CONSA+ ↗</strong><span>クラブ公式の動画・コンテンツへ</span></a><a href="https://store.consadole-sapporo.jp/" target="_blank" rel="noopener"><strong>公式オンラインストア ↗</strong><span>次の観戦に向けて、赤黒の準備を</span></a></div></section>
+  <div class="hub-source-note">データ：Jリーグ公式・北海道コンサドーレ札幌公式。観戦案内はクラブ公式・大和ハウス プレミストドーム公式をもとに編集。日程・ニュースの取得日時は各欄に表示しています。試合の変更、チケットの残席、当日の実施内容は公式ページをご確認ください。</div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{
+  "checked_on": "2026-09-17",
+  "official_url": "https://www.consadole-sapporo.jp/",
+  "guide_url": "https://www.consadole-sapporo.jp/guide/gameguide/beginnersguide/",
+  "prices_url": "https://www.consadole-sapporo.jp/guide/ticket/price/",
+  "training_url": "https://www.consadole-sapporo.jp/team_schedule/",
+  "club_tv_url": "https://lp.consa-plus.com/",
+  "venue_names": {
+    "プレド": "大和ハウス プレミストドーム",
+    "札幌厚別": "札幌厚別公園競技場",
+    "いちご": "いちご宮崎新富サッカー場",
+    "ヤマハ": "ヤマハスタジアム",
+    "ＮＤスタ": "NDソフトスタジアム山形",
+    "ユアスタ": "ユアテックスタジアム仙台"
+  },
+  "club_slugs": {
+    "札幌": "sapporo",
+    "大分": "oita",
+    "宮崎": "miyazaki",
+    "岡山": "okayama",
+    "いわき": "iwaki",
+    "磐田": "iwata",
+    "秋田": "akita",
+    "山形": "yamagata",
+    "富山": "toyama",
+    "湘南": "shonan",
+    "今治": "imabari",
+    "八戸": "hachinohe",
+    "鳥栖": "tosu",
+    "横浜FC": "yokohama-fc",
+    "藤枝": "fujieda",
+    "新潟": "niigata",
+    "栃木C": "tochigi-c",
+    "大宮": "omiya",
+    "甲府": "kofu",
+    "徳島": "tokushima",
+    "仙台": "sendai",
+    "鹿児島": "kagoshima"
+  },
+  "seats": [
+    {
+      "key": "first",
+      "label": "初めて・ゆっくり",
+      "name": "カテゴリー4",
+      "price": "一般 3,200円 / 小中 500円",
+      "text": "指定席で座って観戦しながら、ゴール裏の声援も感じたい人へ。初めて同行する人と、席を決めてから出かけられます。"
+    },
+    {
+      "key": "family",
+      "label": "子どもと一緒に",
+      "name": "カテゴリー3",
+      "price": "一般 3,400円 / 小中 500円",
+      "text": "ピッチを見渡しやすく、キッズ・ベビーコーナーに近いエリア。家族で観戦するなら、席と休憩場所を一緒に確認しておくと安心です。"
+    },
+    {
+      "key": "support",
+      "label": "声を出して応援",
+      "name": "カテゴリー5・熱狂エリア",
+      "price": "一般 2,700円 / 小中 500円",
+      "text": "立ってチャントを歌い、応援に参加したい人の候補。自由席のため、入場方法・当日の応援ルールを確認してから選びましょう。"
+    }
+  ],
+  "matchday": {
+    "date": "2026-09-19",
+    "opponent": "大分トリニータ",
+    "source_url": "https://www.consadole-sapporo.jp/game_event/20260919/",
+    "food_url": "https://www.consadole-sapporo.jp/news/2026/09/info_1785915223/",
+    "timeline": [
+      {
+        "time": "10:00",
+        "label": "屋外テラスのカレーフェス開始"
+      },
+      {
+        "time": "11:30",
+        "label": "一般入場開始"
+      },
+      {
+        "time": "13:10頃",
+        "label": "ピッチ練習開始"
+      },
+      {
+        "time": "14:00",
+        "label": "キックオフ／屋外テラス営業終了"
+      }
+    ],
+    "food": [
+      {
+        "name": "スモーキーポークカレー",
+        "price": "1,400円",
+        "where": "屋外テラス",
+        "text": "下國伸シェフ監修の限定カレー。販売は10:00〜14:00、なくなり次第終了。"
+      },
+      {
+        "name": "バターチキンカリー＋ナン",
+        "price": "カリー960円・ナン390円",
+        "where": "豊平峡温泉 タンドール号／屋外テラス",
+        "text": "カリーとナンは別売り。屋外テラスでキックオフ前の食事を楽しむ選択肢に。"
+      },
+      {
+        "name": "唐マヨカレー",
+        "price": "1,400円",
+        "where": "頑固オヤジのカレー／1F西側",
+        "text": "館内で食べたい人はこちら。11:00から後半開始15分後まで。なくなり次第終了。"
+      }
+    ]
+  }
+}

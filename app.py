@@ -2,6 +2,7 @@ import os
 import random
 import re
 import uuid
+from club_hub import build_sapporo_hub
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify, render_template, request, abort
 from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, Text, select, func, desc, asc, or_, text
@@ -371,6 +372,16 @@ def club_detail(slug):
             .order_by(desc(Player.goals), desc(Player.appearances), Player.name)
             .limit(6)
         ).all()
+    if slug == "sapporo":
+        standing = standing_for(club.id)
+        recent_results = results_for(club.id, 40)
+        league_rows = safe_rows("""
+            SELECT s.*, c.name, c.slug FROM standings s JOIN clubs c ON c.id = s.club_id
+            WHERE s.league = :league ORDER BY s.rank
+        """, {"league": club.league})
+        hub = build_sapporo_hub(standing, recent_results, league_rows, roster)
+        return render_template("club_sapporo.html", club=club, roster=roster,
+                               top_scorers=top_scorers, standing=standing, hub=hub)
     return render_template(
         "club.html",
         club=club,

@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - 'app.py'
+      - 'club_hub.py'
+      - 'data/**'
+      - 'scripts/sync_club_content.py'
       - 'templates/**'
       - 'static/**'
       - 'scripts/export_static.py'
@@ -54,6 +57,9 @@ jobs:
 
       - name: Refresh verified fixtures
         run: python scripts/sync_fixtures.py
+
+      - name: Refresh Sapporo news and full schedule
+        run: python scripts/sync_club_content.py
 
       - name: Export static site
         run: python scripts/export_static.py
