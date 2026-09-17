@@ -76,8 +76,11 @@ DBには次の追記欄を用意済みです。
 - Cloudflare Pages: `issho-jleague`、GitHub `static-site` ブランチを配信。
 - ビルドコマンド: なし。ルート・公開ディレクトリ: `/`。
 - データ: Neon PostgreSQL。接続情報はGitHub Actions / RenderのSecretに保持。
-- `Build static CDN frontend` がHTMLを生成して `static-site` を更新し、Cloudflareが自動公開。
-- `Verify live Cloudflare Pages` が公開後の主要ページ、CSS、robots、サイトマップ、404を確認。
+- `Build static CDN frontend` がHTMLを生成して `static-site` を更新。CloudflareにはGitHub連携・本番ブランチ・自動デプロイ設定を登録済み。
+- 初回公開と更新版の公開はCloudflare APIから成功。GitHub pushによる自動デプロイ発火は未確認のため、GitHub Appの対象リポジトリ権限を要確認。
+- 主要10種類のページとCSS、日本語表示、選手検索は公開URLでブラウザ確認済み。
+- 公開HTML全2,384ページの内部参照・文字化け・サイトマップ件数は静的検査済み。
+- robots.txt / sitemap.xml のライブ取得は検証クライアントに403またはERR_BLOCKED_BY_CLIENTが返るため未確認。自動HTTP検証ジョブは誤警報を避けるため撤去。
 - 選手検索・試合一覧の絞り込みは静的ページ内のJavaScriptで実行し、Renderへ問い合わせない。
 - クイズは暫定的に https://issho-jleague.onrender.com/quiz へ移動し、Render / Neonを利用。
 - Renderの通常デプロイでは全クラブ同期を実行しない。手動フル同期は `RUN_FULL_SYNC=1` の場合だけ。
