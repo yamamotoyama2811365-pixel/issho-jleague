@@ -1,24 +1,27 @@
 """Export the read-heavy fan site to static HTML for CDN hosting.
 
-The Flask app remains the source of truth and Neon remains the data store. This script
-renders public GET pages into ./public so Cloudflare Pages (or any static host) can
-serve them without a sleeping web process. Quiz is intentionally redirected to the
-API-backed Render app until its write API is centralized.
+Cloudflare Pages serves the generated HTML, while Flask/Neon remain the source of
+truth. The exporter batch-loads player-page data so thousands of pages do not cause
+thousands of round trips to Neon.
 """
 from __future__ import annotations
 
 import os
 import shutil
 import sys
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from flask import render_template
+from sqlalchemy import select, text
+from sqlalchemy.orm import joinedload
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-# DATABASE_URL must be set by CI before importing the Flask app.
-from app import app, SessionLocal, Club, Player, Stadium  # noqa: E402
+from app import app, engine, SessionLocal, Club, Player, Stadium  # noqa: E402
 
 OUT = ROOT / "public"
 STATIC_SRC = ROOT / "static"
@@ -33,14 +36,18 @@ def out_path(route: str) -> Path:
     return OUT / route / "index.html" if route else OUT / "index.html"
 
 
+def write_route(route: str, data: bytes) -> None:
+    path = out_path(route)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+
+
 def render_route(route: str) -> str:
     with app.test_client() as client:
         response = client.get(route, follow_redirects=True)
     if response.status_code != 200:
         raise RuntimeError(f"static export failed: {route} -> {response.status_code}")
-    path = out_path(route)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(response.data)
+    write_route(route, response.data)
     return route
 
 
@@ -51,6 +58,100 @@ def redirect_page(target: str, title: str) -> str:
 <meta http-equiv=\"refresh\" content=\"0;url={safe}\"><title>{escape(title)}</title>
 <link rel=\"canonical\" href=\"{safe}\"></head><body>
 <p><a href=\"{safe}\">{escape(title)}を開く</a></p></body></html>"""
+
+
+def rows(sql: str):
+    with engine.begin() as conn:
+        return [dict(r._mapping) for r in conn.execute(text(sql))]
+
+
+def batch_player_contexts():
+    with SessionLocal() as db:
+        players = db.scalars(
+            select(Player).options(joinedload(Player.club)).order_by(Player.id)
+        ).unique().all()
+        clubs = db.scalars(
+            select(Club).options(joinedload(Club.stadium)).order_by(Club.id)
+        ).unique().all()
+        # Fully load scalar attributes before leaving the session.
+        for p in players:
+            _ = (p.id, p.slug, p.club_id, p.name, p.number, p.position, p.goals, p.appearances, p.club.id, p.club.slug, p.club.name, p.club.league)
+        for c in clubs:
+            _ = (c.id, c.slug, c.name, c.league, c.stadium_id)
+            if c.stadium:
+                _ = (c.stadium.id, c.stadium.slug, c.stadium.name)
+
+    club_map = {c.id: c for c in clubs}
+    by_club = defaultdict(list)
+    for p in players:
+        by_club[p.club_id].append(p)
+
+    standing_map = {r["club_id"]: r for r in rows("SELECT * FROM standings")}
+
+    results_map = defaultdict(list)
+    for r in rows("""
+        SELECT cr.*, c.name AS club_name, c.slug AS club_slug, c.league
+        FROM club_results cr JOIN clubs c ON c.id = cr.club_id
+        ORDER BY cr.club_id, cr.match_date DESC, cr.id DESC
+    """):
+        if len(results_map[r["club_id"]]) < 5:
+            results_map[r["club_id"]].append(r)
+
+    fixture_map = defaultdict(list)
+    for f in rows("""
+        SELECT f.*, hc.slug AS home_slug, ac.slug AS away_slug, s.slug AS stadium_slug
+        FROM fixtures f
+        LEFT JOIN clubs hc ON hc.id=f.home_club_id
+        LEFT JOIN clubs ac ON ac.id=f.away_club_id
+        LEFT JOIN stadiums s ON s.id=f.stadium_id
+        WHERE f.match_date >= CURRENT_DATE
+        ORDER BY f.match_date, f.kickoff NULLS LAST
+    """):
+        for cid in {f.get("home_club_id"), f.get("away_club_id")}:
+            if cid and len(fixture_map[cid]) < 3:
+                fixture_map[cid].append(f)
+
+    social_map = defaultdict(list)
+    try:
+        social_rows = rows("""
+            SELECT player_id, platform, url, handle, source_url, checked_at
+            FROM player_socials
+            ORDER BY player_id, CASE platform
+                WHEN 'Instagram' THEN 1 WHEN 'X' THEN 2 WHEN 'TikTok' THEN 3 WHEN 'YouTube' THEN 4 ELSE 9 END
+        """)
+    except Exception:
+        social_rows = []
+    for s in social_rows:
+        social_map[s["player_id"]].append(s)
+
+    def teammate_key(p):
+        return (-(p.goals if p.goals is not None else -1), p.position or "", p.number is None, p.number or 9999, p.name)
+
+    contexts = []
+    for p in players:
+        teammates = [x for x in sorted(by_club[p.club_id], key=teammate_key) if x.id != p.id][:8]
+        contexts.append((
+            p.slug,
+            {
+                "player": p,
+                "club": club_map[p.club_id],
+                "standing": standing_map.get(p.club_id),
+                "recent_results": results_map.get(p.club_id, []),
+                "teammates": teammates,
+                "socials": social_map.get(p.id, []),
+                "next_fixtures": fixture_map.get(p.club_id, []),
+            },
+        ))
+    return contexts, clubs
+
+
+def render_player(item):
+    slug, context = item
+    with app.test_request_context(f"/player/{slug}"):
+        html = render_template("player.html", **context).encode("utf-8")
+    route = f"/player/{slug}"
+    write_route(route, html)
+    return route
 
 
 def write_sitemap(urls: list[str]) -> None:
@@ -68,37 +169,39 @@ def main() -> None:
     OUT.mkdir(parents=True)
     shutil.copytree(STATIC_SRC, STATIC_DST)
 
-    fixed_routes = [
-        "/", "/schedule", "/standings", "/results", "/clubs", "/players",
-        "/stadiums", "/leaderboard",
-    ]
-
+    player_contexts, clubs = batch_player_contexts()
     with SessionLocal() as db:
-        clubs = [(c.slug, c.id) for c in db.query(Club).all()]
-        players = [p.slug for p in db.query(Player).all()]
-        stadiums = [s.slug for s in db.query(Stadium).all()]
+        stadiums = [s.slug for s in db.scalars(select(Stadium).order_by(Stadium.id)).all()]
 
-    urls = list(fixed_routes)
-    urls.extend(f"/club/{slug}" for slug, _ in clubs)
-    urls.extend(f"/player/{slug}" for slug in players)
-    urls.extend(f"/stadium/{slug}" for slug in stadiums)
+    fixed_routes = ["/", "/schedule", "/standings", "/results", "/clubs", "/players", "/stadiums", "/leaderboard"]
+    light_routes = list(fixed_routes)
+    light_routes.extend(f"/club/{c.slug}" for c in clubs)
+    light_routes.extend(f"/stadium/{slug}" for slug in stadiums)
 
-    completed = 0
-    total = len(urls)
+    urls = list(light_routes)
+    urls.extend(f"/player/{slug}" for slug, _ in player_contexts)
+
+    # The small set of non-player routes can still use the Flask route functions.
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
-        futures = {pool.submit(render_route, route): route for route in urls}
+        futures = {pool.submit(render_route, route): route for route in light_routes}
         for future in as_completed(futures):
-            route = futures[future]
+            future.result()
+
+    # Player pages are rendered from one batch-loaded snapshot: no per-page Neon calls.
+    completed = 0
+    total = len(player_contexts)
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        futures = {pool.submit(render_player, item): item[0] for item in player_contexts}
+        for future in as_completed(futures):
+            slug = futures[future]
             try:
                 future.result()
             except Exception as exc:
-                raise RuntimeError(f"static export failed at {route}: {exc}") from exc
+                raise RuntimeError(f"player export failed at {slug}: {exc}") from exc
             completed += 1
-            if completed % 250 == 0 or completed == total:
-                print(f"static export progress: {completed}/{total}", flush=True)
+            if completed % 500 == 0 or completed == total:
+                print(f"player export progress: {completed}/{total}", flush=True)
 
-    # Write actions remain on the backend for now, so the static shell never needs
-    # CORS credentials or database secrets in the browser.
     quiz = out_path("/quiz")
     quiz.parent.mkdir(parents=True, exist_ok=True)
     quiz.write_text(redirect_page(f"{DYNAMIC_ORIGIN}/quiz", "Jリーグ10問クイズ"), encoding="utf-8")
@@ -115,7 +218,7 @@ def main() -> None:
     write_sitemap(urls)
 
     page_count = len(list(OUT.rglob("index.html")))
-    print(f"static export complete: pages={page_count} clubs={len(clubs)} players={len(players)} stadiums={len(stadiums)}")
+    print(f"static export complete: pages={page_count} clubs={len(clubs)} players={len(player_contexts)} stadiums={len(stadiums)}")
     if page_count < 2200:
         raise SystemExit(f"static export coverage too small: {page_count}")
 
