@@ -11,7 +11,7 @@
     return data;
   }
   // No tracking during previews/tests. The HTML never waits for the API to start.
-  if (club && location.hostname === 'issho-jleague.pages.dev' && !navigator.webdriver) {
+  if (club && location.hostname === 'issho-jleague.pages.dev' && !navigator.webdriver && !new URLSearchParams(location.search).has('v')) {
     let timer;
     function scheduleView() {
       clearTimeout(timer);
