@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 780" role="img" aria-labelledby="title desc">
+<title id="title">大和ハウス プレミストドーム 主要席種の位置ガイド</title>
+<desc id="desc">バックスタンド中央はカテゴリー3、両端はカテゴリー4。メインスタンド中央はカテゴリー1とゴールド、両端はカテゴリー2、上部はカテゴリー1アッパー。北側ホームゴール裏はカテゴリー5。南側はアウェイゾーンとカテゴリー6。公式の席種配置を参考に作成した概略図です。座席番号・通路・特別席の詳細は省略しています。</desc>
+<rect width="1120" height="780" rx="18" fill="#faf8f2"/>
+<g font-family="'Noto Sans JP', system-ui, sans-serif" fill="#352d32" text-anchor="middle">
+<text x="560" y="49" font-size="25" font-weight="800">大和ハウス プレミストドーム</text><text x="560" y="78" font-size="14" fill="#796d72">サッカー開催時 / 主要席種の位置ガイド</text>
+<rect x="65" y="130" width="990" height="574" rx="105" fill="#ebe5df" stroke="#d3c9c4" stroke-width="2"/>
+<text x="560" y="153" font-size="15" font-weight="750">バックスタンド</text>
+<rect x="334" y="176" width="452" height="76" rx="12" fill="#e7a43f"/>
+<text x="560" y="208" font-size="23" font-weight="800">カテゴリー3</text><text x="560" y="233" font-size="14">家族で / 全体を見渡す</text>
+<rect x="91" y="176" width="225" height="94" rx="20" fill="#b8d5a5"/><rect x="804" y="176" width="225" height="94" rx="20" fill="#b8d5a5"/>
+<text x="203" y="211" font-size="21" font-weight="800">カテゴリー4 北</text><text x="203" y="239" font-size="14">初めての観戦にも</text>
+<text x="916" y="211" font-size="21" font-weight="800">カテゴリー4 南</text><text x="916" y="239" font-size="14">初めての観戦にも</text>
+<rect x="91" y="285" width="192" height="105" rx="14" fill="#a474b1"/>
+<text x="187" y="319" font-size="20" font-weight="800" fill="#fff">カテゴリー5</text><text x="187" y="348" font-size="18" fill="#fff">熱狂エリア</text><text x="187" y="373" font-size="12" fill="#fff">立って声援を送りたい人へ</text>
+<rect x="91" y="402" width="192" height="106" rx="14" fill="#805196"/>
+<text x="187" y="440" font-size="20" font-weight="800" fill="#fff">カテゴリー5</text><text x="187" y="470" font-size="18" fill="#fff">ホームゴール裏</text>
+<text x="43" y="398" font-size="15" transform="rotate(-90 43 398)" font-weight="750">北側 / HOME</text>
+<rect x="837" y="285" width="192" height="105" rx="14" fill="#454953"/>
+<text x="933" y="327" font-size="20" font-weight="800" fill="#fff">アウェイゾーン</text><text x="933" y="358" font-size="14" fill="#fff">ビジターの応援はこちら</text>
+<rect x="837" y="402" width="192" height="106" rx="14" fill="#edcf53"/>
+<text x="933" y="443" font-size="20" font-weight="800">カテゴリー6</text><text x="933" y="473" font-size="14">南側ゴール裏</text>
+<text x="1077" y="398" font-size="15" transform="rotate(90 1077 398)" font-weight="750">南側 / AWAY</text>
+<rect x="339" y="285" width="442" height="223" rx="4" fill="#217b60"/>
+<g fill="none" stroke="#fff" stroke-width="2" opacity=".75"><rect x="354" y="300" width="412" height="193"/><path d="M560 300V493"/><circle cx="560" cy="396.5" r="32"/><path d="M354 348H414V445H354 M766 348H706V445H766 M354 371H376V422H354 M766 371H744V422H766"/><rect x="328" y="375" width="11" height="44"/><rect x="781" y="375" width="11" height="44"/></g>
+<circle cx="560" cy="396.5" r="3" fill="#fff"/>
+<text x="452" y="403" font-size="12" fill="#d7efe1">HOME</text><text x="667" y="403" font-size="12" fill="#d7efe1">AWAY</text>
+<rect x="91" y="525" width="225" height="76" rx="18" fill="#8cc4df"/><rect x="804" y="525" width="225" height="76" rx="18" fill="#8cc4df"/>
+<text x="203" y="570" font-size="21" font-weight="800">カテゴリー2 北</text><text x="916" y="570" font-size="21" font-weight="800">カテゴリー2 南</text>
+<rect x="334" y="525" width="452" height="76" rx="12" fill="#e4a1b2"/>
+<text x="413" y="570" font-size="18" font-weight="800">カテゴリー1</text><text x="708" y="570" font-size="18" font-weight="800">カテゴリー1</text>
+<rect x="492" y="525" width="137" height="76" rx="8" fill="#d0b148"/><text x="560" y="558" font-size="18" font-weight="800">ゴールド</text><text x="560" y="582" font-size="13">シート</text>
+<text x="560" y="627" font-size="15" font-weight="750">メインスタンド</text>
+<rect x="334" y="644" width="452" height="40" rx="9" fill="#c0c1c8"/><text x="560" y="670" font-size="18" font-weight="750">カテゴリー1アッパー（メイン上部）</text>
+<text x="560" y="736" font-size="13" fill="#776a70">席種の位置関係を示す独自の概略図。座席番号・通路・特別席などは省略しています。</text>
+<text x="560" y="761" font-size="12" fill="#776a70">参照：クラブ公式「席種・価格」2026年9月17日確認 / 作図：一生Jリーグ</text>
+</g></svg>

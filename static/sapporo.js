@@ -34,6 +34,37 @@
     });
     activate(tabs.find(t => '#' + t.dataset.hubTab === location.hash) || tabs[0]);
   });
+  const dialog = root.querySelector('.dome-map-dialog');
+  if (dialog && typeof dialog.showModal === 'function') {
+    root.querySelectorAll('[data-map-image]').forEach(button => button.addEventListener('click', () => {
+      dialog.querySelector('h3').textContent = button.dataset.mapTitle;
+      const full = dialog.querySelector('[data-map-full]');
+      full.src = button.dataset.mapImage;
+      full.alt = button.querySelector('img').alt;
+      dialog.showModal();
+    }));
+    dialog.querySelector('[data-map-close]').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  }
+  const voices = root.querySelector('#club-voices');
+  if (voices) {
+    let loaded = false;
+    function loadInstagram() {
+      if (loaded) return;
+      loaded = true;
+      const script = document.createElement('script');
+      script.src = 'https://www.instagram.com/embed.js';
+      script.async = true;
+      script.onload = () => window.instgrm?.Embeds?.process();
+      document.body.appendChild(script);
+    }
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) { loadInstagram(); observer.disconnect(); }
+      }, {rootMargin: '500px'});
+      observer.observe(voices);
+    } else loadInstagram();
+  }
   root.querySelectorAll('[data-hub-filter]').forEach(group => {
     const rows = [...group.querySelectorAll('[data-filter-item]')];
     const buttons = [...group.querySelectorAll('[data-filter]')];
