@@ -2,10 +2,11 @@ name: Weekend J.League data sync
 
 on:
   schedule:
-    # 23:30 JST = 14:30 UTC. Run Saturday and Sunday.
-    - cron: '30 14 * * 6,0'
+    # 23:30 JST = 14:30 UTC.
+    - cron: '30 14 * * 6' # Saturday: results + standings
+    - cron: '30 14 * * 0' # Sunday: results + standings + roster
   workflow_dispatch:
-  # Temporary validation trigger. Removed after the first successful run.
+  # Temporary validation trigger. Removed after validation succeeds.
   push:
     branches: [main]
     paths:
@@ -17,7 +18,7 @@ permissions:
 
 concurrency:
   group: issho-jleague-weekend-sync
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   sync:
@@ -25,7 +26,6 @@ jobs:
     timeout-minutes: 45
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      RUN_FULL_SYNC: '1'
 
     steps:
       - name: Check out repository
@@ -48,11 +48,14 @@ jobs:
             exit 1
           fi
 
-      - name: Sync J.League roster and stadium facts
-        run: python scripts/sync_jleague.py
-
       - name: Sync standings and match results
         run: python scripts/sync_competition_data.py
+
+      - name: Weekly roster and stadium refresh
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 14 * * 0'
+        env:
+          RUN_FULL_SYNC: '1'
+        run: python scripts/sync_jleague.py
 
       - name: Verify sync coverage
         run: |
