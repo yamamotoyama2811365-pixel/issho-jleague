@@ -1,9 +1,46 @@
 {% extends 'base.html' %}
-{% block title %}{{ player.name }} | MATCHDAY{% endblock %}
+{% block title %}{{ player.name }} | 一生Jリーグ{% endblock %}
 {% block content %}
-<section class="player-hero"><div class="shirt">{{ player.number if player.number is not none else '—' }}</div><div><p class="eyebrow">{{ player.club.league }} / {{ player.club.name }}</p><h1>{{ player.name }}</h1><p>{{ player.position or '' }}</p></div></section>
+<section class="player-hero">
+  <div class="shirt">{{ player.number if player.number is not none else '—' }}</div>
+  <div class="player-hero-main">
+    <p class="eyebrow"><a href="/club/{{ player.club.slug }}">{{ player.club.league }} / {{ player.club.name }}</a></p>
+    <h1>{{ player.name }}</h1>
+    <p>{{ player.position or '' }}</p>
+    <div class="social-row">
+      {% for s in socials %}<a class="social-btn" href="{{ s.url }}" target="_blank" rel="nofollow noopener">{{ s.platform }}{% if s.handle %} <small>{{ s.handle }}</small>{% endif %}</a>{% endfor %}
+      {% if not socials %}<span class="social-pending">公式確認できたSNSから順次掲載</span>{% endif %}
+    </div>
+  </div>
+</section>
+
 <div class="stats-grid">
 <div><small>生年月日</small><b>{{ player.birthdate or '—' }}</b></div><div><small>出身地</small><b>{{ player.birthplace or '—' }}</b></div><div><small>身長</small><b>{{ player.height_cm or '—' }}{% if player.height_cm %}cm{% endif %}</b></div><div><small>体重</small><b>{{ player.weight_kg or '—' }}{% if player.weight_kg %}kg{% endif %}</b></div><div><small>出場</small><b>{{ player.appearances if player.appearances is not none else '—' }}</b></div><div><small>得点</small><b>{{ player.goals if player.goals is not none else '—' }}</b></div>
 </div>
-<div class="source-note">基本データ出典：<a href="{{ player.source_url }}" rel="nofollow noopener" target="_blank">Jリーグ公式 選手ページ</a>。画像・紹介文は転載していません。</div>
+
+{% if next_fixtures %}
+<section class="section-head"><div><p class="eyebrow">NEXT MATCH</p><h2>{{ player.name }}の次戦</h2></div><a href="/schedule?club={{ player.club.slug }}">日程一覧 →</a></section>
+{% for f in next_fixtures[:1] %}
+<article class="fixture-card featured"><div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span></div><div class="fixture-main"><small>{{ f.competition or f.league }}</small><h3>{{ f.home_name }} <b>vs</b> {{ f.away_name }}</h3><p>{{ f.venue or '会場確認中' }}</p></div><div class="fixture-actions">{% if f.ticket_url %}<a class="btn primary" href="{{ f.ticket_url }}" target="_blank" rel="nofollow noopener">チケットを買う</a>{% endif %}{% if f.stadium_slug %}<a class="btn" href="/stadium/{{ f.stadium_slug }}">会場ガイド</a>{% endif %}</div></article>
+{% endfor %}
+{% endif %}
+
+<div class="player-content-grid">
+<section>
+  <div class="section-head compact"><div><p class="eyebrow">RECENT FORM</p><h2>所属クラブの直近戦績</h2></div><a href="/club/{{ player.club.slug }}">クラブページ →</a></div>
+  <div class="results-list">
+  {% for row in recent_results %}<div class="result-row"><time>{{ row.match_date }}</time><span class="league-chip">{{ row.result or '-' }}</span><strong>{{ player.club.name }}</strong><b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b><span>{{ row.opponent }}</span><small>{{ row.competition }}</small></div>{% endfor %}
+  </div>
+</section>
+<aside class="panel">
+  <p class="eyebrow">CLUB</p><h2>{{ player.club.name }}</h2>
+  {% if standing %}<p class="big-rank">{{ standing.rank }}位 <b>{{ standing.points }}pt</b></p><p>{{ standing.played }}試合 {{ standing.wins }}勝 {{ standing.draws }}分 {{ standing.losses }}敗</p>{% endif %}
+  {% if club.stadium %}<a class="btn full" href="/stadium/{{ club.stadium.slug }}">{{ club.stadium.name }} 会場ガイド</a>{% endif %}
+</aside>
+</div>
+
+<section class="section-head"><div><p class="eyebrow">TEAMMATES</p><h2>チームメイト</h2></div><a href="/players?club={{ player.club.slug }}">全選手 →</a></section>
+<div class="scorer-grid">{% for p in teammates %}<a class="scorer-card" href="/player/{{ p.slug }}"><span>{{ p.position or '' }} #{{ p.number if p.number is not none else '—' }}</span><strong>{{ p.name }}</strong><div><b>{{ p.goals or 0 }}</b> GOALS</div></a>{% endfor %}</div>
+
+<div class="source-note">基本データ出典：<a href="{{ player.source_url }}" rel="nofollow noopener" target="_blank">Jリーグ公式 選手ページ</a>。SNSは本人またはクラブ公式等で確認できたアカウントのみ掲載します。</div>
 {% endblock %}
