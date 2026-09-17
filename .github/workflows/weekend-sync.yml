@@ -1,10 +1,12 @@
 name: Weekend J.League data sync
 
 on:
+  push:
+    branches: [main]
   schedule:
     # 23:30 JST = 14:30 UTC.
     - cron: '30 14 * * 6' # Saturday: fixtures + results + standings
-    - cron: '30 14 * * 0' # Sunday: fixtures + results + standings + roster
+    - cron: '30 14 * * 0' # Sunday: fixtures + results + standings + roster + socials
   workflow_dispatch:
 
 permissions:
@@ -57,18 +59,21 @@ jobs:
           RUN_FULL_SYNC: '1'
         run: python scripts/sync_jleague.py
 
+      - name: Sync verified player social links
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.schedule == '30 14 * * 0'
+        run: python scripts/sync_player_socials.py
+
       - name: Verify sync coverage
         run: |
           python - <<'PY'
           from sqlalchemy import select, func, text
-          from app import SessionLocal, Club, Player, engine
+          from app import SessionLocal, Club, Player, PlayerSocial, engine
 
           with SessionLocal() as db:
               clubs = db.scalar(select(func.count()).select_from(Club)) or 0
               players = db.scalar(select(func.count()).select_from(Player)) or 0
-              clubs_with_players = db.scalar(
-                  select(func.count(func.distinct(Player.club_id)))
-              ) or 0
+              clubs_with_players = db.scalar(select(func.count(func.distinct(Player.club_id)))) or 0
+              social_links = db.scalar(select(func.count()).select_from(PlayerSocial)) or 0
           with engine.begin() as conn:
               standings = conn.execute(text('SELECT COUNT(*) FROM standings')).scalar_one()
               results = conn.execute(text('SELECT COUNT(*) FROM club_results')).scalar_one()
@@ -77,7 +82,8 @@ jobs:
 
           print(
               f"clubs={clubs} players={players} clubs_with_players={clubs_with_players} "
-              f"standings={standings} results={results} upcoming_fixtures={fixtures} ticket_links={tickets}"
+              f"standings={standings} results={results} upcoming_fixtures={fixtures} "
+              f"ticket_links={tickets} verified_social_links={social_links}"
           )
           if clubs < 60 or clubs_with_players < 60 or players < 1000 or standings < 60 or results < 50 or fixtures < 1:
               raise SystemExit("Sync coverage check failed")
