@@ -4,7 +4,7 @@ import re
 import uuid
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify, render_template, request, abort
-from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, Text, select, func, desc, asc, or_
+from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, Text, select, func, desc, asc, or_, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, joinedload
 from slugify import slugify
 
@@ -17,8 +17,10 @@ elif DATABASE_URL.startswith("postgresql://") and "+psycopg" not in DATABASE_URL
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(engine, expire_on_commit=False)
 
+
 class Base(DeclarativeBase):
     pass
+
 
 class Club(Base):
     __tablename__ = "clubs"
@@ -30,6 +32,7 @@ class Club(Base):
     stadium_id: Mapped[int | None] = mapped_column(ForeignKey("stadiums.id"), nullable=True)
     players: Mapped[list["Player"]] = relationship(back_populates="club", cascade="all, delete-orphan")
     stadium: Mapped["Stadium | None"] = relationship(back_populates="clubs")
+
 
 class Player(Base):
     __tablename__ = "players"
@@ -49,6 +52,7 @@ class Player(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     club: Mapped[Club] = relationship(back_populates="players")
 
+
 class Stadium(Base):
     __tablename__ = "stadiums"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -64,6 +68,7 @@ class Stadium(Base):
     source_url: Mapped[str | None] = mapped_column(String(255), nullable=True)
     clubs: Mapped[list[Club]] = relationship(back_populates="stadium")
 
+
 class QuizQuestion(Base):
     __tablename__ = "quiz_questions"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -76,6 +81,7 @@ class QuizQuestion(Base):
     correct: Mapped[str] = mapped_column(String(1))
     explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
 
+
 class QuizAttempt(Base):
     __tablename__ = "quiz_attempts"
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
@@ -86,49 +92,50 @@ class QuizAttempt(Base):
     score: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
     elapsed_ms: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
 
+
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 CLUBS = {
     "J1": [
-        ("鹿島アントラーズ","kashima"),("水戸ホーリーホック","mito"),("浦和レッズ","urawa"),("ジェフユナイテッド千葉","chiba"),
-        ("柏レイソル","kashiwa"),("ＦＣ東京","ftokyo"),("東京ヴェルディ","tokyo-v"),("ＦＣ町田ゼルビア","machida"),
-        ("川崎フロンターレ","kawasaki"),("横浜Ｆ・マリノス","yokohama-fm"),("清水エスパルス","shimizu"),("名古屋グランパス","nagoya"),
-        ("京都サンガF.C.","kyoto"),("ガンバ大阪","g-osaka"),("セレッソ大阪","c-osaka"),("ヴィッセル神戸","kobe"),
-        ("ファジアーノ岡山","okayama"),("サンフレッチェ広島","hiroshima"),("アビスパ福岡","fukuoka"),("Ｖ・ファーレン長崎","nagasaki")
+        ("鹿島アントラーズ", "kashima"), ("水戸ホーリーホック", "mito"), ("浦和レッズ", "urawa"), ("ジェフユナイテッド千葉", "chiba"),
+        ("柏レイソル", "kashiwa"), ("ＦＣ東京", "ftokyo"), ("東京ヴェルディ", "tokyo-v"), ("ＦＣ町田ゼルビア", "machida"),
+        ("川崎フロンターレ", "kawasaki"), ("横浜Ｆ・マリノス", "yokohama-fm"), ("清水エスパルス", "shimizu"), ("名古屋グランパス", "nagoya"),
+        ("京都サンガF.C.", "kyoto"), ("ガンバ大阪", "g-osaka"), ("セレッソ大阪", "c-osaka"), ("ヴィッセル神戸", "kobe"),
+        ("ファジアーノ岡山", "okayama"), ("サンフレッチェ広島", "hiroshima"), ("アビスパ福岡", "fukuoka"), ("Ｖ・ファーレン長崎", "nagasaki")
     ],
     "J2": [
-        ("北海道コンサドーレ札幌","sapporo"),("ヴァンラーレ八戸","hachinohe"),("ベガルタ仙台","sendai"),("ブラウブリッツ秋田","akita"),
-        ("モンテディオ山形","yamagata"),("いわきＦＣ","iwaki"),("栃木シティ","tochigi-c"),("ＲＢ大宮アルディージャ","omiya"),
-        ("横浜ＦＣ","yokohama-fc"),("湘南ベルマーレ","shonan"),("ヴァンフォーレ甲府","kofu"),("アルビレックス新潟","niigata"),
-        ("カターレ富山","toyama"),("ジュビロ磐田","iwata"),("藤枝ＭＹＦＣ","fujieda"),("徳島ヴォルティス","tokushima"),
-        ("ＦＣ今治","imabari"),("サガン鳥栖","tosu"),("大分トリニータ","oita"),("テゲバジャーロ宮崎","miyazaki")
+        ("北海道コンサドーレ札幌", "sapporo"), ("ヴァンラーレ八戸", "hachinohe"), ("ベガルタ仙台", "sendai"), ("ブラウブリッツ秋田", "akita"),
+        ("モンテディオ山形", "yamagata"), ("いわきＦＣ", "iwaki"), ("栃木シティ", "tochigi-c"), ("ＲＢ大宮アルディージャ", "omiya"),
+        ("横浜ＦＣ", "yokohama-fc"), ("湘南ベルマーレ", "shonan"), ("ヴァンフォーレ甲府", "kofu"), ("アルビレックス新潟", "niigata"),
+        ("カターレ富山", "toyama"), ("ジュビロ磐田", "iwata"), ("藤枝ＭＹＦＣ", "fujieda"), ("徳島ヴォルティス", "tokushima"),
+        ("ＦＣ今治", "imabari"), ("サガン鳥栖", "tosu"), ("大分トリニータ", "oita"), ("テゲバジャーロ宮崎", "miyazaki")
     ],
     "J3": [
-        ("福島ユナイテッドＦＣ","fukushima"),("栃木ＳＣ","tochigi"),("ザスパ群馬","gunma"),("ＳＣ相模原","sagamihara"),
-        ("松本山雅ＦＣ","matsumoto"),("ＡＣ長野パルセイロ","nagano"),("ツエーゲン金沢","kanazawa"),("ＦＣ岐阜","gifu"),
-        ("レイラック滋賀ＦＣ","shiga"),("ＦＣ大阪","fc-osaka"),("奈良クラブ","nara"),("ガイナーレ鳥取","tottori"),
-        ("レノファ山口ＦＣ","yamaguchi"),("カマタマーレ讃岐","sanuki"),("愛媛ＦＣ","ehime"),("高知ユナイテッドＳＣ","kochi"),
-        ("ギラヴァンツ北九州","kitakyushu"),("ロアッソ熊本","kumamoto"),("鹿児島ユナイテッドＦＣ","kagoshima"),("ＦＣ琉球","ryukyu")
+        ("福島ユナイテッドＦＣ", "fukushima"), ("栃木ＳＣ", "tochigi"), ("ザスパ群馬", "gunma"), ("ＳＣ相模原", "sagamihara"),
+        ("松本山雅ＦＣ", "matsumoto"), ("ＡＣ長野パルセイロ", "nagano"), ("ツエーゲン金沢", "kanazawa"), ("ＦＣ岐阜", "gifu"),
+        ("レイラック滋賀ＦＣ", "shiga"), ("ＦＣ大阪", "fc-osaka"), ("奈良クラブ", "nara"), ("ガイナーレ鳥取", "tottori"),
+        ("レノファ山口ＦＣ", "yamaguchi"), ("カマタマーレ讃岐", "sanuki"), ("愛媛ＦＣ", "ehime"), ("高知ユナイテッドＳＣ", "kochi"),
+        ("ギラヴァンツ北九州", "kitakyushu"), ("ロアッソ熊本", "kumamoto"), ("鹿児島ユナイテッドＦＣ", "kagoshima"), ("ＦＣ琉球", "ryukyu")
     ]
 }
 
 QUIZ_SEED = [
-    ("club","2026/27シーズンのJ1所属クラブはどれ？",["鹿島アントラーズ","北海道コンサドーレ札幌","ジュビロ磐田","ロアッソ熊本"],"A","2026/27の鹿島はJ1所属。"),
-    ("club","2026/27シーズンのJ2所属クラブはどれ？",["北海道コンサドーレ札幌","柏レイソル","ＦＣ町田ゼルビア","栃木ＳＣ"],"A","札幌は2026/27シーズンJ2所属。"),
-    ("club","2026/27シーズンのJ3所属クラブはどれ？",["ツエーゲン金沢","アルビレックス新潟","湘南ベルマーレ","アビスパ福岡"],"A","金沢は2026/27シーズンJ3所属。"),
-    ("stadium","北海道コンサドーレ札幌のホームスタジアムとしてJリーグ公式に掲載されているのは？",["大和ハウス プレミストドーム","味の素スタジアム","ノエビアスタジアム神戸","駅前不動産スタジアム"],"A","札幌のホームスタジアムは大和ハウス プレミストドーム。"),
-    ("club","2026/27シーズンにJ1へ所属する長崎県のクラブは？",["Ｖ・ファーレン長崎","ロアッソ熊本","サガン鳥栖","大分トリニータ"],"A","Ｖ・ファーレン長崎がJ1所属。"),
-    ("club","2026/27シーズンにJ2へ所属する新潟県のクラブは？",["アルビレックス新潟","カターレ富山","ツエーゲン金沢","松本山雅ＦＣ"],"A","アルビレックス新潟がJ2所属。"),
-    ("club","2026/27シーズンにJ3へ所属する滋賀県のクラブは？",["レイラック滋賀ＦＣ","奈良クラブ","ＦＣ大阪","ＦＣ岐阜"],"A","レイラック滋賀FCがJ3所属。"),
-    ("stadium","2026/27 J1の日程でガンバ大阪のホーム開催に使われている略称「パナスタ」はどのスタジアム？",["パナソニック スタジアム 吹田","豊田スタジアム","日産スタジアム","埼玉スタジアム2002"],"A","パナスタはパナソニック スタジアム 吹田の略称。"),
-    ("stadium","2026/27 J1の日程でサンフレッチェ広島のホーム開催に使われる「Eピース」は？",["エディオンピースウイング広島","ピーススタジアム Connected by SoftBank","ベスト電器スタジアム","JFE晴れの国スタジアム"],"A","Eピースはエディオンピースウイング広島。"),
-    ("club","2026/27シーズンにJ1所属の岡山県クラブは？",["ファジアーノ岡山","レノファ山口ＦＣ","徳島ヴォルティス","愛媛ＦＣ"],"A","ファジアーノ岡山がJ1所属。"),
-    ("club","2026/27シーズンにJ2所属の栃木県クラブは？",["栃木シティ","栃木ＳＣ","ザスパ群馬","水戸ホーリーホック"],"A","栃木シティがJ2所属。"),
-    ("club","2026/27シーズンにJ3所属の栃木県クラブは？",["栃木ＳＣ","栃木シティ","水戸ホーリーホック","ザスパ群馬"],"A","栃木SCがJ3所属。"),
-    ("club","2026/27シーズンにJ1所属の千葉県クラブは？",["ジェフユナイテッド千葉","ＲＢ大宮アルディージャ","横浜ＦＣ","湘南ベルマーレ"],"A","ジェフユナイテッド千葉がJ1所属。"),
-    ("club","2026/27シーズンにJ2所属の鳥栖市のクラブは？",["サガン鳥栖","アビスパ福岡","ギラヴァンツ北九州","大分トリニータ"],"A","サガン鳥栖がJ2所属。"),
-    ("stadium","2026/27 J1日程で横浜F・マリノスのホーム開催に使われる「日産ス」は？",["日産スタジアム","ニッパツ三ツ沢球技場","味の素スタジアム","国立競技場"],"A","日産スは日産スタジアムの略称。"),
+    ("club", "2026/27シーズンのJ1所属クラブはどれ？", ["鹿島アントラーズ", "北海道コンサドーレ札幌", "ジュビロ磐田", "ロアッソ熊本"], "A", "2026/27の鹿島はJ1所属。"),
+    ("club", "2026/27シーズンのJ2所属クラブはどれ？", ["北海道コンサドーレ札幌", "柏レイソル", "ＦＣ町田ゼルビア", "栃木ＳＣ"], "A", "札幌は2026/27シーズンJ2所属。"),
+    ("club", "2026/27シーズンのJ3所属クラブはどれ？", ["ツエーゲン金沢", "アルビレックス新潟", "湘南ベルマーレ", "アビスパ福岡"], "A", "金沢は2026/27シーズンJ3所属。"),
+    ("stadium", "北海道コンサドーレ札幌のホームスタジアムとしてJリーグ公式に掲載されているのは？", ["大和ハウス プレミストドーム", "味の素スタジアム", "ノエビアスタジアム神戸", "駅前不動産スタジアム"], "A", "札幌のホームスタジアムは大和ハウス プレミストドーム。"),
+    ("club", "2026/27シーズンにJ1へ所属する長崎県のクラブは？", ["Ｖ・ファーレン長崎", "ロアッソ熊本", "サガン鳥栖", "大分トリニータ"], "A", "Ｖ・ファーレン長崎がJ1所属。"),
+    ("club", "2026/27シーズンにJ2へ所属する新潟県のクラブは？", ["アルビレックス新潟", "カターレ富山", "ツエーゲン金沢", "松本山雅ＦＣ"], "A", "アルビレックス新潟がJ2所属。"),
+    ("club", "2026/27シーズンにJ3へ所属する滋賀県のクラブは？", ["レイラック滋賀ＦＣ", "奈良クラブ", "ＦＣ大阪", "ＦＣ岐阜"], "A", "レイラック滋賀FCがJ3所属。"),
+    ("stadium", "2026/27 J1の日程でガンバ大阪のホーム開催に使われている略称「パナスタ」はどのスタジアム？", ["パナソニック スタジアム 吹田", "豊田スタジアム", "日産スタジアム", "埼玉スタジアム2002"], "A", "パナスタはパナソニック スタジアム 吹田の略称。"),
+    ("stadium", "2026/27 J1の日程でサンフレッチェ広島のホーム開催に使われる「Eピース」は？", ["エディオンピースウイング広島", "ピーススタジアム Connected by SoftBank", "ベスト電器スタジアム", "JFE晴れの国スタジアム"], "A", "Eピースはエディオンピースウイング広島。"),
+    ("club", "2026/27シーズンにJ1所属の岡山県クラブは？", ["ファジアーノ岡山", "レノファ山口ＦＣ", "徳島ヴォルティス", "愛媛ＦＣ"], "A", "ファジアーノ岡山がJ1所属。"),
+    ("club", "2026/27シーズンにJ2所属の栃木県クラブは？", ["栃木シティ", "栃木ＳＣ", "ザスパ群馬", "水戸ホーリーホック"], "A", "栃木シティがJ2所属。"),
+    ("club", "2026/27シーズンにJ3所属の栃木県クラブは？", ["栃木ＳＣ", "栃木シティ", "水戸ホーリーホック", "ザスパ群馬"], "A", "栃木SCがJ3所属。"),
+    ("club", "2026/27シーズンにJ1所属の千葉県クラブは？", ["ジェフユナイテッド千葉", "ＲＢ大宮アルディージャ", "横浜ＦＣ", "湘南ベルマーレ"], "A", "ジェフユナイテッド千葉がJ1所属。"),
+    ("club", "2026/27シーズンにJ2所属の鳥栖市のクラブは？", ["サガン鳥栖", "アビスパ福岡", "ギラヴァンツ北九州", "大分トリニータ"], "A", "サガン鳥栖がJ2所属。"),
+    ("stadium", "2026/27 J1日程で横浜F・マリノスのホーム開催に使われる「日産ス」は？", ["日産スタジアム", "ニッパツ三ツ沢球技場", "味の素スタジアム", "国立競技場"], "A", "日産スは日産スタジアムの略称。"),
 ]
 
 
@@ -144,9 +151,39 @@ def init_db():
                 db.add(QuizQuestion(category=cat, question=q, option_a=opts[0], option_b=opts[1], option_c=opts[2], option_d=opts[3], correct=correct, explanation=exp))
         db.commit()
 
+
+def safe_rows(sql, params=None):
+    try:
+        with engine.begin() as conn:
+            return [dict(row._mapping) for row in conn.execute(text(sql), params or {})]
+    except Exception:
+        return []
+
+
+def standing_for(club_id):
+    rows = safe_rows("""
+        SELECT s.*, c.name AS club_name, c.slug AS club_slug
+        FROM standings s JOIN clubs c ON c.id = s.club_id
+        WHERE s.club_id = :club_id
+        LIMIT 1
+    """, {"club_id": club_id})
+    return rows[0] if rows else None
+
+
+def results_for(club_id, limit=12):
+    return safe_rows("""
+        SELECT cr.*, c.name AS club_name, c.slug AS club_slug, c.league
+        FROM club_results cr JOIN clubs c ON c.id = cr.club_id
+        WHERE cr.club_id = :club_id
+        ORDER BY cr.match_date DESC, cr.id DESC
+        LIMIT :limit
+    """, {"club_id": club_id, "limit": limit})
+
+
 @app.context_processor
 def inject_globals():
     return {"current_year": datetime.now().year}
+
 
 @app.route("/")
 def home():
@@ -155,7 +192,45 @@ def home():
         player_count = db.scalar(select(func.count()).select_from(Player)) or 0
         stadium_count = db.scalar(select(func.count()).select_from(Stadium)) or 0
         top = db.scalars(select(QuizAttempt).where(QuizAttempt.completed_at.is_not(None)).order_by(desc(QuizAttempt.score), asc(QuizAttempt.elapsed_ms)).limit(5)).all()
-    return render_template("index.html", club_count=club_count, player_count=player_count, stadium_count=stadium_count, top=top)
+        top_scorers = db.scalars(
+            select(Player).options(joinedload(Player.club))
+            .where(Player.goals.is_not(None))
+            .order_by(desc(Player.goals), desc(Player.appearances), Player.name)
+            .limit(8)
+        ).all()
+
+    standings = {}
+    for league in ("J1", "J2", "J3"):
+        standings[league] = safe_rows("""
+            SELECT s.rank, s.points, s.played, s.wins, s.draws, s.losses,
+                   s.goals_for, s.goals_against, s.goal_diff, s.recent_form,
+                   c.name, c.slug
+            FROM standings s JOIN clubs c ON c.id = s.club_id
+            WHERE s.league = :league
+            ORDER BY s.rank
+            LIMIT 5
+        """, {"league": league})
+
+    recent_results = safe_rows("""
+        SELECT cr.match_date, cr.kickoff, cr.opponent, cr.venue, cr.result,
+               cr.club_score, cr.opponent_score, cr.competition, cr.attendance,
+               c.name AS club_name, c.slug AS club_slug, c.league
+        FROM club_results cr JOIN clubs c ON c.id = cr.club_id
+        ORDER BY cr.match_date DESC, cr.id DESC
+        LIMIT 12
+    """)
+
+    return render_template(
+        "index.html",
+        club_count=club_count,
+        player_count=player_count,
+        stadium_count=stadium_count,
+        top=top,
+        standings=standings,
+        recent_results=recent_results,
+        top_scorers=top_scorers,
+    )
+
 
 @app.route("/players")
 def players():
@@ -167,7 +242,7 @@ def players():
         if q:
             like = f"%{q}%"
             stmt = stmt.where(or_(Player.name.ilike(like), Club.name.ilike(like), Player.birthplace.ilike(like)))
-        if league in {"J1","J2","J3"}:
+        if league in {"J1", "J2", "J3"}:
             stmt = stmt.where(Club.league == league)
         if club_slug:
             stmt = stmt.where(Club.slug == club_slug)
@@ -177,19 +252,103 @@ def players():
         total = db.scalar(select(func.count()).select_from(Player)) or 0
     return render_template("players.html", players=rows, clubs=clubs, total=total, q=q, league=league, club_slug=club_slug)
 
+
 @app.route("/player/<slug>")
 def player_detail(slug):
     with SessionLocal() as db:
         p = db.scalar(select(Player).options(joinedload(Player.club)).where(Player.slug == slug))
         if not p:
             abort(404)
-    return render_template("player.html", player=p)
+        teammates = db.scalars(
+            select(Player)
+            .where(Player.club_id == p.club_id, Player.id != p.id)
+            .order_by(desc(Player.goals), Player.position, Player.number.nulls_last())
+            .limit(8)
+        ).all()
+        club = db.scalar(select(Club).options(joinedload(Club.stadium)).where(Club.id == p.club_id))
+    return render_template(
+        "player.html",
+        player=p,
+        club=club,
+        standing=standing_for(p.club_id),
+        recent_results=results_for(p.club_id, 5),
+        teammates=teammates,
+    )
+
 
 @app.route("/clubs")
 def clubs():
     with SessionLocal() as db:
         rows = db.scalars(select(Club).options(joinedload(Club.stadium)).order_by(Club.league, Club.name)).unique().all()
-    return render_template("clubs.html", clubs=rows)
+    standing_rows = safe_rows("SELECT club_id, rank, points, played, wins, draws, losses, goal_diff FROM standings")
+    standing_map = {r["club_id"]: r for r in standing_rows}
+    return render_template("clubs.html", clubs=rows, standing_map=standing_map)
+
+
+@app.route("/club/<slug>")
+def club_detail(slug):
+    with SessionLocal() as db:
+        club = db.scalar(select(Club).options(joinedload(Club.stadium)).where(Club.slug == slug))
+        if not club:
+            abort(404)
+        roster = db.scalars(
+            select(Player)
+            .where(Player.club_id == club.id)
+            .order_by(Player.position, Player.number.nulls_last(), Player.name)
+        ).all()
+        top_scorers = db.scalars(
+            select(Player)
+            .where(Player.club_id == club.id, Player.goals.is_not(None))
+            .order_by(desc(Player.goals), desc(Player.appearances), Player.name)
+            .limit(6)
+        ).all()
+    return render_template(
+        "club.html",
+        club=club,
+        roster=roster,
+        top_scorers=top_scorers,
+        standing=standing_for(club.id),
+        recent_results=results_for(club.id, 12),
+    )
+
+
+@app.route("/standings")
+def standings_page():
+    leagues = {}
+    for league in ("J1", "J2", "J3"):
+        leagues[league] = safe_rows("""
+            SELECT s.*, c.name, c.slug
+            FROM standings s JOIN clubs c ON c.id = s.club_id
+            WHERE s.league = :league
+            ORDER BY s.rank
+        """, {"league": league})
+    return render_template("standings.html", leagues=leagues)
+
+
+@app.route("/results")
+def results_page():
+    league = (request.args.get("league") or "").upper()
+    club_slug = (request.args.get("club") or "").strip()
+    where = []
+    params = {"limit": 120}
+    if league in {"J1", "J2", "J3"}:
+        where.append("c.league = :league")
+        params["league"] = league
+    if club_slug:
+        where.append("c.slug = :club_slug")
+        params["club_slug"] = club_slug
+    where_sql = " WHERE " + " AND ".join(where) if where else ""
+    rows = safe_rows(f"""
+        SELECT cr.*, c.name AS club_name, c.slug AS club_slug, c.league
+        FROM club_results cr JOIN clubs c ON c.id = cr.club_id
+        {where_sql}
+        ORDER BY cr.match_date DESC, cr.id DESC
+        LIMIT :limit
+    """, params)
+    with SessionLocal() as db:
+        clubs = db.scalars(select(Club).order_by(Club.league, Club.name)).all()
+    return render_template("results.html", rows=rows, clubs=clubs, league=league, club_slug=club_slug)
+
 
 @app.route("/stadiums")
 def stadiums():
@@ -197,45 +356,48 @@ def stadiums():
         rows = db.scalars(select(Stadium).options(joinedload(Stadium.clubs)).order_by(Stadium.name)).unique().all()
     return render_template("stadiums.html", stadiums=rows)
 
+
 @app.route("/stadium/<slug>")
 def stadium_detail(slug):
     with SessionLocal() as db:
         s = db.scalar(select(Stadium).options(joinedload(Stadium.clubs)).where(Stadium.slug == slug))
         if not s:
             abort(404)
-    return render_template("stadium.html", stadium=s)
+        club_ids = [c.id for c in s.clubs]
+    club_cards = []
+    for club_id in club_ids:
+        club_cards.append({"standing": standing_for(club_id), "results": results_for(club_id, 3)})
+    return render_template("stadium.html", stadium=s, club_cards=club_cards)
+
 
 @app.route("/quiz")
 def quiz_page():
     return render_template("quiz.html")
+
 
 @app.post("/api/quiz/start")
 def quiz_start():
     with SessionLocal() as db:
         all_q = db.scalars(select(QuizQuestion)).all()
         if len(all_q) < 10:
-            return jsonify({"error":"クイズ問題が10問未満です"}), 500
+            return jsonify({"error": "クイズ問題が10問未満です"}), 500
         chosen = random.sample(all_q, 10)
         payload = []
         attempt_tokens = []
         for q in chosen:
-            original = {"A":q.option_a,"B":q.option_b,"C":q.option_c,"D":q.option_d}
+            original = {"A": q.option_a, "B": q.option_b, "C": q.option_c, "D": q.option_d}
             correct_text = original[q.correct]
             shuffled = list(original.values())
             random.shuffle(shuffled)
-            options = {chr(65+i): text for i, text in enumerate(shuffled)}
-            correct_value = next(k for k, text in options.items() if text == correct_text)
+            options = {chr(65 + i): value for i, value in enumerate(shuffled)}
+            correct_value = next(k for k, value in options.items() if value == correct_text)
             attempt_tokens.append(f"{q.id}:{correct_value}")
-            payload.append({
-                "id": q.id,
-                "question": q.question,
-                "category": q.category,
-                "options": options
-            })
+            payload.append({"id": q.id, "question": q.question, "category": q.category, "options": options})
         attempt = QuizAttempt(id=str(uuid.uuid4()), question_ids=",".join(attempt_tokens))
         db.add(attempt)
         db.commit()
-        return jsonify({"attempt_id":attempt.id, "questions":payload})
+        return jsonify({"attempt_id": attempt.id, "questions": payload})
+
 
 @app.post("/api/quiz/submit")
 def quiz_submit():
@@ -244,15 +406,15 @@ def quiz_submit():
     nickname = re.sub(r"\s+", " ", str(data.get("nickname") or "").strip())[:24]
     answers = data.get("answers") or {}
     if not nickname:
-        return jsonify({"error":"ニックネームを入力してください"}), 400
+        return jsonify({"error": "ニックネームを入力してください"}), 400
     if not isinstance(answers, dict):
-        return jsonify({"error":"回答形式が不正です"}), 400
+        return jsonify({"error": "回答形式が不正です"}), 400
     with SessionLocal() as db:
         attempt = db.get(QuizAttempt, attempt_id)
         if not attempt:
-            return jsonify({"error":"挑戦データが見つかりません"}), 404
+            return jsonify({"error": "挑戦データが見つかりません"}), 404
         if attempt.completed_at is not None:
-            return jsonify({"error":"この挑戦は送信済みです"}), 409
+            return jsonify({"error": "この挑戦は送信済みです"}), 409
         tokens = [x for x in attempt.question_ids.split(",") if x]
         ids = []
         attempt_keys = {}
@@ -265,7 +427,7 @@ def quiz_submit():
                 qid = int(token)
             ids.append(qid)
         qs = db.scalars(select(QuizQuestion).where(QuizQuestion.id.in_(ids))).all()
-        qmap = {q.id:q for q in qs}
+        qmap = {q.id: q for q in qs}
         score = 0
         details = []
         for qid in ids:
@@ -274,19 +436,20 @@ def quiz_submit():
             correct_value = attempt_keys.get(qid, q.correct if q else "")
             ok = bool(q and ans == correct_value)
             score += int(ok)
-            details.append({"id":qid,"correct":ok,"correct_value": correct_value if q else None,"explanation":q.explanation if q else None})
+            details.append({"id": qid, "correct": ok, "correct_value": correct_value if q else None, "explanation": q.explanation if q else None})
         now = datetime.now(timezone.utc)
         started = attempt.started_at
         if started.tzinfo is None:
             started = started.replace(tzinfo=timezone.utc)
-        elapsed_ms = max(0, min(int((now - started).total_seconds()*1000), 60*60*1000))
+        elapsed_ms = max(0, min(int((now - started).total_seconds() * 1000), 60 * 60 * 1000))
         attempt.completed_at = now
         attempt.nickname = nickname
         attempt.score = score
         attempt.elapsed_ms = elapsed_ms
         db.commit()
         rank = ranking_for_attempt(db, attempt)
-        return jsonify({"score":score,"total":len(ids),"elapsed_ms":elapsed_ms,"rank":rank,"details":details})
+        return jsonify({"score": score, "total": len(ids), "elapsed_ms": elapsed_ms, "rank": rank, "details": details})
+
 
 def ranking_for_attempt(db, attempt):
     better = db.scalar(select(func.count()).select_from(QuizAttempt).where(
@@ -294,6 +457,7 @@ def ranking_for_attempt(db, attempt):
         or_(QuizAttempt.score > attempt.score, (QuizAttempt.score == attempt.score) & (QuizAttempt.elapsed_ms < attempt.elapsed_ms))
     )) or 0
     return better + 1
+
 
 @app.route("/leaderboard")
 def leaderboard():
@@ -309,9 +473,11 @@ def leaderboard():
         rows = db.scalars(stmt.order_by(desc(QuizAttempt.score), asc(QuizAttempt.elapsed_ms), asc(QuizAttempt.completed_at)).limit(100)).all()
     return render_template("leaderboard.html", rows=rows, period=period)
 
+
 @app.route("/health")
 def health():
-    return jsonify({"ok":True})
+    return jsonify({"ok": True})
+
 
 if __name__ == "__main__":
     init_db()
