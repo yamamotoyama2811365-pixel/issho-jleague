@@ -4,3 +4,6 @@ __pycache__/
 .venv/
 issho_jleague.db
 .pytest_cache/
+
+.cache/
+data/club_content/league_clubs.json

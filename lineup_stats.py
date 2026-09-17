@@ -10,7 +10,7 @@ def name_key(name):
 
 def league_matches(matches):
     return {m['source_url']: m for m in matches if m['completed'] and
-            unicodedata.normalize('NFKC', m['competition']) == '明治安田J2リーグ'}
+            re.fullmatch(r'明治安田J[123]リーグ', unicodedata.normalize('NFKC', m['competition']))}
 
 
 def parse_starters(html, home_away):

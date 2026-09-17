@@ -43,6 +43,10 @@ def out_path(route: str) -> Path:
 def write_route(route: str, data: bytes) -> None:
     path = out_path(route)
     path.parent.mkdir(parents=True, exist_ok=True)
+    canonical = SITE_URL + ('/' + route.strip('/') + '/' if route.strip('/') else '/')
+    if b'rel="canonical"' not in data:
+        tag = ('<link rel="canonical" href="' + escape(canonical, {'"':'&quot;'}) + '">').encode('utf-8')
+        data = data.replace(b'</head>', tag + b'</head>', 1)
     path.write_bytes(data)
 
 
@@ -154,7 +158,7 @@ def render_player(item):
 
 
 def write_sitemap(urls: list[str]) -> None:
-    body = "".join(f"<url><loc>{escape(SITE_URL + u)}</loc></url>" for u in sorted(set(urls)))
+    body = "".join(f"<url><loc>{escape(SITE_URL + ('/' + u.strip('/') + '/' if u.strip('/') else '/'))}</loc></url>" for u in sorted(set(urls)))
     (OUT / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>',
         encoding="utf-8",
@@ -168,6 +172,7 @@ def main() -> None:
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
     shutil.copytree(STATIC_SRC, STATIC_DST)
+    shutil.copytree(ROOT / "public_files", OUT, dirs_exist_ok=True)
     cleanup(engine)
     (OUT / "fan-rankings.json").write_text(json.dumps(rankings(engine, CLUBS), ensure_ascii=False), encoding="utf-8")
 
@@ -175,7 +180,7 @@ def main() -> None:
     with SessionLocal() as db:
         stadiums = [s.slug for s in db.scalars(select(Stadium).order_by(Stadium.id)).all()]
 
-    fixed_routes = ["/", "/schedule", "/standings", "/results", "/clubs", "/players", "/stadiums", "/leaderboard"]
+    fixed_routes = ["/", "/schedule", "/standings", "/results", "/clubs", "/players", "/stadiums", "/leaderboard", "/about", "/privacy"]
     light_routes = list(fixed_routes)
     light_routes.extend(f"/club/{c.slug}" for c in clubs)
     light_routes.extend(f"/stadium/{slug}" for slug in stadiums)
@@ -207,7 +212,7 @@ def main() -> None:
     quiz = out_path("/quiz")
     quiz.parent.mkdir(parents=True, exist_ok=True)
     quiz.write_text(redirect_page(f"{DYNAMIC_ORIGIN}/quiz", "Jリーグ10問クイズ"), encoding="utf-8")
-    urls.append("/quiz")
+    # Quiz redirects to the API origin; keep it out of the static-site sitemap.
 
     (OUT / "_headers").write_text(
         "/static/*\n  Cache-Control: public, max-age=86400, immutable\n/*\n  Cache-Control: public, max-age=300\n",

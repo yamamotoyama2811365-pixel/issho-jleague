@@ -9,8 +9,11 @@ on:
       - 'club_hub.py'
       - 'lineup_stats.py'
       - 'fan_editorial.py'
+      - 'league_content.py'
+      - 'scripts/sync_league_content.py'
       - 'fan_community.py'
       - 'data/**'
+      - 'public_files/**'
       - 'scripts/sync_club_content.py'
       - 'templates/**'
       - 'static/**'
@@ -63,6 +66,16 @@ jobs:
 
       - name: Refresh Sapporo news and full schedule
         run: python scripts/sync_club_content.py
+
+      - name: Restore official match facts
+        uses: actions/cache@v4
+        with:
+          path: .cache/league-match-facts
+          key: league-facts-v1-${{ github.run_id }}
+          restore-keys: league-facts-v1-
+
+      - name: Refresh all club fan content
+        run: python scripts/sync_league_content.py
 
       - name: Export static site
         run: python scripts/export_static.py

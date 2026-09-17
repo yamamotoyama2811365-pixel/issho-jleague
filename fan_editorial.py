@@ -55,11 +55,11 @@ def parse_match_report(html, match):
     return dict(starters=starters, goals=goals, substitutions=changes, video=videos[0] if videos else None)
 
 
-def parse_comments(html, source_url, date, summaries):
+def parse_comments(html, source_url, date, summaries, club_name='北海道コンサドーレ札幌'):
     soup = BeautifulSoup(html, 'html.parser')
     comments = []
     for group in soup.select('.p-game-details-highlight__comment-list'):
-        if not group.get_text(' ', strip=True).startswith('北海道コンサドーレ札幌'):
+        if not name_key(group.get_text(' ', strip=True)).startswith(name_key(club_name)):
             continue
         for card in group.select('.player-comment'):
             name, body = card.select_one('.player-comment__name'), card.select_one('.player-comment__content-text')
@@ -104,7 +104,7 @@ def recent_player_form(content, roster):
 
 def build_editorial(content, roster):
     reports = content.get('match_reports', {})
-    completed = sorted([m for m in content['matches'] if m['completed']], key=lambda m:m['date'], reverse=True)
+    completed = sorted(league_matches(content['matches']).values() if content.get('recap_scope') == 'league' else [m for m in content['matches'] if m['completed']], key=lambda m:m['date'], reverse=True)
     latest = completed[0] if completed else None
     recap = dict(latest, **reports[latest['source_url']]) if latest and latest['source_url'] in reports else None
     form = recent_player_form(content, roster)
@@ -112,14 +112,14 @@ def build_editorial(content, roster):
     ready = [f for f in form if f['complete']]
     picks = []
     # One scorer, one established starter, one newly promoted starter; no injury inference.
-    rankings = [sorted(ready, key=lambda f:(-f['goals'], -f['starts'], f['player'].number or 999)),
-                sorted(ready, key=lambda f:(-f['starts'], f['player'].number or 999)),
+    rankings = [sorted([f for f in ready if f['goals'] > 0], key=lambda f:(-f['goals'], -f['starts'], f['player'].number or 999)),
+                sorted([f for f in ready if f['starts'] > 0], key=lambda f:(-f['starts'], f['player'].number or 999)),
                 sorted([f for f in ready if f['history'] and f['history'][0]['status']=='先発'],
                        key=lambda f:(f['starts'], -f['goals'], f['player'].number or 999))]
     for ranking, reason in zip(rankings, ['直近5試合の得点から注目', '継続して先発に起用', '直近の試合で先発']):
         chosen = next((f for f in ranking if all(p['player'].slug != f['player'].slug for p in picks)), None)
         if chosen:
             picks.append(dict(chosen, reason=reason))
-    return dict(recap=recap, updates=content.get('team_updates', []), comments=content.get('comments', []),
+    return dict(recap_label='直近のリーグ戦' if content.get('recap_scope') == 'league' else '直近の公式戦', recap=recap, updates=content.get('team_updates', []), comments=content.get('comments', []),
                 comments_match=content.get('comments_match'), form=by_slug, picks=picks,
                 checked_at=content['checked_at'][:16].replace('T',' '))

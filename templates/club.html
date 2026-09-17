@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}{{ club.name }} | 一生Jリーグ{% endblock %}
-{% block content %}
+{% block description %}{{ club.name }}の次の試合、最新ニュース、直近の試合記録、公式ハイライト、監督・選手コメント、スタメン率をまとめた非公式ファンガイド。{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=5"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
+{% block content %}<div class="sapporo-hub league-club-hub">
 <section class="page-head club-head">
   <p class="eyebrow">{{ club.league }} CLUB GUIDE</p>
   <h1>{{ club.name }}</h1>
@@ -8,10 +10,10 @@
     {% if standing %}<span>{{ standing.rank }}位</span><span>{{ standing.points }}pt</span><span>{{ standing.played }}試合</span>{% endif %}
     {% if club.stadium %}<a href="/stadium/{{ club.stadium.slug }}">HOME {{ club.stadium.name }}</a>{% endif %}
   </div>
-</section>
+</section><nav class="club-jump" aria-label="クラブページのメニュー"><a href="#next-match">次の試合</a><a href="#team-updates">最新情報</a><a href="#match-recap">試合を振り返る</a><a href="#match-comments">公式コメント</a><a href="#players-to-watch">注目選手</a><a href="#squad">全選手</a></nav>
 
 {% if next_fixtures %}
-<section class="section-head"><div><p class="eyebrow">NEXT MATCH</p><h2>次の試合</h2></div><a href="/schedule?club={{ club.slug }}">日程一覧 →</a></section>
+<section id="next-match" class="section-head"><div><p class="eyebrow">NEXT MATCH</p><h2>次の試合</h2></div><a href="/schedule?club={{ club.slug }}">日程一覧 →</a></section>
 <div class="fixture-stack">
 {% for f in next_fixtures[:3] %}
 <article class="fixture-card featured">
@@ -31,14 +33,15 @@
 </div>
 {% endif %}
 
+{% include '_sapporo_editorial.html' %}
 <div class="club-content-grid">
-<section>
+<section id="squad">
   <div class="section-head compact"><div><p class="eyebrow">SQUAD</p><h2>所属選手</h2></div><a href="/players?club={{ club.slug }}">全選手 →</a></div>
-  <div class="roster-mini-grid">
-  {% for p in roster %}
-    <a class="roster-mini" href="/player/{{ p.slug }}"><b>{{ p.number if p.number is not none else '—' }}</b><span><strong>{{ p.name }}</strong><small>{{ p.position or '' }}{% if p.goals is not none %} / {{ p.goals }}得点{% endif %}</small></span></a>
-  {% endfor %}
-  </div>
+    <details class="starting-method"><summary>スタメン率の計算方法・出典</summary><p>今季{{ club.league }}の先発回数 ÷ チームの終了済みリーグ戦数 × 100。途中出場・カップ戦は先発回数に含めません。次の試合への起用確率を予測した数値ではありません。加入前・欠場中の試合も分母に含みます。</p><p>集計期間：{{ hub.starting.since }}〜{{ hub.starting.through }} ／ {{ hub.starting.total }}試合中{{ hub.starting.covered }}試合の先発記録を確認。記録が揃うまでは割合を表示しません。</p><p>{% for source in hub.starting.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.round }}（{{ source.date }}）公式記録 ↗</a> {% endfor %}</p></details>
+    <div class="squad-directory" data-hub-filter="players">
+      <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="ポジションで選手を絞り込む"><button type="button" data-filter="all" aria-pressed="true">全選手</button>{% for pos in ['GK','DF','MF','FW'] %}<button type="button" data-filter="{{ pos }}" aria-pressed="false">{{ pos }}</button>{% endfor %}</div><label class="player-search">名前・背番号で探す<input type="search" data-player-search placeholder="名前・背番号" autocomplete="off"></label></div>
+      <p class="hub-note" data-filter-count aria-live="polite"></p><p class="hub-note">スタメン率の高い順 · 同率は背番号順</p><div class="hub-roster">{% for p in hub.ordered_roster %}<a class="hub-player" href="/player/{{ p.slug }}" data-filter-item data-category="{{ p.position or '' }}" data-search="{{ p.name }} {{ p.number if p.number is not none else '' }}"><b>{{ p.number if p.number is not none else '—' }}</b><div><small>{{ p.position or '—' }}</small><strong>{{ p.name }}</strong><span>{{ p.appearances if p.appearances is not none else '—' }} 出場 <i>·</i> {{ p.goals if p.goals is not none else '—' }} 得点</span>{% include '_starting_rate.html' %}</div><span aria-hidden="true">↗</span></a>{% endfor %}</div><button type="button" class="hub-more" data-filter-more hidden>全選手を表示</button>
+    </div><p class="hub-note">選手データ更新 {{ hub.player_checked or '確認中' }} · 出場・得点は取得済みのJリーグ公式データ。「—」は未取得です。</p>
 </section>
 <aside>
   <div class="panel sticky-card">
@@ -59,4 +62,4 @@
 {% endfor %}
 </div>
 {% include '_fan_rankings.html' %}
-{% endblock %}
+</div>{% endblock %}

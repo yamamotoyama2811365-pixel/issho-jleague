@@ -2,6 +2,7 @@ import os
 import random
 import re
 import uuid
+from league_content import build_club_hub
 from club_hub import build_sapporo_hub
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify, render_template, request, abort
@@ -385,6 +386,7 @@ def club_detail(slug):
                                top_scorers=top_scorers, standing=standing, hub=hub)
     return render_template(
         "club.html",
+        hub=build_club_hub(club, roster),
         club=club,
         roster=roster,
         top_scorers=top_scorers,
@@ -577,6 +579,17 @@ def health():
 
 from fan_community import register as register_fan_community
 register_fan_community(app, engine, CLUBS)
+
+
+
+@app.route('/about')
+def about_page():
+    return render_template('about.html')
+
+@app.route('/privacy')
+def privacy_page():
+    return render_template('privacy.html')
+
 
 if __name__ == "__main__":
     init_db()
