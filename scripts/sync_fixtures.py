@@ -1,0 +1,244 @@
+"""J1/J2/J3の直近日程と試合別JリーグチケットURLを同期する。
+
+公式日程ページから試合詳細URLを拾い、各試合詳細ページから
+日時・ホーム/アウェイ・会場・チケット購入URLだけを保存する。
+"""
+import re
+import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import date
+from pathlib import Path
+from urllib.parse import urljoin
+
+import requests
+from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+from sqlalchemy import select, text
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from app import engine, SessionLocal, Club, Stadium, init_db  # noqa: E402
+
+BASE = "https://www.jleague.jp"
+LEAGUES = ("J1", "J2", "J3")
+HEADERS = {"User-Agent": "IsshoJLeague/1.4 (+fixture and ticket sync)", "Accept-Language": "ja,en;q=0.5"}
+MATCH_RE = re.compile(r"/match/(j1|j2|j3)/(20\d{2})/(\d{6})/?")
+CLUB_RE = re.compile(r"/club/([^/?#]+)/?")
+
+
+def http():
+    s = requests.Session()
+    s.headers.update(HEADERS)
+    s.mount("https://", HTTPAdapter(max_retries=Retry(
+        total=2, connect=2, read=2, backoff_factor=0.7,
+        status_forcelist=(429, 500, 502, 503, 504), allowed_methods=("GET",)
+    )))
+    return s
+
+
+def clean(v):
+    return re.sub(r"\s+", " ", v or "").strip()
+
+
+def ensure_table():
+    with engine.begin() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS fixtures (
+                match_key VARCHAR(64) PRIMARY KEY,
+                league VARCHAR(8) NOT NULL,
+                match_date DATE NOT NULL,
+                kickoff VARCHAR(16),
+                home_club_id INTEGER REFERENCES clubs(id) ON DELETE SET NULL,
+                away_club_id INTEGER REFERENCES clubs(id) ON DELETE SET NULL,
+                home_name VARCHAR(120) NOT NULL,
+                away_name VARCHAR(120) NOT NULL,
+                venue VARCHAR(160),
+                stadium_id INTEGER REFERENCES stadiums(id) ON DELETE SET NULL,
+                competition VARCHAR(120),
+                match_url VARCHAR(255) NOT NULL,
+                ticket_url VARCHAR(255),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+            )
+        """))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fixtures_date ON fixtures(match_date, kickoff)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fixtures_home ON fixtures(home_club_id, match_date)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fixtures_away ON fixtures(away_club_id, match_date)"))
+
+
+def db_index():
+    with SessionLocal() as db:
+        clubs = db.scalars(select(Club)).all()
+        stadiums = db.scalars(select(Stadium)).all()
+    club_by_slug = {c.slug: {"id": c.id, "name": c.name, "slug": c.slug} for c in clubs}
+    stadium_rows = sorted(
+        [{"id": s.id, "name": s.name, "slug": s.slug} for s in stadiums],
+        key=lambda x: len(x["name"] or ""), reverse=True,
+    )
+    return club_by_slug, stadium_rows
+
+
+def collect_urls(league):
+    url = f"{BASE}/{league.lower()}/match/"
+    r = http().get(url, timeout=25)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    out = []
+    seen = set()
+    for a in soup.find_all("a", href=True):
+        href = a.get("href") or ""
+        m = MATCH_RE.search(href)
+        if not m or m.group(1).upper() != league:
+            continue
+        absolute = urljoin(BASE, href.split("?")[0].split("#")[0])
+        if absolute not in seen:
+            seen.add(absolute)
+            out.append(absolute)
+    return out
+
+
+def parse_detail(match_url, club_by_slug, stadium_rows):
+    m = MATCH_RE.search(match_url)
+    if not m:
+        return None
+    league = m.group(1).upper()
+    year = int(m.group(2))
+    code = m.group(3)
+    month, day = int(code[:2]), int(code[2:4])
+    match_date = date(year, month, day)
+
+    r = http().get(match_url, timeout=25)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    scope = soup.find("main") or soup
+    page_text = clean(scope.get_text(" "))
+
+    # 試合ページ上に現れるクラブURLを順番に拾う。通常はホーム→アウェイ。
+    teams = []
+    seen = set()
+    for a in scope.find_all("a", href=True):
+        cm = CLUB_RE.search(a.get("href") or "")
+        if not cm:
+            continue
+        slug = cm.group(1)
+        club = club_by_slug.get(slug)
+        if club and club["id"] not in seen:
+            seen.add(club["id"])
+            teams.append(club)
+    if len(teams) < 2:
+        return None
+    home, away = teams[0], teams[1]
+
+    kickoff = None
+    strings = [clean(s) for s in scope.stripped_strings if clean(s)]
+    for i, value in enumerate(strings):
+        if value.upper() == "KICK OFF":
+            for cand in strings[i + 1:i + 5]:
+                tm = re.fullmatch(r"\d{1,2}:\d{2}", cand)
+                if tm:
+                    kickoff = cand
+                    break
+            if kickoff:
+                break
+    if not kickoff:
+        tm = re.search(r"\b([01]?\d|2[0-3]):[0-5]\d\b", page_text)
+        kickoff = tm.group(0) if tm else None
+
+    stadium = None
+    for s in stadium_rows:
+        if s["name"] and s["name"] in page_text:
+            stadium = s
+            break
+
+    ticket_url = None
+    for a in scope.find_all("a", href=True):
+        href = a.get("href") or ""
+        if "jleague-ticket.jp" in href:
+            ticket_url = href
+            break
+
+    title = clean(soup.title.get_text(" ") if soup.title else "")
+    competition = league
+    if "明治安田" in title:
+        competition = f"明治安田{league}リーグ"
+
+    return {
+        "match_key": f"{league}-{year}-{code}",
+        "league": league,
+        "match_date": match_date.isoformat(),
+        "kickoff": kickoff,
+        "home_club_id": home["id"],
+        "away_club_id": away["id"],
+        "home_name": home["name"],
+        "away_name": away["name"],
+        "venue": stadium["name"] if stadium else None,
+        "stadium_id": stadium["id"] if stadium else None,
+        "competition": competition,
+        "match_url": match_url,
+        "ticket_url": ticket_url,
+    }
+
+
+def save(row):
+    stmt = text("""
+        INSERT INTO fixtures (
+            match_key, league, match_date, kickoff, home_club_id, away_club_id,
+            home_name, away_name, venue, stadium_id, competition, match_url, ticket_url, updated_at
+        ) VALUES (
+            :match_key, :league, CAST(:match_date AS DATE), :kickoff, :home_club_id, :away_club_id,
+            :home_name, :away_name, :venue, :stadium_id, :competition, :match_url, :ticket_url, NOW()
+        )
+        ON CONFLICT (match_key) DO UPDATE SET
+            match_date=EXCLUDED.match_date, kickoff=EXCLUDED.kickoff,
+            home_club_id=EXCLUDED.home_club_id, away_club_id=EXCLUDED.away_club_id,
+            home_name=EXCLUDED.home_name, away_name=EXCLUDED.away_name,
+            venue=EXCLUDED.venue, stadium_id=EXCLUDED.stadium_id,
+            competition=EXCLUDED.competition, match_url=EXCLUDED.match_url,
+            ticket_url=EXCLUDED.ticket_url, updated_at=NOW()
+    """)
+    with engine.begin() as conn:
+        conn.execute(stmt, row)
+
+
+def main():
+    init_db()
+    ensure_table()
+    club_by_slug, stadium_rows = db_index()
+    urls = []
+    for league in LEAGUES:
+        found = collect_urls(league)
+        print(f"{league}: match URLs={len(found)}", flush=True)
+        urls.extend(found)
+
+    saved = 0
+    ticketed = 0
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        jobs = {pool.submit(parse_detail, url, club_by_slug, stadium_rows): url for url in urls}
+        for future in as_completed(jobs):
+            url = jobs[future]
+            try:
+                row = future.result()
+                if not row:
+                    print(f"WARN parse failed: {url}", flush=True)
+                    continue
+                save(row)
+                saved += 1
+                ticketed += int(bool(row["ticket_url"]))
+                print(
+                    f"{row['match_date']} {row['home_name']} vs {row['away_name']} "
+                    f"venue={row['venue']} ticket={'yes' if row['ticket_url'] else 'no'}",
+                    flush=True,
+                )
+            except Exception as exc:
+                print(f"ERROR {url}: {exc}", flush=True)
+
+    with engine.begin() as conn:
+        upcoming = conn.execute(text("SELECT COUNT(*) FROM fixtures WHERE match_date >= CURRENT_DATE")).scalar_one()
+        upcoming_ticketed = conn.execute(text("SELECT COUNT(*) FROM fixtures WHERE match_date >= CURRENT_DATE AND ticket_url IS NOT NULL")).scalar_one()
+    print(f"fixtures saved={saved} ticketed={ticketed} upcoming={upcoming} upcoming_ticketed={upcoming_ticketed}", flush=True)
+    if saved == 0:
+        raise SystemExit("fixture sync failed: no fixtures parsed")
+
+
+if __name__ == "__main__":
+    main()
