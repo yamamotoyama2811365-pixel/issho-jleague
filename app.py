@@ -6,7 +6,6 @@ from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify, render_template, request, abort
 from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, Text, select, func, desc, asc, or_, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, joinedload
-from slugify import slugify
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///issho_jleague.db")
 if DATABASE_URL.startswith("postgres://"):
@@ -91,6 +90,17 @@ class QuizAttempt(Base):
     nickname: Mapped[str | None] = mapped_column(String(24), nullable=True, index=True)
     score: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
     elapsed_ms: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+
+
+class PlayerSocial(Base):
+    __tablename__ = "player_socials"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    player_id: Mapped[int] = mapped_column(ForeignKey("players.id", ondelete="CASCADE"), index=True)
+    platform: Mapped[str] = mapped_column(String(20), index=True)
+    url: Mapped[str] = mapped_column(String(255))
+    handle: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    source_url: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    checked_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 app = Flask(__name__)
@@ -180,6 +190,47 @@ def results_for(club_id, limit=12):
     """, {"club_id": club_id, "limit": limit})
 
 
+def fixtures_for(club_id=None, stadium_id=None, limit=20, league=None):
+    where = ["f.match_date >= CURRENT_DATE"]
+    params = {"limit": limit}
+    if club_id is not None:
+        where.append("(f.home_club_id = :club_id OR f.away_club_id = :club_id)")
+        params["club_id"] = club_id
+    if stadium_id is not None:
+        where.append("f.stadium_id = :stadium_id")
+        params["stadium_id"] = stadium_id
+    if league in {"J1", "J2", "J3"}:
+        where.append("f.league = :league")
+        params["league"] = league
+    return safe_rows(f"""
+        SELECT f.*,
+               hc.slug AS home_slug,
+               ac.slug AS away_slug,
+               s.slug AS stadium_slug
+        FROM fixtures f
+        LEFT JOIN clubs hc ON hc.id = f.home_club_id
+        LEFT JOIN clubs ac ON ac.id = f.away_club_id
+        LEFT JOIN stadiums s ON s.id = f.stadium_id
+        WHERE {' AND '.join(where)}
+        ORDER BY f.match_date, f.kickoff NULLS LAST
+        LIMIT :limit
+    """, params)
+
+
+def socials_for(player_id):
+    return safe_rows("""
+        SELECT platform, url, handle, source_url, checked_at
+        FROM player_socials
+        WHERE player_id = :player_id
+        ORDER BY CASE platform
+            WHEN 'Instagram' THEN 1
+            WHEN 'X' THEN 2
+            WHEN 'TikTok' THEN 3
+            WHEN 'YouTube' THEN 4
+            ELSE 9 END
+    """, {"player_id": player_id})
+
+
 @app.context_processor
 def inject_globals():
     return {"current_year": datetime.now().year}
@@ -229,6 +280,7 @@ def home():
         standings=standings,
         recent_results=recent_results,
         top_scorers=top_scorers,
+        next_fixtures=fixtures_for(limit=8),
     )
 
 
@@ -273,6 +325,8 @@ def player_detail(slug):
         standing=standing_for(p.club_id),
         recent_results=results_for(p.club_id, 5),
         teammates=teammates,
+        socials=socials_for(p.id),
+        next_fixtures=fixtures_for(club_id=p.club_id, limit=3),
     )
 
 
@@ -309,7 +363,26 @@ def club_detail(slug):
         top_scorers=top_scorers,
         standing=standing_for(club.id),
         recent_results=results_for(club.id, 12),
+        next_fixtures=fixtures_for(club_id=club.id, limit=5),
     )
+
+
+@app.route("/schedule")
+def schedule_page():
+    league = (request.args.get("league") or "").strip().upper()
+    club_slug = (request.args.get("club") or "").strip()
+    club_id = None
+    with SessionLocal() as db:
+        clubs = db.scalars(select(Club).order_by(Club.league, Club.name)).all()
+        if club_slug:
+            c = db.scalar(select(Club).where(Club.slug == club_slug))
+            club_id = c.id if c else None
+    rows = fixtures_for(
+        club_id=club_id,
+        limit=160,
+        league=league if league in {"J1", "J2", "J3"} else None,
+    )
+    return render_template("schedule.html", fixtures=rows, clubs=clubs, league=league, club_slug=club_slug)
 
 
 @app.route("/standings")
@@ -367,7 +440,12 @@ def stadium_detail(slug):
     club_cards = []
     for club_id in club_ids:
         club_cards.append({"standing": standing_for(club_id), "results": results_for(club_id, 3)})
-    return render_template("stadium.html", stadium=s, club_cards=club_cards)
+    return render_template(
+        "stadium.html",
+        stadium=s,
+        club_cards=club_cards,
+        next_fixtures=fixtures_for(stadium_id=s.id, limit=8),
+    )
 
 
 @app.route("/quiz")
