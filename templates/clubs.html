@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}全60クラブ | MATCHDAY{% endblock %}
 {% block content %}
-<section class="page-head"><p class="eyebrow">ALL 60 CLUBS</p><h1>J1・J2・J3 全クラブ</h1><p>2026/27シーズンの60クラブをリーグ別に掲載。</p></section>
+<section class="page-head"><p class="eyebrow">ALL 60 CLUBS</p><h1>J1・J2・J3 全クラブ</h1><p>順位・勝点・ホームスタジアムから各クラブの詳細、所属選手、直近戦績へ。</p></section>
 {% for league in ['J1','J2','J3'] %}
-<h2 class="league-title">{{ league }}</h2>
+<div class="section-head compact"><div><p class="eyebrow">{{ league }} CLUBS</p><h2>{{ league }}</h2></div><a href="/standings#{{ league|lower }}">{{ league }}順位表 →</a></div>
 <div class="club-grid">
-{% for c in clubs if c.league == league %}<article class="club-card"><div class="club-badge">{{ league }}</div><h3>{{ c.name }}</h3><p>{% if c.stadium %}{{ c.stadium.name }}{% else %}スタジアム情報同期待ち{% endif %}</p><a href="/players?club={{ c.slug }}">所属選手を見る →</a></article>{% endfor %}
+{% for c in clubs if c.league == league %}
+{% set st = standing_map.get(c.id) %}
+<article class="club-card rich">
+  <div class="club-card-top"><div class="club-badge">{{ league }}</div>{% if st %}<strong>{{ st.rank }}位</strong>{% endif %}</div>
+  <h3>{{ c.name }}</h3>
+  {% if st %}<p class="club-record"><b>{{ st.points }}pt</b> / {{ st.played }}試合 {{ st.wins }}勝 {{ st.draws }}分 {{ st.losses }}敗 / 得失 {{ '%+d'|format(st.goal_diff or 0) }}</p>{% endif %}
+  <p>{% if c.stadium %}HOME：{{ c.stadium.name }}{% else %}ホームスタジアム情報同期待ち{% endif %}</p>
+  <div class="card-links"><a href="/club/{{ c.slug }}">クラブ詳細 →</a><a href="/players?club={{ c.slug }}">所属選手 →</a></div>
+</article>
+{% endfor %}
 </div>
 {% endfor %}
 {% endblock %}
