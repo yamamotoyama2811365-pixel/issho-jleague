@@ -1,0 +1,27 @@
+name: Production fan journey smoke test
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify public fan journey
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://issho-jleague.onrender.com"
+          for path in / /schedule /club/sapporo /player/sapporo-suhatiyoku-7 /standings /results /stadiums; do
+            echo "GET $path"
+            curl --fail --silent --show-error --retry 3 --retry-delay 2 "$base$path" -o "/tmp/page.html"
+            test -s /tmp/page.html
+          done
+          curl --fail --silent --show-error "$base/schedule" | grep -q "チケットを買う"
+          curl --fail --silent --show-error "$base/player/sapporo-suhatiyoku-7" | grep -q "supachok_19"
+          echo "production fan journey OK"
