@@ -10,6 +10,7 @@ from __future__ import annotations
 import os
 import shutil
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -24,6 +25,7 @@ STATIC_SRC = ROOT / "static"
 STATIC_DST = OUT / "static"
 SITE_URL = os.getenv("STATIC_SITE_URL", "https://issho-jleague.pages.dev").rstrip("/")
 DYNAMIC_ORIGIN = os.getenv("DYNAMIC_ORIGIN", "https://issho-jleague.onrender.com").rstrip("/")
+MAX_WORKERS = int(os.getenv("STATIC_EXPORT_WORKERS", "8"))
 
 
 def out_path(route: str) -> Path:
@@ -31,13 +33,15 @@ def out_path(route: str) -> Path:
     return OUT / route / "index.html" if route else OUT / "index.html"
 
 
-def render(client, route: str) -> None:
-    response = client.get(route, follow_redirects=True)
+def render_route(route: str) -> str:
+    with app.test_client() as client:
+        response = client.get(route, follow_redirects=True)
     if response.status_code != 200:
         raise RuntimeError(f"static export failed: {route} -> {response.status_code}")
     path = out_path(route)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(response.data)
+    return route
 
 
 def redirect_page(target: str, title: str) -> str:
@@ -64,33 +68,34 @@ def main() -> None:
     OUT.mkdir(parents=True)
     shutil.copytree(STATIC_SRC, STATIC_DST)
 
-    # Static pages that should always be instant from the CDN.
     fixed_routes = [
         "/", "/schedule", "/standings", "/results", "/clubs", "/players",
         "/stadiums", "/leaderboard",
     ]
-    urls = list(fixed_routes)
 
     with SessionLocal() as db:
         clubs = [(c.slug, c.id) for c in db.query(Club).all()]
         players = [p.slug for p in db.query(Player).all()]
         stadiums = [s.slug for s in db.query(Stadium).all()]
 
-    with app.test_client() as client:
-        for route in fixed_routes:
-            render(client, route)
-        for slug, _ in clubs:
-            route = f"/club/{slug}"
-            render(client, route)
-            urls.append(route)
-        for slug in players:
-            route = f"/player/{slug}"
-            render(client, route)
-            urls.append(route)
-        for slug in stadiums:
-            route = f"/stadium/{slug}"
-            render(client, route)
-            urls.append(route)
+    urls = list(fixed_routes)
+    urls.extend(f"/club/{slug}" for slug, _ in clubs)
+    urls.extend(f"/player/{slug}" for slug in players)
+    urls.extend(f"/stadium/{slug}" for slug in stadiums)
+
+    completed = 0
+    total = len(urls)
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        futures = {pool.submit(render_route, route): route for route in urls}
+        for future in as_completed(futures):
+            route = futures[future]
+            try:
+                future.result()
+            except Exception as exc:
+                raise RuntimeError(f"static export failed at {route}: {exc}") from exc
+            completed += 1
+            if completed % 250 == 0 or completed == total:
+                print(f"static export progress: {completed}/{total}", flush=True)
 
     # Write actions remain on the backend for now, so the static shell never needs
     # CORS credentials or database secrets in the browser.
