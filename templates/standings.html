@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}J1・J2・J3 順位表 | 一生Jリーグ{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">STANDINGS</p><h1>J1・J2・J3 順位表</h1><p>勝点、試合数、勝敗、得失点を週末更新。</p></section>
+{% for league in ['J1','J2','J3'] %}
+<section id="{{ league|lower }}" class="standings-section">
+<div class="section-head compact"><div><p class="eyebrow">{{ league }}</p><h2>{{ league }} 順位</h2></div></div>
+<div class="table-scroll"><table class="data-table"><thead><tr><th>順位</th><th>クラブ</th><th>勝点</th><th>試合</th><th>勝</th><th>分</th><th>負</th><th>得点</th><th>失点</th><th>得失</th></tr></thead><tbody>
+{% for row in leagues[league] %}<tr><td><b>{{ row.rank }}</b></td><td><a href="/club/{{ row.slug }}">{{ row.name }}</a></td><td><strong>{{ row.points }}</strong></td><td>{{ row.played }}</td><td>{{ row.wins }}</td><td>{{ row.draws }}</td><td>{{ row.losses }}</td><td>{{ row.goals_for }}</td><td>{{ row.goals_against }}</td><td>{{ '%+d'|format(row.goal_diff or 0) }}</td></tr>{% endfor %}
+</tbody></table></div>
+</section>
+{% endfor %}
+{% endblock %}
