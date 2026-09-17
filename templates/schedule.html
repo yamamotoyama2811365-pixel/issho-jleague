@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}試合日程・チケット | 一生Jリーグ{% endblock %}
+{% block content %}
+<section class="page-head"><p class="eyebrow">MATCHDAY PLANNER</p><h1>試合日程・チケット</h1><p>次にいつ、どこで観るか。対戦カードからチケット購入、会場ガイドまで一気に。</p></section>
+
+<form class="filterbar schedule-filter" method="get">
+  <select name="league"><option value="">J1・J2・J3すべて</option>{% for l in ['J1','J2','J3'] %}<option value="{{ l }}" {% if league==l %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+  <select name="club"><option value="">全クラブ</option>{% for c in clubs %}<option value="{{ c.slug }}" {% if club_slug==c.slug %}selected{% endif %}>{{ c.league }} {{ c.name }}</option>{% endfor %}</select>
+  <button class="btn primary" type="submit">日程を見る</button>
+</form>
+
+<div class="schedule-notice"><b>観戦する試合を決める → チケットを買う → 会場を調べる</b><span>「チケットを買う」はJリーグチケットの該当試合購入ページへ移動します。</span></div>
+
+<div class="fixture-stack">
+{% for f in fixtures %}
+<article class="fixture-card">
+  <div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span><em>{{ f.league }}</em></div>
+  <div class="fixture-main">
+    <small>{{ f.competition or f.league }}</small>
+    <h2><a href="/club/{{ f.home_slug }}">{{ f.home_name }}</a> <b>vs</b> <a href="/club/{{ f.away_slug }}">{{ f.away_name }}</a></h2>
+    <p>{% if f.venue %}{{ f.venue }}{% else %}会場確認中{% endif %}</p>
+  </div>
+  <div class="fixture-actions">
+    {% if f.ticket_url %}<a class="btn primary" href="{{ f.ticket_url }}" target="_blank" rel="nofollow noopener">チケットを買う</a>{% else %}<span class="ticket-wait">チケット販売情報待ち</span>{% endif %}
+    {% if f.stadium_slug %}<a class="btn" href="/stadium/{{ f.stadium_slug }}">会場ガイド</a>{% endif %}
+    {% if f.match_url %}<a class="text-link" href="{{ f.match_url }}" target="_blank" rel="nofollow noopener">公式試合ページ →</a>{% endif %}
+  </div>
+</article>
+{% else %}<p class="empty">現在取得済みの今後の日程がありません。次回同期で更新します。</p>{% endfor %}
+</div>
+{% endblock %}
