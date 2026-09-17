@@ -87,8 +87,13 @@ def build_sapporo_hub(standing, results, league_rows, roster, today=None):
     comparison = opponent if next_match and 'リーグ' in next_match['competition'] else None
     active_event = guide['matchday'] if any(m['date'] == guide['matchday']['date'] and m['home_away'] == 'HOME' for m in matches) else None
     newest_player = max((str(p.updated_at)[:10] for p in roster if p.updated_at), default='')
+    starting = starting_rates(content, roster)
+    def starting_order(player):
+        starts = starting['players'][player.slug]['starts']
+        return (starts is None, -(starts or 0), player.number is None, player.number or 0, player.name)
+    ordered_roster = sorted(roster, key=starting_order)
     return dict(guide=guide, news=content['news'], checked_at=content['checked_at'][:16].replace('T',' '),
                 matches=matches, next_match=next_match, comparison=comparison, form=form,
                 league_results=league_results, nearby=nearby, matchday=active_event,
-                player_checked=newest_player, starting=starting_rates(content, roster),
+                player_checked=newest_player, starting=starting, ordered_roster=ordered_roster,
                 standing_checked=str(standing.get('updated_at',''))[:10] if standing else '')
