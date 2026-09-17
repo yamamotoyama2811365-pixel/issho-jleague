@@ -46,8 +46,8 @@
     dialog.querySelector('[data-map-close]').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
   }
-  const voices = root.querySelector('#club-voices');
-  if (voices) {
+  const voices = root.querySelectorAll('[data-instagram-profile]');
+  if (voices.length) {
     let loaded = false;
     function loadInstagram() {
       if (loaded) return;
@@ -62,7 +62,7 @@
       const observer = new IntersectionObserver(entries => {
         if (entries.some(entry => entry.isIntersecting)) { loadInstagram(); observer.disconnect(); }
       }, {rootMargin: '500px'});
-      observer.observe(voices);
+      voices.forEach(element => observer.observe(element));
     } else loadInstagram();
   }
   root.querySelectorAll('[data-hub-filter]').forEach(group => {

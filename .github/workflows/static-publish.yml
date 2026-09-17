@@ -7,6 +7,7 @@ on:
     paths:
       - 'app.py'
       - 'club_hub.py'
+      - 'fan_community.py'
       - 'data/**'
       - 'scripts/sync_club_content.py'
       - 'templates/**'

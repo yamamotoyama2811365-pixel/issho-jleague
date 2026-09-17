@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}コンサドーレ札幌｜次戦・選手・ホーム観戦ガイド | 一生Jリーグ{% endblock %}
 {% block description %}北海道コンサドーレ札幌の次戦プレビュー、日程・チケット、直近の戦績、選手、プレミストドームの席選び・アクセス・当日の楽しみ方をまとめた非公式ファンガイド。{% endblock %}
-{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=2"><script src="/static/sapporo.js?v=2" defer></script>{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=2"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
 {% block content %}
 {% set next = hub.next_match %}
 <div class="sapporo-hub">
@@ -17,7 +17,7 @@
     <span class="hero-footnote">一生Jリーグによる非公式ファンガイド</span>
   </section>
 
-  <nav class="club-jump" aria-label="コンサドーレのページ内メニュー"><a href="#next-match">次の試合</a><a href="#team-form">戦績・順位</a><a href="#club-schedule">日程</a><a href="#club-news">ニュース</a><a href="#squad">選手</a><a href="#home-guide">観戦ガイド</a><a href="#club-voices">人・SNS</a></nav>
+  <nav class="club-jump" aria-label="コンサドーレのページ内メニュー"><a href="#next-match">次の試合</a><a href="#team-form">戦績・順位</a><a href="#club-schedule">日程</a><a href="#club-news">ニュース</a><a href="#squad">選手</a><a href="#home-guide">観戦ガイド</a><a href="#club-voices">人・SNS</a><a href="#fan-messages">応援</a><a href="#fan-ranking">閲覧ランキング</a></nav>
 
   {% if next %}
   <section id="next-match" class="hub-section">
@@ -77,6 +77,7 @@
   <section id="squad" class="hub-section">
     <div class="hub-heading"><div><p class="hub-kicker">KNOW YOUR RED & BLACK</p><h2>名前がわかると、もっと熱くなる。</h2></div><span class="hub-update">登録 {{ roster|length }}選手</span></div>
     {% if top_scorers %}<h3 class="scorers-label">チームの得点上位</h3><div class="hub-scorers">{% for p in top_scorers[:3] %}<a href="/player/{{ p.slug }}"><div class="player-shirt-number" aria-hidden="true">{{ p.number if p.number is not none else '—' }}</div><div class="scorer-name"><small>{{ p.position or '' }} / #{{ p.number if p.number is not none else '—' }}</small><h3>{{ p.name }}</h3><p><strong>{{ p.goals }}</strong> 得点 <span>{{ p.appearances if p.appearances is not none else '—' }}試合出場</span></p><span class="hub-inline">選手プロフィール →</span></div></a>{% endfor %}</div>{% endif %}
+    {% include '_sapporo_spotlight.html' %}
     <div class="squad-directory" data-hub-filter="players">
       <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="ポジションで選手を絞り込む"><button type="button" data-filter="all" aria-pressed="true">全選手</button>{% for pos in ['GK','DF','MF','FW'] %}<button type="button" data-filter="{{ pos }}" aria-pressed="false">{{ pos }}</button>{% endfor %}</div><label class="player-search">名前・背番号で探す<input type="search" data-player-search placeholder="例：西野、47" autocomplete="off"></label></div>
       <p class="hub-note" data-filter-count aria-live="polite"></p><div class="hub-roster">{% for p in roster %}<a class="hub-player" href="/player/{{ p.slug }}" data-filter-item data-category="{{ p.position or '' }}" data-search="{{ p.name }} {{ p.number if p.number is not none else '' }}"><b>{{ p.number if p.number is not none else '—' }}</b><div><small>{{ p.position or '—' }}</small><strong>{{ p.name }}</strong><span>{{ p.appearances if p.appearances is not none else '—' }} 出場 <i>·</i> {{ p.goals if p.goals is not none else '—' }} 得点</span></div><span aria-hidden="true">↗</span></a>{% endfor %}</div><button type="button" class="hub-more" data-filter-more hidden>全選手を表示</button>
@@ -96,6 +97,8 @@
     <div class="guide-faq"><h3>出かける前の、小さな確認。</h3><details><summary>子どものチケットは必要？</summary><p>未就学児は、大人1名につき1名まで膝上観戦なら無料。席を使う場合はチケットが必要です。購入時に対象席種・条件を公式で確認してください。</p><a href="{{ hub.guide.prices_url }}" target="_blank" rel="noopener">席種・料金の公式案内 ↗</a></details><details><summary>初めての観戦。何を準備すればいい？</summary><p>チケットの表示・受取方法、入場ゲート、荷物のルールを出発前に確認。スマートフォンで入場するなら充電にも余裕を。屋外イベントに立ち寄る日は、天気に合わせた上着もあると便利です。</p><a href="{{ hub.guide.guide_url }}" target="_blank" rel="noopener">はじめての観戦ガイド ↗</a></details><details><summary>ホームゲームは毎回プレミストドーム？</summary><p>試合によって会場が変わります。このページの各試合に記載した会場を確認してから、アクセスやチケットを選んでください。この観戦ガイドはプレミストドーム向けです。</p><a href="#club-schedule">試合ごとの会場を確認 →</a></details></div>
   </section>
 
+  {% include '_sapporo_messages.html' %}
+  {% include '_fan_rankings.html' %}
   {% include '_sapporo_social.html' %}
 
   <section class="club-everyday"><div><p class="hub-kicker">BEYOND THE 90 MINUTES</p><h2>試合のない日も、コンサドーレ。</h2></div><div class="everyday-links"><a href="{{ hub.guide.training_url }}" target="_blank" rel="noopener"><strong>練習スケジュール ↗</strong><span>公開日・場所・見学条件を公式で確認</span></a><a href="{{ hub.guide.club_tv_url }}" target="_blank" rel="noopener"><strong>CONSA+ ↗</strong><span>クラブ公式の動画・コンテンツへ</span></a><a href="https://store.consadole-sapporo.jp/" target="_blank" rel="noopener"><strong>公式オンラインストア ↗</strong><span>次の観戦に向けて、赤黒の準備を</span></a></div></section>

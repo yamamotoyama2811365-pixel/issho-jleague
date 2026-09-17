@@ -58,4 +58,5 @@
 <div class="result-row"><time>{{ row.match_date }}</time><span class="league-chip">{{ row.result or '-' }}</span><strong>{{ club.name }}</strong><b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b><span>{{ row.opponent }}</span><small>{{ row.competition }}{% if row.venue %} / {{ row.venue }}{% endif %}</small></div>
 {% endfor %}
 </div>
+{% include '_fan_rankings.html' %}
 {% endblock %}

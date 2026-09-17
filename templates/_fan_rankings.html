@@ -1,0 +1,8 @@
+<section id="fan-ranking" class="fan-feature" data-fan-ranking data-default-league="{{ club.league if club is defined else 'J1' }}">
+  <div class="fan-heading"><div><p class="fan-kicker">FAN ATTENTION / LAST 7 DAYS</p><h2>いま、見られているクラブ。</h2></div><span data-rank-personal></span></div>
+  <p>このサイトのクラブページ閲覧ランキング。あなたの気になるクラブは、いま何位？</p>
+  <div class="fan-tabs" role="tablist" aria-label="閲覧ランキングのリーグ">{% for league in ['J1','J2','J3'] %}<button type="button" role="tab" id="fan-tab-{{ league }}" aria-controls="fan-rank-list" aria-selected="{{ 'true' if (club is defined and club.league == league) or (club is not defined and league == 'J1') else 'false' }}" data-rank-league="{{ league }}">{{ league }}</button>{% endfor %}</div>
+  <p data-rank-status role="status">閲覧ランキングを読み込んでいます。</p><ol id="fan-rank-list" class="fan-rank-list" role="tabpanel" aria-labelledby="fan-tab-{{ club.league if club is defined else 'J1' }}"></ol>
+  <button type="button" class="fan-secondary" data-rank-more hidden>全20クラブを見る</button>
+  <details class="fan-method"><summary>ランキングの集計方法</summary><p>過去7日間の当サイト内のクラブページ閲覧をもとに集計。5秒以上表示されたページを対象とし、同じ接続元から同じクラブへの短時間の閲覧・連続更新や既知のボットを除外します。同数は同順位、未計測は「集計中」。PVの数値は公開しません。実際のリーグ成績や全国のファン人口を示すものではありません。</p><p>順位は原則1日2回更新します。計測を開始したばかりのため、初期の順位は変動しやすくなります。</p></details>
+</section>

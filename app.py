@@ -106,6 +106,7 @@ class PlayerSocial(Base):
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+app.config["TRUST_RENDER_PROXY"] = os.getenv("RENDER") == "true"
 
 CLUBS = {
     "J1": [
@@ -573,6 +574,9 @@ def leaderboard():
 def health():
     return jsonify({"ok": True})
 
+
+from fan_community import register as register_fan_community
+register_fan_community(app, engine, CLUBS)
 
 if __name__ == "__main__":
     init_db()

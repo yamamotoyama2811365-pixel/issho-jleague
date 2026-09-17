@@ -1,0 +1,15 @@
+<section id="fan-messages" class="fan-feature fan-cheers" data-fan-messages="sapporo">
+  <div class="fan-heading"><div><p class="fan-kicker">20 LETTERS, ONE TEAM</p><h2>赤黒へ、ひとこと。</h2></div><span class="fan-limit-badge">20文字の応援</span></div>
+  <p>勝つ日も、悔しい日も。あなたの言葉で、札幌を応援しよう。</p>
+  <div class="fan-cheer-layout"><form data-cheer-form>
+    <label for="cheer-name">ニックネーム <small>12文字以内・本名は使わないでください</small></label><input id="cheer-name" name="nickname" autocomplete="off" required placeholder="例：赤黒サポーター" aria-describedby="cheer-status">
+    <label for="cheer-body">応援メッセージ <span data-cheer-count>0 / 20</span></label><textarea id="cheer-body" name="body" rows="3" required placeholder="例：次の一勝を、一緒につかもう！" aria-describedby="cheer-rule cheer-status"></textarea>
+    <div class="fan-honeypot" aria-hidden="true"><label>ウェブサイト<input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <p id="cheer-rule" class="fan-small">チームへの応援専用です。誹謗中傷、他者への攻撃、個人情報、宣伝は禁止。名前と本文を確認後に公開します。クラブへ直接送信されるものではありません。</p>
+    <label class="fan-consent"><input type="checkbox" name="agree" required>投稿ルールと<a href="#fan-privacy">データの扱い</a>に同意する</label>
+    <button class="fan-primary" type="submit">この応援を届ける</button><p id="cheer-status" role="status" aria-live="polite"></p>
+    <div data-own-cheers></div>
+    <noscript><p>投稿にはJavaScriptを有効にしてください。</p></noscript>
+  </form><div><div class="fan-wall-heading"><h3>みんなの応援</h3><button type="button" class="fan-secondary" data-cheer-refresh>更新</button></div><p data-cheer-list-status role="status">公開済みのメッセージを読み込んでいます。</p><div class="fan-wall" data-cheer-list></div></div></div>
+  <details class="fan-method" id="fan-privacy"><summary>投稿ルール・データの扱い</summary><p>投稿は公開前に確認します。応援以外の内容や、なりすまし・攻撃的な名前は掲載しません。公開を保証するものではありません。返信や他者への評価機能はありません。</p><p>公開中の投稿に問題がある場合は「通報」からお知らせください。一時非表示にして再確認します。権利侵害・個人情報の掲載についても「通報」を利用できます。</p><p>送信したブラウザには取り消し用の情報を保存します。「自分の投稿を取り消す」から削除できます。ブラウザの保存情報を消すと取り消し機能は使えなくなります。</p><p>公開する情報はニックネーム・本文・投稿日です。公開前・非表示の投稿は最長30日、公開済みは最長180日を目安に削除します。連投防止・閲覧集計には接続元を秘密鍵付きでハッシュ化した識別情報を利用し、生のIPアドレスをこの機能のデータベースに保存しません。集計用記録は最長8日、連投制限用は最長2日で削除します。ホスティング事業者のアクセスログは別途その事業者の方針に従います。</p></details>
+</section>

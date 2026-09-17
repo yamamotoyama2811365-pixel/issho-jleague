@@ -7,6 +7,7 @@ thousands of round trips to Neon.
 from __future__ import annotations
 
 import os
+import json
 import shutil
 import sys
 from collections import defaultdict
@@ -22,6 +23,8 @@ from sqlalchemy.orm import joinedload
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from fan_community import rankings, cleanup
+from app import CLUBS
 from app import app, engine, SessionLocal, Club, Player, Stadium, fixtures_for  # noqa: E402
 
 OUT = ROOT / "public"
@@ -165,6 +168,8 @@ def main() -> None:
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
     shutil.copytree(STATIC_SRC, STATIC_DST)
+    cleanup(engine)
+    (OUT / "fan-rankings.json").write_text(json.dumps(rankings(engine, CLUBS), ensure_ascii=False), encoding="utf-8")
 
     player_contexts, clubs = batch_player_contexts()
     with SessionLocal() as db:
