@@ -191,8 +191,8 @@ def results_for(club_id, limit=12):
 
 
 def fixtures_for(club_id=None, stadium_id=None, limit=20, league=None):
-    where = ["f.match_date >= CURRENT_DATE"]
-    params = {"limit": limit}
+    where = ["f.match_date >= :today", "f.source_version = 2"]
+    params = {"limit": limit, "today": datetime.now(timezone(timedelta(hours=9))).date()}
     if club_id is not None:
         where.append("(f.home_club_id = :club_id OR f.away_club_id = :club_id)")
         params["club_id"] = club_id
@@ -212,9 +212,20 @@ def fixtures_for(club_id=None, stadium_id=None, limit=20, league=None):
         LEFT JOIN clubs ac ON ac.id = f.away_club_id
         LEFT JOIN stadiums s ON s.id = f.stadium_id
         WHERE {' AND '.join(where)}
-        ORDER BY f.match_date, f.kickoff NULLS LAST
+        ORDER BY f.match_date, f.kickoff NULLS LAST, f.match_key
         {'LIMIT :limit' if limit is not None else ''}
     """, params)
+
+
+def next_rounds_for(fixtures):
+    """Select a whole round per league, rather than slicing the first N games."""
+    out = {}
+    for league in ("J1", "J2", "J3"):
+        upcoming = [f for f in fixtures if f["league"] == league]
+        first = upcoming[0] if upcoming else None
+        matches = [f for f in upcoming if f.get("round_label") == first.get("round_label")] if first else []
+        out[league] = {"label": first.get("round_label") if first else None, "matches": matches}
+    return out
 
 
 def socials_for(player_id):
@@ -259,7 +270,6 @@ def home():
             FROM standings s JOIN clubs c ON c.id = s.club_id
             WHERE s.league = :league
             ORDER BY s.rank
-            LIMIT 5
         """, {"league": league})
 
     recent_results = safe_rows("""
@@ -280,7 +290,7 @@ def home():
         standings=standings,
         recent_results=recent_results,
         top_scorers=top_scorers,
-        next_fixtures=fixtures_for(limit=8),
+        next_rounds=next_rounds_for(fixtures_for(limit=None)),
     )
 
 
@@ -336,7 +346,12 @@ def clubs():
         rows = db.scalars(select(Club).options(joinedload(Club.stadium)).order_by(Club.league, Club.name)).unique().all()
     standing_rows = safe_rows("SELECT club_id, rank, points, played, wins, draws, losses, goal_diff FROM standings")
     standing_map = {r["club_id"]: r for r in standing_rows}
-    return render_template("clubs.html", clubs=rows, standing_map=standing_map)
+    rows.sort(key=lambda c: (c.league, standing_map.get(c.id, {}).get("rank") or 999, c.name))
+    next_map = {}
+    for fixture in fixtures_for(limit=None):
+        for cid in (fixture["home_club_id"], fixture["away_club_id"]):
+            next_map.setdefault(cid, fixture)
+    return render_template("clubs.html", clubs=rows, standing_map=standing_map, next_map=next_map)
 
 
 @app.route("/club/<slug>")
@@ -369,20 +384,11 @@ def club_detail(slug):
 
 @app.route("/schedule")
 def schedule_page():
-    league = (request.args.get("league") or "").strip().upper()
-    club_slug = (request.args.get("club") or "").strip()
-    club_id = None
     with SessionLocal() as db:
         clubs = db.scalars(select(Club).order_by(Club.league, Club.name)).all()
-        if club_slug:
-            c = db.scalar(select(Club).where(Club.slug == club_slug))
-            club_id = c.id if c else None
-    rows = fixtures_for(
-        club_id=club_id,
-        limit=None if app.config.get("STATIC_EXPORT") else 160,
-        league=league if league in {"J1", "J2", "J3"} else None,
-    )
-    return render_template("schedule.html", fixtures=rows, clubs=clubs, league=league, club_slug=club_slug)
+    rows = fixtures_for(limit=None)
+    return render_template("schedule.html", fixtures=rows, clubs=clubs,
+                           next_rounds=next_rounds_for(rows))
 
 
 @app.route("/standings")

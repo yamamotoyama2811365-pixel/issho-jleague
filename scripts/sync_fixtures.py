@@ -65,6 +65,8 @@ def ensure_table():
                 updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
             )
         """))
+        conn.execute(text("ALTER TABLE fixtures ADD COLUMN IF NOT EXISTS round_label VARCHAR(64)"))
+        conn.execute(text("ALTER TABLE fixtures ADD COLUMN IF NOT EXISTS source_version INTEGER NOT NULL DEFAULT 0"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fixtures_date ON fixtures(match_date, kickoff)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fixtures_home ON fixtures(home_club_id, match_date)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fixtures_away ON fixtures(away_club_id, match_date)"))
@@ -85,121 +87,98 @@ def db_index():
     return club_rows, stadium_rows
 
 
-def identify_teams(raw_text, clubs):
-    hay = norm(raw_text)
-    hits = []
-    for club in clubs:
-        pos = hay.find(club["norm"])
-        if pos >= 0:
-            hits.append((pos, -len(club["norm"]), club))
-    hits.sort(key=lambda x: (x[0], x[1]))
-    teams = []
-    used = set()
-    for _, _, club in hits:
-        if club["id"] not in used:
-            used.add(club["id"])
-            teams.append(club)
-        if len(teams) == 2:
-            break
-    return teams
+def resolve_streamed_html(html):
+    """Reattach server-streamed HTML fragments without executing remote JavaScript."""
+    soup = BeautifulSoup(html, "html.parser")
+    # React inserts S:* fragments at P:* placeholders. Without this step a
+    # match's away team/ticket can sit at the end of the document, outside its card.
+    for source, target in re.findall(r'\$RS\("(S:[^"\s]+)","(P:[^"\s]+)"\)', html):
+        fragment = soup.find(id=source)
+        placeholder = soup.find("template", id=target)
+        if fragment is not None and placeholder is not None:
+            for child in list(fragment.contents):
+                placeholder.insert_before(child.extract())
+            placeholder.decompose()
+            fragment.decompose()
+    return soup
 
 
-def identify_stadium(raw_text, stadium_rows):
-    hay = norm(raw_text)
-    for stadium in stadium_rows:
-        if stadium["norm"] and stadium["norm"] in hay:
-            return stadium
-    return None
+def node_text(node):
+    return clean(node.get_text(" ")) if node else ""
 
 
-def card_context(match_anchor, clubs):
-    """対戦カードの範囲まで親要素を上がり、2クラブ＋チケットを同じ範囲で確保する。"""
-    best_text = clean(match_anchor.get_text(" "))
-    best_node = match_anchor
-    node = match_anchor
-    for _ in range(9):
-        text_value = clean(node.get_text(" "))
-        teams = identify_teams(text_value, clubs)
-        if len(teams) >= 2:
-            best_text = text_value
-            best_node = node
-            # 2クラブが揃い、チケットリンクも含めばこのカードで確定。
-            if any("jleague-ticket.jp" in (a.get("href") or "") for a in node.find_all("a", href=True)):
-                break
-        node = getattr(node, "parent", None)
-        if node is None or len(clean(node.get_text(" "))) > 4500:
-            break
-    return best_node, best_text
-
-
-def ticket_in(node):
-    for a in node.find_all("a", href=True):
-        href = a.get("href") or ""
-        if "jleague-ticket.jp" in href:
-            return href
-    return None
+def parse_html(html, league, clubs, stadium_rows):
+    soup = resolve_streamed_html(html)
+    club_map = {norm(c["name"]): c for c in clubs}
+    stadium_map = {norm(s["name"]): s for s in stadium_rows}
+    rows, seen, seen_teams = [], set(), set()
+    for card in soup.select(".m-schedule"):
+        anchor = card.select_one("a.m-schedule__link[href]")
+        match = MATCH_RE.search(anchor["href"]) if anchor else None
+        if not match or match.group(1).upper() != league:
+            continue
+        year, code = int(match.group(2)), match.group(3)
+        key = f"{league}-{year}-{code}"
+        if key in seen:
+            continue
+        # Exact fields inside ONE card. Never climb to a container of several games.
+        home_text = node_text(card.select_one('.m-schedule__team-home .m-schedule__team-name[data-media="pc"]'))
+        away_text = node_text(card.select_one('.m-schedule__team-away .m-schedule__team-name[data-media="pc"]'))
+        home, away = club_map.get(norm(home_text)), club_map.get(norm(away_text))
+        if not home or not away or home["id"] == away["id"]:
+            raise ValueError(f"{key}: incomplete/unrecognized match teams: {home_text} / {away_text}")
+        group = card.find_parent(class_="p-game-schedule__group")
+        header = group.select_one(".m-section-header") if group else None
+        round_match = re.search(r"第\s*(\d+)\s*節", node_text(header))
+        day = re.search(r"(20\d{2})/(\d{1,2})/(\d{1,2})", node_text(header))
+        if not round_match or not day:
+            raise ValueError(f"{key}: missing round/date heading")
+        match_date = date(*map(int, day.groups())).isoformat()
+        round_label = f"第{int(round_match.group(1))}節"
+        for club in (home, away):
+            occurrence = (match_date[:4], round_label, club["id"])
+            if occurrence in seen_teams:
+                raise ValueError(f"{key}: club repeated in {round_label}: {club['name']}")
+            seen_teams.add(occurrence)
+        venue = node_text(card.select_one('.m-schedule__info-stadium[data-media="pc"]'))
+        stadium = stadium_map.get(norm(venue))
+        time_text = node_text(card.select_one(".m-schedule__time-text"))
+        time_match = re.search(r"\b([01]?\d|2[0-3]):[0-5]\d\b", time_text)
+        ticket = card.select_one('a[href*="jleague-ticket.jp/"]')
+        rows.append({
+            "match_key": key, "league": league, "match_date": match_date,
+            "round_label": round_label, "source_version": 2,
+            "kickoff": time_match.group(0) if time_match else None,
+            "home_club_id": home["id"], "away_club_id": away["id"],
+            "home_name": home["name"], "away_name": away["name"],
+            "venue": venue or None, "stadium_id": stadium["id"] if stadium else None,
+            "competition": f"明治安田{league}リーグ",
+            "match_url": urljoin(BASE, anchor["href"].split("?")[0].split("#")[0]),
+            "ticket_url": ticket["href"] if ticket else None,
+        })
+        seen.add(key)
+    # A changed source layout must fail visibly, not publish an empty schedule.
+    if not rows:
+        league_links = [a for a in soup.select("a[href]") if f"/match/{league.lower()}/" in a["href"]]
+        if league_links:
+            raise ValueError(f"{league}: match links found but no cards parsed")
+    return rows
 
 
 def parse_league(league, clubs, stadium_rows):
-    url = f"{BASE}/{league.lower()}/match/"
-    r = http().get(url, timeout=25)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
-    rows = []
-    seen = set()
-
-    for a in soup.find_all("a", href=True):
-        href = a.get("href") or ""
-        m = MATCH_RE.search(href)
-        if not m or m.group(1).upper() != league:
-            continue
-        match_url = urljoin(BASE, href.split("?")[0].split("#")[0])
-        if match_url in seen:
-            continue
-        seen.add(match_url)
-
-        year = int(m.group(2))
-        code = m.group(3)
-        match_date = date(year, int(code[:2]), int(code[2:4]))
-
-        card, card_text = card_context(a, clubs)
-        teams = identify_teams(card_text, clubs)
-        if len(teams) < 2:
-            print(f"WARN teams not found in schedule card: {match_url} text={card_text[:180]}", flush=True)
-            continue
-        home, away = teams[0], teams[1]
-
-        tm = re.search(r"\b([01]?\d|2[0-3]):[0-5]\d\b", card_text)
-        kickoff = tm.group(0) if tm else None
-        stadium = identify_stadium(card_text, stadium_rows)
-        ticket_url = ticket_in(card)
-
-        rows.append({
-            "match_key": f"{league}-{year}-{code}",
-            "league": league,
-            "match_date": match_date.isoformat(),
-            "kickoff": kickoff,
-            "home_club_id": home["id"],
-            "away_club_id": away["id"],
-            "home_name": home["name"],
-            "away_name": away["name"],
-            "venue": stadium["name"] if stadium else None,
-            "stadium_id": stadium["id"] if stadium else None,
-            "competition": f"明治安田{league}リーグ",
-            "match_url": match_url,
-            "ticket_url": ticket_url,
-        })
-    return rows
+    response = http().get(f"{BASE}/{league.lower()}/match/", timeout=30)
+    response.raise_for_status()
+    return parse_html(response.text, league, clubs, stadium_rows)
 
 
 def save(row):
     stmt = text("""
         INSERT INTO fixtures (
             match_key, league, match_date, kickoff, home_club_id, away_club_id,
-            home_name, away_name, venue, stadium_id, competition, match_url, ticket_url, updated_at
+            home_name, away_name, venue, stadium_id, competition, match_url, ticket_url, round_label, source_version, updated_at
         ) VALUES (
             :match_key, :league, CAST(:match_date AS DATE), :kickoff, :home_club_id, :away_club_id,
-            :home_name, :away_name, :venue, :stadium_id, :competition, :match_url, :ticket_url, NOW()
+            :home_name, :away_name, :venue, :stadium_id, :competition, :match_url, :ticket_url, :round_label, :source_version, NOW()
         )
         ON CONFLICT (match_key) DO UPDATE SET
             match_date=EXCLUDED.match_date, kickoff=EXCLUDED.kickoff,
@@ -207,7 +186,8 @@ def save(row):
             home_name=EXCLUDED.home_name, away_name=EXCLUDED.away_name,
             venue=EXCLUDED.venue, stadium_id=EXCLUDED.stadium_id,
             competition=EXCLUDED.competition, match_url=EXCLUDED.match_url,
-            ticket_url=COALESCE(EXCLUDED.ticket_url, fixtures.ticket_url), updated_at=NOW()
+            ticket_url=EXCLUDED.ticket_url, round_label=EXCLUDED.round_label,
+            source_version=EXCLUDED.source_version, updated_at=NOW()
     """)
     with engine.begin() as conn:
         conn.execute(stmt, row)
@@ -220,8 +200,9 @@ def main():
     saved = 0
     ticketed = 0
 
-    for league in LEAGUES:
-        rows = parse_league(league, clubs, stadium_rows)
+    # Parse and validate all leagues before making any data changes.
+    parsed = {league: parse_league(league, clubs, stadium_rows) for league in LEAGUES}
+    for league, rows in parsed.items():
         for row in rows:
             save(row)
         saved += len(rows)

@@ -1,31 +1,20 @@
 {% extends 'base.html' %}
+{% from '_league_components.html' import league_tabs, fixture_card %}
 {% block title %}試合日程・チケット | 一生Jリーグ{% endblock %}
 {% block content %}
-<section class="page-head"><p class="eyebrow">MATCHDAY PLANNER</p><h1>試合日程・チケット</h1><p>次にいつ、どこで観るか。対戦カードからチケット購入、会場ガイドまで一気に。</p></section>
-
-<form class="filterbar schedule-filter" method="get" data-static-filter>
-  <select name="league"><option value="">J1・J2・J3すべて</option>{% for l in ['J1','J2','J3'] %}<option value="{{ l }}" {% if league==l %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
-  <select name="club"><option value="">全クラブ</option>{% for c in clubs %}<option value="{{ c.slug }}" {% if club_slug==c.slug %}selected{% endif %}>{{ c.league }} {{ c.name }}</option>{% endfor %}</select>
-  <button class="btn primary" type="submit">日程を見る</button>
-</form>
-
-<div class="schedule-notice"><b>観戦する試合を決める → チケットを買う → 会場を調べる</b><span>「チケットを買う」はJリーグチケットの該当試合購入ページへ移動します。</span></div>
-
-<div class="fixture-stack">
-{% for f in fixtures %}
-<article class="fixture-card" data-filter-row data-league="{{ f.league }}" data-clubs="{{ f.home_slug }} {{ f.away_slug }}">
-  <div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span><em>{{ f.league }}</em></div>
-  <div class="fixture-main">
-    <small>{{ f.competition or f.league }}</small>
-    <h2><a href="/club/{{ f.home_slug }}">{{ f.home_name }}</a> <b>vs</b> <a href="/club/{{ f.away_slug }}">{{ f.away_name }}</a></h2>
-    <p>{% if f.venue %}{{ f.venue }}{% else %}会場確認中{% endif %}</p>
-  </div>
-  <div class="fixture-actions">
-    {% if f.ticket_url %}<a class="btn primary" href="{{ f.ticket_url }}" target="_blank" rel="nofollow noopener">チケットを買う</a>{% else %}<span class="ticket-wait">チケット販売情報待ち</span>{% endif %}
-    {% if f.stadium_slug %}<a class="btn" href="/stadium/{{ f.stadium_slug }}">会場ガイド</a>{% endif %}
-    {% if f.match_url %}<a class="text-link" href="{{ f.match_url }}" target="_blank" rel="nofollow noopener">公式試合ページ →</a>{% endif %}
-  </div>
-</article>
-{% else %}<p class="empty">現在取得済みの今後の日程がありません。次回同期で更新します。</p>{% endfor %}
+<section class="page-head"><p class="eyebrow">MATCHDAY PLANNER</p><h1>試合日程・チケット</h1><p>リーグを選んで次節の対戦カードをチェック。開催日時・会場・チケットをまとめて確認できます。</p></section>
+<section data-tabs data-query-league class="league-section" aria-label="リーグ別試合日程">
+{{ league_tabs('schedule', '日程のリーグ') }}
+{% for league in ['J1','J2','J3'] %}
+{% set round = next_rounds[league] %}
+<div id="schedule-{{ league|lower }}" data-tab-panel="{{ league|lower }}">
+  <div class="league-summary"><h2>{{ league }}{% if round.label %} 次節：{{ round.label }}{% endif %}</h2><span>{{ round.matches|length }}試合・日本時間</span></div>
+  <label class="club-filter">クラブで絞り込む <select data-fixture-club><option value="">{{ league }} 全クラブ</option>{% for c in clubs if c.league == league %}<option value="{{ c.slug }}">{{ c.name }}</option>{% endfor %}</select></label>
+  <p data-match-count role="status" aria-live="polite"></p>
+  <div class="fixture-stack">{% for f in round.matches %}{{ fixture_card(f) }}{% else %}<p class="empty">次節の日程は発表・更新をお待ちください。</p>{% endfor %}</div>
+  {% set later = fixtures|selectattr('league','equalto',league)|rejectattr('round_label','equalto',round.label)|list %}
+  {% if later %}<h3 class="section-space">以降の開催予定</h3><div class="fixture-stack">{% for f in later %}{{ fixture_card(f) }}{% endfor %}</div>{% endif %}
 </div>
+{% endfor %}
+</section>
 {% endblock %}

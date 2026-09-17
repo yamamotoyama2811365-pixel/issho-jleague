@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '_league_components.html' import league_tabs, fixture_card, standings_table %}
 {% block content %}
 <section class="hero">
   <div>
@@ -14,26 +15,39 @@
   </div>
 </section>
 
-<section class="section-head"><div><p class="eyebrow">NEXT MATCHES</p><h2>次に観に行ける試合</h2></div><a href="/schedule">全日程・チケット →</a></section>
-<div class="fixture-stack home-fixtures">
-{% for f in next_fixtures %}
-<article class="fixture-card">
-  <div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span><em>{{ f.league }}</em></div>
-  <div class="fixture-main"><small>{{ f.competition or f.league }}</small><h3><a href="/club/{{ f.home_slug }}">{{ f.home_name }}</a> <b>vs</b> <a href="/club/{{ f.away_slug }}">{{ f.away_name }}</a></h3><p>{{ f.venue or '会場確認中' }}</p></div>
-  <div class="fixture-actions">{% if f.ticket_url %}<a class="btn primary" href="{{ f.ticket_url }}" target="_blank" rel="nofollow noopener">チケットを買う</a>{% else %}<span class="ticket-wait">販売情報待ち</span>{% endif %}{% if f.stadium_slug %}<a class="btn" href="/stadium/{{ f.stadium_slug }}">会場ガイド</a>{% endif %}</div>
-</article>
-{% else %}<p class="empty">次回の自動同期で今後の日程を表示します。</p>{% endfor %}
-</div>
+<section class="section-head"><div><p class="eyebrow">NEXT MATCHES</p><h2>次節の全試合</h2></div><a href="/schedule">日程・チケット →</a></section>
+<section data-tabs class="league-section" aria-label="次節の試合">
+  {{ league_tabs('home-matches', '試合のリーグ') }}
+  {% for league in ['J1','J2','J3'] %}
+  {% set round = next_rounds[league] %}
+  <div id="home-matches-{{ league|lower }}" data-tab-panel="{{ league|lower }}">
+    <div class="league-summary"><h3>{{ league }}{% if round.label %} {{ round.label }}{% endif %}</h3><span>{{ round.matches|length }}試合・日本時間</span></div>
+    <div class="fixture-stack home-fixtures">{% for f in round.matches %}{{ fixture_card(f) }}{% else %}<p class="empty">次節の日程は発表・更新をお待ちください。</p>{% endfor %}</div>
+  </div>
+  {% endfor %}
+</section>
 
-<section class="section-head"><div><p class="eyebrow">FOLLOW YOUR CLUB</p><h2>推しクラブの現在地</h2></div><a href="/clubs">全60クラブ →</a></section>
-<div class="league-board-grid">
-{% for league in ['J1','J2','J3'] %}
-<article class="panel league-board">
-  <div class="league-board-head"><strong>{{ league }}</strong><span>TOP 5</span></div>
-  {% for row in standings[league] %}<a class="mini-standing" href="/club/{{ row.slug }}"><b>{{ row.rank }}</b><span>{{ row.name }}</span><strong>{{ row.points }}pt</strong></a>{% else %}<p class="empty">順位データ準備中</p>{% endfor %}
-</article>
-{% endfor %}
-</div>
+<section class="section-head"><div><p class="eyebrow">FOLLOW YOUR CLUB</p><h2>推しクラブの現在地</h2></div><a href="/clubs">クラブを探す →</a></section>
+<section data-tabs class="league-section" aria-label="推しクラブの順位">
+  {{ league_tabs('home-standings', '順位のリーグ', true) }}
+  <div id="home-standings-top5" data-tab-panel="top5">
+    <div class="league-board-grid">
+    {% for league in ['J1','J2','J3'] %}
+    <article class="panel league-board">
+      <div class="league-board-head"><strong>{{ league }}</strong><span>TOP 5</span></div>
+      {% for row in standings[league][:5] %}<a class="mini-standing" href="/club/{{ row.slug }}"><b>{{ row.rank }}</b><span>{{ row.name }}</span><strong>{{ row.points }}pt</strong></a>{% else %}<p class="empty">順位データ準備中</p>{% endfor %}
+      <a class="board-all" href="#home-standings-{{ league|lower }}">{{ league }}の全順位を見る →</a>
+    </article>
+    {% endfor %}
+    </div>
+  </div>
+  {% for league in ['J1','J2','J3'] %}
+  <div id="home-standings-{{ league|lower }}" data-tab-panel="{{ league|lower }}">
+    <div class="league-summary"><h3>{{ league }} 全順位</h3><a href="/clubs#{{ league|lower }}">{{ league }}のクラブを探す →</a></div>
+    {{ standings_table(standings[league], league) }}
+  </div>
+  {% endfor %}
+</section>
 
 <section class="section-head"><div><p class="eyebrow">PLAYER WATCH</p><h2>いま得点している選手</h2></div><a href="/players">全選手を見る →</a></section>
 <div class="scorer-grid">{% for p in top_scorers %}<a class="scorer-card" href="/player/{{ p.slug }}"><span>{{ p.club.league }} / {{ p.club.name }}</span><strong>{{ p.name }}</strong><div><b>{{ p.goals or 0 }}</b> GOALS <em>{{ p.appearances or 0 }}試合</em></div></a>{% endfor %}</div>

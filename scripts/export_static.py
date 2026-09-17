@@ -14,6 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from bs4 import BeautifulSoup
 from flask import render_template
 from sqlalchemy import select, text
 from sqlalchemy.orm import joinedload
@@ -21,7 +22,7 @@ from sqlalchemy.orm import joinedload
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from app import app, engine, SessionLocal, Club, Player, Stadium  # noqa: E402
+from app import app, engine, SessionLocal, Club, Player, Stadium, fixtures_for  # noqa: E402
 
 OUT = ROOT / "public"
 STATIC_SRC = ROOT / "static"
@@ -48,7 +49,7 @@ def render_route(route: str) -> str:
     if response.status_code != 200:
         raise RuntimeError(f"static export failed: {route} -> {response.status_code}")
     data = response.data
-    if route in {"/players", "/schedule", "/results"}:
+    if route in {"/players", "/results"}:
         data = data.replace(b"</head>", b'<script src="/static/filters.js" defer></script></head>', 1)
     write_route(route, data)
     return route
@@ -101,15 +102,7 @@ def batch_player_contexts():
             results_map[r["club_id"]].append(r)
 
     fixture_map = defaultdict(list)
-    for f in rows("""
-        SELECT f.*, hc.slug AS home_slug, ac.slug AS away_slug, s.slug AS stadium_slug
-        FROM fixtures f
-        LEFT JOIN clubs hc ON hc.id=f.home_club_id
-        LEFT JOIN clubs ac ON ac.id=f.away_club_id
-        LEFT JOIN stadiums s ON s.id=f.stadium_id
-        WHERE f.match_date >= CURRENT_DATE
-        ORDER BY f.match_date, f.kickoff NULLS LAST
-    """):
+    for f in fixtures_for(limit=None):
         for cid in {f.get("home_club_id"), f.get("away_club_id")}:
             if cid and len(fixture_map[cid]) < 3:
                 fixture_map[cid].append(f)
@@ -220,6 +213,25 @@ def main() -> None:
         encoding="utf-8",
     )
     write_sitemap(urls)
+
+    # Catch empty/duplicated league panels before updating the production branch.
+    home = BeautifulSoup((OUT / "index.html").read_text(encoding="utf-8"), "html.parser")
+    schedule = BeautifulSoup((OUT / "schedule/index.html").read_text(encoding="utf-8"), "html.parser")
+    directory = BeautifulSoup((OUT / "clubs/index.html").read_text(encoding="utf-8"), "html.parser")
+    for league in ("j1", "j2", "j3"):
+        cards = home.select(f"#home-matches-{league} [data-match-key]")
+        keys = [c["data-match-key"] for c in cards]
+        teams = [t for c in cards for t in c["data-clubs"].split()]
+        if len(keys) != len(set(keys)) or len(teams) != len(set(teams)):
+            raise RuntimeError(f"{league}: duplicate next-round match/team")
+        scheduled = {c["data-match-key"] for c in schedule.select(f"#schedule-{league} [data-match-key]")}
+        if not set(keys).issubset(scheduled):
+            raise RuntimeError(f"{league}: homepage/schedule mismatch")
+        standings_count = len(home.select(f"#home-standings-{league} tbody tr"))
+        club_cards = directory.select(f"#{league} [data-club-card]")
+        if standings_count != len(club_cards) or standings_count != 20:
+            raise RuntimeError(f"{league}: incomplete standings/directory: {standings_count}/{len(club_cards)}")
+        print(f"verified {league}: next_round={len(keys)} standings={standings_count} clubs={len(club_cards)}", flush=True)
 
     page_count = len(list(OUT.rglob("index.html")))
     print(f"static export complete: pages={page_count} clubs={len(clubs)} players={len(player_contexts)} stadiums={len(stadiums)}")
