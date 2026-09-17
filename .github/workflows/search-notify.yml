@@ -1,5 +1,8 @@
 name: Notify search engines of published updates
 on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/search-notify.yml']
   workflow_dispatch:
   schedule:
     - cron: '55 13,21 * * *'
@@ -15,4 +18,4 @@ jobs:
         with:
           python-version: '3.13'
       - run: pip install requests
-      - run: python scripts/notify_search.py
+      - run: python scripts/notify_search.py ${{ github.event_name == 'push' && '--all' || '' }}
