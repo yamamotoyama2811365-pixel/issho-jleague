@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-17T19:35+09:00",
+  "checked_at": "2026-09-17T22:30+09:00",
   "news": [
     {
       "title": "9/19(土)大分戦：ご来場の北海道コンサドーレ札幌サポーターの皆様へ",
@@ -736,5 +736,283 @@
       "ticket_url": null,
       "event_url": null
     }
-  ]
+  ],
+  "starting_lineups": {
+    "https://www.consadole-sapporo.jp/game/info/20260808/": [
+      {
+        "number": 24,
+        "name": "田川　知樹"
+      },
+      {
+        "number": 47,
+        "name": "西野　奨太"
+      },
+      {
+        "number": 55,
+        "name": "梅津　龍之介"
+      },
+      {
+        "number": 2,
+        "name": "髙尾　瑠"
+      },
+      {
+        "number": 3,
+        "name": "パク　ミンギュ"
+      },
+      {
+        "number": 34,
+        "name": "木實　快斗"
+      },
+      {
+        "number": 31,
+        "name": "堀米　悠斗"
+      },
+      {
+        "number": 19,
+        "name": "ティラパット"
+      },
+      {
+        "number": 70,
+        "name": "ヴィニ　ペイショット"
+      },
+      {
+        "number": 71,
+        "name": "白井　陽斗"
+      },
+      {
+        "number": 38,
+        "name": "唐山　翔自"
+      }
+    ],
+    "https://www.consadole-sapporo.jp/game/info/20260815/": [
+      {
+        "number": 24,
+        "name": "田川　知樹"
+      },
+      {
+        "number": 47,
+        "name": "西野　奨太"
+      },
+      {
+        "number": 55,
+        "name": "梅津　龍之介"
+      },
+      {
+        "number": 2,
+        "name": "髙尾　瑠"
+      },
+      {
+        "number": 3,
+        "name": "パク　ミンギュ"
+      },
+      {
+        "number": 31,
+        "name": "堀米　悠斗"
+      },
+      {
+        "number": 34,
+        "name": "木實　快斗"
+      },
+      {
+        "number": 19,
+        "name": "ティラパット"
+      },
+      {
+        "number": 70,
+        "name": "ヴィニ　ペイショット"
+      },
+      {
+        "number": 71,
+        "name": "白井　陽斗"
+      },
+      {
+        "number": 38,
+        "name": "唐山　翔自"
+      }
+    ],
+    "https://www.consadole-sapporo.jp/game/info/20260822/": [
+      {
+        "number": 24,
+        "name": "田川　知樹"
+      },
+      {
+        "number": 47,
+        "name": "西野　奨太"
+      },
+      {
+        "number": 55,
+        "name": "梅津　龍之介"
+      },
+      {
+        "number": 17,
+        "name": "内田　瑞己"
+      },
+      {
+        "number": 3,
+        "name": "パク　ミンギュ"
+      },
+      {
+        "number": 18,
+        "name": "木戸　柊摩"
+      },
+      {
+        "number": 34,
+        "name": "木實　快斗"
+      },
+      {
+        "number": 19,
+        "name": "ティラパット"
+      },
+      {
+        "number": 70,
+        "name": "ヴィニ　ペイショット"
+      },
+      {
+        "number": 71,
+        "name": "白井　陽斗"
+      },
+      {
+        "number": 38,
+        "name": "唐山　翔自"
+      }
+    ],
+    "https://www.consadole-sapporo.jp/game/info/20260829/": [
+      {
+        "number": 24,
+        "name": "田川　知樹"
+      },
+      {
+        "number": 47,
+        "name": "西野　奨太"
+      },
+      {
+        "number": 55,
+        "name": "梅津　龍之介"
+      },
+      {
+        "number": 17,
+        "name": "内田　瑞己"
+      },
+      {
+        "number": 3,
+        "name": "パク　ミンギュ"
+      },
+      {
+        "number": 18,
+        "name": "木戸　柊摩"
+      },
+      {
+        "number": 31,
+        "name": "堀米　悠斗"
+      },
+      {
+        "number": 19,
+        "name": "ティラパット"
+      },
+      {
+        "number": 70,
+        "name": "ヴィニ　ペイショット"
+      },
+      {
+        "number": 38,
+        "name": "唐山　翔自"
+      },
+      {
+        "number": 7,
+        "name": "スパチョーク"
+      }
+    ],
+    "https://www.consadole-sapporo.jp/game/info/20260906/": [
+      {
+        "number": 24,
+        "name": "田川　知樹"
+      },
+      {
+        "number": 43,
+        "name": "野瀬　翔也"
+      },
+      {
+        "number": 55,
+        "name": "梅津　龍之介"
+      },
+      {
+        "number": 17,
+        "name": "内田　瑞己"
+      },
+      {
+        "number": 3,
+        "name": "パク　ミンギュ"
+      },
+      {
+        "number": 30,
+        "name": "真田　蓮司"
+      },
+      {
+        "number": 10,
+        "name": "宮澤　裕樹"
+      },
+      {
+        "number": 19,
+        "name": "ティラパット"
+      },
+      {
+        "number": 70,
+        "name": "ヴィニ　ペイショット"
+      },
+      {
+        "number": 7,
+        "name": "スパチョーク"
+      },
+      {
+        "number": 38,
+        "name": "唐山　翔自"
+      }
+    ],
+    "https://www.consadole-sapporo.jp/game/info/20260913/": [
+      {
+        "number": 24,
+        "name": "田川　知樹"
+      },
+      {
+        "number": 43,
+        "name": "野瀬　翔也"
+      },
+      {
+        "number": 47,
+        "name": "西野　奨太"
+      },
+      {
+        "number": 2,
+        "name": "髙尾　瑠"
+      },
+      {
+        "number": 17,
+        "name": "内田　瑞己"
+      },
+      {
+        "number": 55,
+        "name": "梅津　龍之介"
+      },
+      {
+        "number": 18,
+        "name": "木戸　柊摩"
+      },
+      {
+        "number": 71,
+        "name": "白井　陽斗"
+      },
+      {
+        "number": 16,
+        "name": "長谷川　竜也"
+      },
+      {
+        "number": 27,
+        "name": "荒野　拓馬"
+      },
+      {
+        "number": 23,
+        "name": "大森　真吾"
+      }
+    ]
+  }
 }

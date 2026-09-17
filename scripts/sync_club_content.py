@@ -1,12 +1,15 @@
 """Refresh the Sapporo pilot's public news and full club schedule (two requests)."""
 import json
 import re
+import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from lineup_stats import league_matches, parse_starters
 ORIGIN = 'https://www.consadole-sapporo.jp'
 OUT = ROOT / 'data/club_content/sapporo.json'
 
@@ -87,6 +90,17 @@ def main():
         home=session.get(ORIGIN+'/',timeout=30);home.raise_for_status()
         schedule=session.get(ORIGIN+'/game/list/',timeout=30);schedule.raise_for_status()
         data=dict(checked_at=datetime.now(timezone(timedelta(hours=9))).isoformat(timespec='minutes'),news=parse_news(home.text),matches=parse_schedule(schedule.text))
+        previous = json.loads(OUT.read_text(encoding='utf-8')) if OUT.exists() else {}
+        data['starting_lineups'] = {}
+        for url, match in league_matches(data['matches']).items():
+            try:
+                response = session.get(url, timeout=30)
+                response.raise_for_status()
+                data['starting_lineups'][url] = parse_starters(response.text, match['home_away'])
+            except (requests.RequestException, ValueError):
+                if url in previous.get('starting_lineups', {}):
+                    data['starting_lineups'][url] = previous['starting_lineups'][url]
+                print(f'Lineup refresh unavailable: {match["date"]}; using previous record if available.')
         OUT.parent.mkdir(parents=True,exist_ok=True)
         OUT.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         print(f"Sapporo official content: news={len(data['news'])} matches={len(data['matches'])}")

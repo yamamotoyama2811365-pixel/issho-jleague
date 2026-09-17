@@ -1,0 +1,2 @@
+{% set rate = hub.starting.players.get(p.slug) %}
+{% if rate %}<span class="starting-rate"><span>スタメン率 <small>今季実績</small></span><strong>{{ rate.percent ~ '%' if rate.percent is not none else '確認中' }}</strong><small>{% if rate.percent is not none %}{{ rate.total }}試合中{{ rate.starts }}試合先発{% else %}先発記録を確認中{% endif %}</small></span>{% endif %}
