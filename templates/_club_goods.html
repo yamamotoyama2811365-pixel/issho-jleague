@@ -1,0 +1,10 @@
+<section id="club-goods" class="hub-section club-goods" aria-labelledby="club-goods-title">
+  <div class="hub-heading"><div><p class="hub-kicker">CLUB COLLABORATIONS</p><h2 id="club-goods-title">コラボグッズ</h2><p class="goods-lead">いつもの応援に、ちょっと特別なアイテムを。</p></div><a class="goods-shop" href="{{ goods.shop_url }}" target="_blank" rel="noopener">公式ストアを見る ↗</a></div>
+  {% if goods.features %}<div class="goods-features">{% for item in goods.features %}
+    <article class="goods-feature"><div class="goods-meta"><span>クラブ公式のお知らせ</span><time datetime="{{ item.date }}">{{ item.date }} 公開</time></div><h3>{{ item.title }}</h3><p class="goods-sale">{{ item.label }}</p><p>{{ item.summary }}</p><p class="goods-detail">{{ item.note }}</p><a href="{{ item.url }}" target="_blank" rel="noopener">販売場所・条件を公式で確認 ↗</a></article>
+  {% endfor %}</div>{% endif %}
+  {% if goods.products %}<div class="goods-products">{% for item in goods.products %}
+    <article class="goods-product"><span class="goods-tag">{{ item.group }}</span><h3>{{ item.title }}</h3><p class="goods-price">{{ item.price }}<small>公式掲載価格</small></p><a href="{{ item.url }}" target="_blank" rel="noopener" aria-label="{{ item.title }}の公式商品ページ">商品・在庫を確認 ↗</a></article>
+  {% endfor %}</div>{% else %}<p>コラボ商品の情報を確認中です。最新の商品は公式ストアでご覧ください。</p>{% endif %}
+  <p class="goods-footnote">価格・在庫・受付期間・送料は公式販売ページでご確認ください。売り切れや受付終了の場合があります。{% if goods.checked_label %}<br>商品情報の確認：<time>{{ goods.checked_label }} JST</time>{% endif %}{% if goods.stale %}（前回確認時の情報です）{% endif %} · 出典：Ｊリーグオンラインストア{% if goods.features %}／クラブ公式{% endif %}</p>
+</section>

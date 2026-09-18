@@ -7,6 +7,8 @@ on:
     paths:
       - 'app.py'
       - 'club_hub.py'
+      - 'club_goods.py'
+      - 'scripts/sync_club_goods.py'
       - 'lineup_stats.py'
       - 'fan_editorial.py'
       - 'league_content.py'
@@ -77,6 +79,9 @@ jobs:
       - name: Refresh all club fan content
         run: python scripts/sync_league_content.py
 
+      - name: Refresh official collaboration merchandise
+        run: python scripts/sync_club_goods.py
+
       - name: Export static site
         run: python scripts/export_static.py
 
@@ -88,6 +93,7 @@ jobs:
           test -s public/clubs/index.html
           test -s public/players/index.html
           test -s public/sitemap.xml
+          python -c "from pathlib import Path; pages=list(Path('public/club').glob('*/index.html')); assert len(pages)==60; assert all('id=\"club-goods\"' in p.read_text() for p in pages)"
           pages=$(find public -name index.html | wc -l)
           echo "static pages=$pages"
           test "$pages" -ge 2200

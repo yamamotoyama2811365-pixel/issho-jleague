@@ -4,6 +4,7 @@ import re
 import uuid
 from league_content import build_club_hub
 from club_hub import build_sapporo_hub
+from club_goods import build_club_goods
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify, render_template, request, abort
 from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, Text, select, func, desc, asc, or_, text
@@ -383,10 +384,11 @@ def club_detail(slug):
         """, {"league": club.league})
         hub = build_sapporo_hub(standing, recent_results, league_rows, roster)
         return render_template("club_sapporo.html", club=club, roster=roster,
-                               top_scorers=top_scorers, standing=standing, hub=hub)
+                               top_scorers=top_scorers, standing=standing, hub=hub, goods=build_club_goods(slug))
     return render_template(
         "club.html",
         hub=build_club_hub(club, roster),
+        goods=build_club_goods(slug),
         club=club,
         roster=roster,
         top_scorers=top_scorers,

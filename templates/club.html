@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ club.name }} | 一生Jリーグ{% endblock %}
-{% block description %}{{ club.name }}の次の試合、最新ニュース、直近の試合記録、公式ハイライト、監督・選手コメント、スタメン率をまとめた非公式ファンガイド。{% endblock %}
-{% block extra_head %}<link rel="stylesheet" href="/static/sapporo.css?v=5"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
+{% block description %}{{ club.name }}の次の試合、最新ニュース、直近の試合記録、公式ハイライト、監督・選手コメント、スタメン率、コラボグッズをまとめた非公式ファンガイド。{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/club-goods.css?v=1"><link rel="stylesheet" href="/static/sapporo.css?v=5"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
 {% block content %}<div class="sapporo-hub league-club-hub">
 <section class="page-head club-head">
   <p class="eyebrow">{{ club.league }} CLUB GUIDE</p>
@@ -10,7 +10,7 @@
     {% if standing %}<span>{{ standing.rank }}位</span><span>{{ standing.points }}pt</span><span>{{ standing.played }}試合</span>{% endif %}
     {% if club.stadium %}<a href="/stadium/{{ club.stadium.slug }}">HOME {{ club.stadium.name }}</a>{% endif %}
   </div>
-</section><nav class="club-jump" aria-label="クラブページのメニュー"><a href="#next-match">次の試合</a><a href="#team-updates">最新情報</a><a href="#match-recap">試合を振り返る</a><a href="#match-comments">公式コメント</a><a href="#players-to-watch">注目選手</a><a href="#squad">全選手</a></nav>
+</section><nav class="club-jump" aria-label="クラブページのメニュー"><a href="#next-match">次の試合</a><a href="#team-updates">最新情報</a><a href="#match-recap">試合を振り返る</a><a href="#match-comments">公式コメント</a><a href="#players-to-watch">注目選手</a><a href="#club-goods">コラボグッズ</a><a href="#squad">全選手</a></nav>
 
 {% if next_fixtures %}
 <section id="next-match" class="section-head"><div><p class="eyebrow">NEXT MATCH</p><h2>次の試合</h2></div><a href="/schedule?club={{ club.slug }}">日程一覧 →</a></section>
@@ -34,6 +34,7 @@
 {% endif %}
 
 {% include '_sapporo_editorial.html' %}
+{% include '_club_goods.html' %}
 <div class="club-content-grid">
 <section id="squad">
   <div class="section-head compact"><div><p class="eyebrow">SQUAD</p><h2>所属選手</h2></div><a href="/players?club={{ club.slug }}">全選手 →</a></div>

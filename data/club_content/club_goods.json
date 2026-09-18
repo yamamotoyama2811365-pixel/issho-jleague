@@ -1,0 +1,1640 @@
+{
+  "kashima": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kashima/",
+    "collection_url": "https://store.jleague.jp/club/kashima/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kashima_pokemon&l-id=jos_pokemon_2026_list_08",
+    "partner": "リザードン",
+    "products": [
+      {
+        "title": "鹿島アントラーズ　リザードン キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kashima/item/P0000112256/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "鹿島アントラーズ　リザードン Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kashima/item/P0000112255/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "鹿島アントラーズ　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kashima/item/P0000112251/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "chiba": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/chiba/",
+    "collection_url": "https://store.jleague.jp/club/chiba/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_chiba_pokemon&l-id=jos_pokemon_2026_list_15",
+    "partner": "パルスワン",
+    "products": [
+      {
+        "title": "ジェフユナイテッド千葉　パルスワン Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/chiba/item/P0000112171/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "ftokyo": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/ftokyo/",
+    "collection_url": "https://store.jleague.jp/club/ftokyo/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_ftokyo_pokemon&l-id=jos_pokemon_2026_list_17",
+    "partner": "ソウブレイズ",
+    "products": [
+      {
+        "title": "MICHAEL LINNELLコラボMESSENGER_S",
+        "price": "10,340円",
+        "url": "https://store.jleague.jp/club/ftokyo/item/P0000115470/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "MICHAEL LINNELLコラボDAY PACK",
+        "price": "14,080円",
+        "url": "https://store.jleague.jp/club/ftokyo/item/P0000115447/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "『FC東京×モンスト』 ダイカットステッカーセット(6枚入り)",
+        "price": "1,210円",
+        "url": "https://store.jleague.jp/club/ftokyo/item/P0000112547/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "『FC東京×モンスト』 スクエアクッション 長倉幹樹",
+        "price": "3,300円",
+        "url": "https://store.jleague.jp/club/ftokyo/item/P0000112546/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "『FC東京×モンスト』 スクエアクッション 佐藤恵允",
+        "price": "3,300円",
+        "url": "https://store.jleague.jp/club/ftokyo/item/P0000112545/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "『FC東京×モンスト』 スクエアクッション 室屋成",
+        "price": "3,300円",
+        "url": "https://store.jleague.jp/club/ftokyo/item/P0000112543/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "kashiwa": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kashiwa/",
+    "collection_url": "https://store.jleague.jp/club/kashiwa/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kashiwa_pokemon&l-id=jos_pokemon_2026_list_16",
+    "partner": "エレザード",
+    "products": [
+      {
+        "title": "柏レイソル　エレザード Tシャツ WHITE キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kashiwa/item/P0000112157/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "mito": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/mito/",
+    "collection_url": "https://store.jleague.jp/club/mito/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_mito_pokemon&l-id=jos_pokemon_2026_list_09",
+    "partner": "ボーマンダ",
+    "products": [
+      {
+        "title": "紀ノ国屋×水戸ホーリーホックエコロジーバッグ",
+        "price": "3,300円",
+        "url": "https://store.jleague.jp/club/mito/item/P0000115138/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "水戸ホーリーホック　ボーマンダ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/mito/item/P0000112245/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "水戸ホーリーホック　ボーマンダ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/mito/item/P0000112244/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "水戸ホーリーホック　ボーマンダ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/mito/item/P0000112243/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "urawa": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/urawa/",
+    "collection_url": "https://store.jleague.jp/club/urawa/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_urawa_pokemon&l-id=jos_pokemon_2026_list_13",
+    "partner": "ガオガエン",
+    "products": [
+      {
+        "title": "浦和レッズ　ガオガエン タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/urawa/item/P0000112197/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "浦和レッズ　ガオガエン キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/urawa/item/P0000112196/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "浦和レッズ　ガオガエンTシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/urawa/item/P0000112195/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "shimizu": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/shimizu/",
+    "collection_url": "https://store.jleague.jp/club/shimizu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_shimizu_pokemon&l-id=jos_pokemon_2026_list_31",
+    "partner": "パーモット",
+    "products": [
+      {
+        "title": "清水エスパルス　パーモット キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/shimizu/item/P0000111980/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "清水エスパルス　パーモット Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/shimizu/item/P0000111979/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "清水エスパルス　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/shimizu/item/P0000111975/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "nagoya": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/nagoya/",
+    "collection_url": "https://store.jleague.jp/club/nagoya/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_nagoya_pokemon&l-id=jos_pokemon_2026_list_34",
+    "partner": "バクフーン",
+    "products": [
+      {
+        "title": "名古屋グランパス　バクフーン キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/nagoya/item/P0000111944/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "名古屋グランパス　バクフーン Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/nagoya/item/P0000111943/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "名古屋グランパス　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/nagoya/item/P0000111939/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "tokyo-v": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/tokyov/",
+    "collection_url": "https://store.jleague.jp/club/tokyov/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_tokyov_pokemon&l-id=jos_pokemon_2026_list_18",
+    "partner": "ジュナイパー",
+    "products": [
+      {
+        "title": "東京ヴェルディ　ジュナイパー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/tokyov/item/P0000112137/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "東京ヴェルディ　ジュナイパー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/tokyov/item/P0000112136/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "東京ヴェルディ　ジュナイパー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/tokyov/item/P0000112135/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "yokohama-fm": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/yokohamafm/",
+    "collection_url": "https://store.jleague.jp/club/yokohamafm/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_yokohamafm_pokemon&l-id=jos_pokemon_2026_list_21",
+    "partner": "マリルリ",
+    "products": [
+      {
+        "title": "横浜F・マリノス　マリルリ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/yokohamafm/item/P0000112100/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "横浜F・マリノス　マリルリ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/yokohamafm/item/P0000112099/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "横浜F・マリノス　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/yokohamafm/item/P0000112095/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "machida": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/machida/",
+    "collection_url": "https://store.jleague.jp/club/machida/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_machida_pokemon&l-id=jos_pokemon_2026_list_19",
+    "partner": "ゲッコウガ",
+    "products": [
+      {
+        "title": "FC町田ゼルビア　ゲッコウガ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/machida/item/P0000112125/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC町田ゼルビア　ゲッコウガ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/machida/item/P0000112124/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC町田ゼルビア　ゲッコウガ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/machida/item/P0000112123/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC町田ゼルビア×川崎フロンターレコラボ回覧板風ノート（B5）",
+        "price": "660円",
+        "url": "https://store.jleague.jp/club/machida/item/P0000076180/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "kawasaki": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kawasakif/",
+    "collection_url": "https://store.jleague.jp/club/kawasakif/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kawasakif_pokemon&l-id=jos_pokemon_2026_list_20",
+    "partner": "イルカマン（マイティフォルム）",
+    "products": [
+      {
+        "title": "川崎フロンターレ　イルカマン(マイティフォルム) タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kawasakif/item/P0000112113/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "川崎フロンターレ　イルカマン(マイティフォルム) キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kawasakif/item/P0000112112/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "川崎フロンターレ　イルカマン(マイティフォルム) Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kawasakif/item/P0000112111/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "hiroshima": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/hiroshima/",
+    "collection_url": "https://store.jleague.jp/club/hiroshima/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_hiroshima_pokemon&l-id=jos_pokemon_2026_list_45",
+    "partner": "ガチグマ",
+    "products": [
+      {
+        "title": "サンフレッチェ広島　ガチグマ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/hiroshima/item/P0000111813/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "サンフレッチェ広島　ガチグマ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/hiroshima/item/P0000111812/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "サンフレッチェ広島　ガチグマ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/hiroshima/item/P0000111811/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "c-osaka": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/cosaka/",
+    "collection_url": "https://store.jleague.jp/club/cosaka/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_cosaka_pokemon&l-id=jos_pokemon_2026_list_39",
+    "partner": "チェリム（ポジティムフォルム）",
+    "products": [
+      {
+        "title": "セレッソ大阪　チェリム(ポジティブフォルム) Tシャツ WHITE キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/cosaka/item/P0000111881/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "セレッソ大阪　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/cosaka/item/P0000111879/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "セレッソ大阪　ピカチュウ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/cosaka/item/P0000111878/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kobe": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kobe/",
+    "collection_url": "https://store.jleague.jp/club/kobe/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kobe_pokemon&l-id=jos_pokemon_2026_list_41",
+    "partner": "ヘルガー",
+    "products": [
+      {
+        "title": "【五百城茉央｜VISSEL KOBE】ユニフォーム型キーホルダー（1st）500 IOKI",
+        "price": "750円",
+        "url": "https://store.jleague.jp/club/kobe/item/P0000116626/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【五百城茉央｜VISSEL KOBE】フェイスタオル 500",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kobe/item/P0000116624/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【五百城茉央｜VISSEL KOBE】【レプリカ】ユニフォーム（1st）500 IOKI",
+        "price": "25,000円",
+        "url": "https://store.jleague.jp/club/kobe/item/P0000116622/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【SHU｜VISSEL KOBE】ステッカー（2枚セット）",
+        "price": "750円",
+        "url": "https://store.jleague.jp/club/kobe/item/P0000116274/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【SHU｜VISSEL KOBE】巾着",
+        "price": "1,540円",
+        "url": "https://store.jleague.jp/club/kobe/item/P0000116271/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【SHU｜VISSEL KOBE】リボンマグネット",
+        "price": "1,980円",
+        "url": "https://store.jleague.jp/club/kobe/item/P0000116270/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "g-osaka": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/gosaka/",
+    "collection_url": "https://store.jleague.jp/club/gosaka/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_gosaka_pokemon&l-id=jos_pokemon_2026_list_38",
+    "partner": "レントラー",
+    "products": [
+      {
+        "title": "ガンバ大阪　レントラー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/gosaka/item/P0000111897/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ガンバ大阪　レントラー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/gosaka/item/P0000111896/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ガンバ大阪　レントラー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/gosaka/item/P0000111895/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "okayama": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/okayama/",
+    "collection_url": "https://store.jleague.jp/club/okayama/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_okayama_pokemon&l-id=jos_pokemon_2026_list_44",
+    "partner": "ケンホロウ（オスのすがた）",
+    "products": [
+      {
+        "title": "ファジアーノ岡山　ケンホロウ(オスのすがた) タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/okayama/item/P0000111825/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ファジアーノ岡山　ケンホロウ(オスのすがた) キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/okayama/item/P0000111824/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ファジアーノ岡山　ケンホロウ(オスのすがた) Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/okayama/item/P0000111823/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kyoto": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kyoto/",
+    "collection_url": "https://store.jleague.jp/club/kyoto/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kyoto_pokemon&l-id=jos_pokemon_2026_list_37",
+    "partner": "ゲンガー",
+    "products": [
+      {
+        "title": "京都サンガF.C.　ゲンガー Tシャツ WHITE キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kyoto/item/P0000111905/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "京都サンガF.C.　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kyoto/item/P0000111903/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "京都サンガF.C.　ピカチュウ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kyoto/item/P0000111902/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "nagasaki": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/nagasaki/",
+    "collection_url": "https://store.jleague.jp/club/nagasaki/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_nagasaki_pokemon&l-id=jos_pokemon_2026_list_55",
+    "partner": "ラグラージ",
+    "products": [
+      {
+        "title": "v・ファーレン長崎　ラグラージ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/nagasaki/item/P0000112401/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "v・ファーレン長崎　ラグラージ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/nagasaki/item/P0000112400/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "v・ファーレン長崎　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/nagasaki/item/P0000112396/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "hachinohe": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/hachinohe/",
+    "collection_url": "https://store.jleague.jp/club/hachinohe/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_hachinohe_pokemon&l-id=jos_pokemon_2026_list_02",
+    "partner": "カラマネロ",
+    "products": [
+      {
+        "title": "ヴァンラーレ八戸　カラマネロ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/hachinohe/item/P0000112329/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ヴァンラーレ八戸　カラマネロ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/hachinohe/item/P0000112328/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ヴァンラーレ八戸　カラマネロ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/hachinohe/item/P0000112327/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "sapporo": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/sapporo/",
+    "collection_url": "https://store.jleague.jp/club/sapporo/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_sapporo_pokemon&l-id=jos_pokemon_2026_list_01",
+    "partner": "ヨルノズク",
+    "products": [
+      {
+        "title": "北海道コンサドーレ札幌　ヨルノズク タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/sapporo/item/P0000112341/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "北海道コンサドーレ札幌　ヨルノズク キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/sapporo/item/P0000112340/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "北海道コンサドーレ札幌　ヨルノズク Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/sapporo/item/P0000112339/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "fukuoka": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/fukuoka/",
+    "collection_url": "https://store.jleague.jp/club/fukuoka/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_fukuoka_pokemon&l-id=jos_pokemon_2026_list_52",
+    "partner": "スピアー",
+    "products": [
+      {
+        "title": "アビスパ福岡　スピアー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/fukuoka/item/P0000111729/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "アビスパ福岡　スピアー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/fukuoka/item/P0000111728/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "アビスパ福岡　スピアー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/fukuoka/item/P0000111727/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "akita": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/akita/",
+    "collection_url": "https://store.jleague.jp/club/akita/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_akita_pokemon&l-id=jos_pokemon_2026_list_04",
+    "partner": "キングドラ",
+    "products": [
+      {
+        "title": "ブラウブリッツ秋田　キングドラ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/akita/item/P0000112305/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ブラウブリッツ秋田　キングドラ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/akita/item/P0000112304/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ブラウブリッツ秋田　キングドラ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/akita/item/P0000112303/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "sendai": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/sendai/",
+    "collection_url": "https://store.jleague.jp/club/sendai/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_sendai_pokemon&l-id=jos_pokemon_2026_list_03",
+    "partner": "ウォーグル",
+    "products": [
+      {
+        "title": "ベガルタ仙台　ウォーグル タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/sendai/item/P0000112317/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ベガルタ仙台　ウォーグル キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/sendai/item/P0000112316/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ベガルタ仙台　ウォーグル Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/sendai/item/P0000112315/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "yokohama-fc": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/yokohamafc/",
+    "collection_url": "https://store.jleague.jp/club/yokohamafc/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_yokohamafc_pokemon&l-id=jos_pokemon_2026_list_22",
+    "partner": "ピクシー",
+    "products": [
+      {
+        "title": "横浜FC　ピクシー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/yokohamafc/item/P0000112089/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "横浜FC　ピクシー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/yokohamafc/item/P0000112088/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "横浜FC　ピクシー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/yokohamafc/item/P0000112087/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "omiya": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/omiya/",
+    "collection_url": "https://store.jleague.jp/club/omiya/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_omiya_pokemon&l-id=jos_pokemon_2026_list_14",
+    "partner": "エンブオー",
+    "products": [
+      {
+        "title": "RB大宮アルディージャ　エンブオー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/omiya/item/P0000112185/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "RB大宮アルディージャ　エンブオー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/omiya/item/P0000112184/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "RB大宮アルディージャ　エンブオー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/omiya/item/P0000112183/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "yamagata": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/yamagata/",
+    "collection_url": "https://store.jleague.jp/club/yamagata/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_yamagata_pokemon&l-id=jos_pokemon_2026_list_05",
+    "partner": "ツンベアー",
+    "products": [
+      {
+        "title": "モンテディオ山形　ツンベアー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/yamagata/item/P0000112293/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "モンテディオ山形　ツンベアー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/yamagata/item/P0000112292/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "モンテディオ山形　ツンベアー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/yamagata/item/P0000112291/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "【桃太郎電鉄×モンテディオ山形】オリジナルキーホルダー（マスコット）",
+        "price": "715円",
+        "url": "https://store.jleague.jp/club/yamagata/item/P0000057008/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【桃太郎電鉄×モンテディオ山形】ミニタオル",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/yamagata/item/P0000057006/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "ステンレスタンブラー（KEN OKUYAMAコラボ）",
+        "price": "11,000円",
+        "url": "https://store.jleague.jp/club/yamagata/item/P0000055913/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "iwaki": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/iwaki/",
+    "collection_url": "https://store.jleague.jp/club/iwaki/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_iwaki_pokemon&l-id=jos_pokemon_2026_list_07",
+    "partner": "アマルルガ",
+    "products": [
+      {
+        "title": "いわきFC　アマルルガ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/iwaki/item/P0000112269/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "いわきFC　アマルルガ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/iwaki/item/P0000112268/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "いわきFC　アマルルガ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/iwaki/item/P0000112267/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "tochigi-c": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/tochigic/",
+    "collection_url": "https://store.jleague.jp/club/tochigic/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_tochigic_pokemon&l-id=jos_pokemon_2026_list_11",
+    "partner": "ネギガナイト（ガラル）",
+    "products": [
+      {
+        "title": "栃木シティ　ネギガナイト タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/tochigic/item/P0000112221/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "栃木シティ　ネギガナイト キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/tochigic/item/P0000112220/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "栃木シティ　ネギガナイト Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/tochigic/item/P0000112219/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "shonan": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/shonan/",
+    "collection_url": "https://store.jleague.jp/club/shonan/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_shonan_pokemon&l-id=jos_pokemon_2026_list_23",
+    "partner": "エンペルト",
+    "products": [
+      {
+        "title": "湘南ベルマーレ　エンペルト タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/shonan/item/P0000112077/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "湘南ベルマーレ　エンペルト キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/shonan/item/P0000112076/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "湘南ベルマーレ　エンペルト Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/shonan/item/P0000112075/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kofu": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kofu/",
+    "collection_url": "https://store.jleague.jp/club/kofu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kofu_pokemon&l-id=jos_pokemon_2026_list_25",
+    "partner": "グラエナ",
+    "products": [
+      {
+        "title": "ヴァンフォーレ甲府　グラエナ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kofu/item/P0000112052/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ヴァンフォーレ甲府　グラエナ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kofu/item/P0000112051/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ヴァンフォーレ甲府　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kofu/item/P0000112047/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "iwata": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/iwata/",
+    "collection_url": "https://store.jleague.jp/club/iwata/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_iwata_pokemon&l-id=jos_pokemon_2026_list_32",
+    "partner": "チルタリス",
+    "products": [
+      {
+        "title": "ジュビロ磐田　チルタリス キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/iwata/item/P0000111968/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ジュビロ磐田　チルタリス Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/iwata/item/P0000111967/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "【弓桁朱琴さんコラボ】GETTER 78 Tシャツ",
+        "price": "3,850円",
+        "url": "https://store.jleague.jp/club/iwata/item/P0000102734/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【弓桁朱琴さんコラボ】GETTER 78 タオルマフラー",
+        "price": "2,200円",
+        "url": "https://store.jleague.jp/club/iwata/item/P0000102733/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "【弓桁朱琴さんコラボ】GETTER 78 ユニ型アクリルキーホルダー",
+        "price": "781円",
+        "url": "https://store.jleague.jp/club/iwata/item/P0000102732/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "25サウナボーイコラボステッカー",
+        "price": "990円",
+        "url": "https://store.jleague.jp/club/iwata/item/P0000087744/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "niigata": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/niigata/",
+    "collection_url": "https://store.jleague.jp/club/niigata/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_niigata_pokemon&l-id=jos_pokemon_2026_list_28",
+    "partner": "スワンナ",
+    "products": [
+      {
+        "title": "26/27 映画クレヨンしんちゃんコラボ　めじるしキーホルダー（タオルマフラー）",
+        "price": "550円",
+        "url": "https://store.jleague.jp/club/niigata/item/P0000114915/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "26/27 映画クレヨンしんちゃんコラボ　めじるしキーホルダー（ジャンプ）",
+        "price": "550円",
+        "url": "https://store.jleague.jp/club/niigata/item/P0000114914/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "26/27 映画クレヨンしんちゃんコラボ　スライドミラー",
+        "price": "1,320円",
+        "url": "https://store.jleague.jp/club/niigata/item/P0000114913/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "26/27 映画クレヨンしんちゃんコラボ　PVCケース2個セット",
+        "price": "880円",
+        "url": "https://store.jleague.jp/club/niigata/item/P0000114912/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "26/27 映画クレヨンしんちゃんコラボ　【ブラインドパッケージ】アクリルスマホグリップ",
+        "price": "599円",
+        "url": "https://store.jleague.jp/club/niigata/item/P0000114911/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "26/27 映画クレヨンしんちゃんコラボ　ステッカー2枚セット",
+        "price": "660円",
+        "url": "https://store.jleague.jp/club/niigata/item/P0000114910/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "fujieda": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/fujieda/",
+    "collection_url": "https://store.jleague.jp/club/fujieda/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_fujieda_pokemon&l-id=jos_pokemon_2026_list_33",
+    "partner": "ニドキング",
+    "products": [
+      {
+        "title": "藤枝MYFC　ニドキング キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/fujieda/item/P0000111956/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "藤枝MYFC　ニドキング Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/fujieda/item/P0000111955/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "藤枝MYFC　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/fujieda/item/P0000111951/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "tokushima": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/tokushima/",
+    "collection_url": "https://store.jleague.jp/club/tokushima/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_tokushima_pokemon&l-id=jos_pokemon_2026_list_48",
+    "partner": "ニョロボン",
+    "products": [
+      {
+        "title": "徳島ヴォルティス　ニョロボン キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/tokushima/item/P0000111776/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "徳島ヴォルティス　ニョロボン Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/tokushima/item/P0000111775/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "徳島ヴォルティス　ピカチュウ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/tokushima/item/P0000111771/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "toyama": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/toyama/",
+    "collection_url": "https://store.jleague.jp/club/toyama/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_toyama_pokemon&l-id=jos_pokemon_2026_list_29",
+    "partner": "ゴーゴート",
+    "products": [
+      {
+        "title": "カターレ富山　ゴーゴート Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/toyama/item/P0000112003/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "カターレ富山　ピカチュウ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/toyama/item/P0000111998/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "imabari": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/imabari/",
+    "collection_url": "https://store.jleague.jp/club/imabari/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_imabari_pokemon&l-id=jos_pokemon_2026_list_50",
+    "partner": "ホエルオー",
+    "products": [
+      {
+        "title": "FC今治　ホエルオー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/imabari/item/P0000111753/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC今治　ホエルオー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/imabari/item/P0000111752/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC今治　ホエルオー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/imabari/item/P0000111751/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "oita": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/oita/",
+    "collection_url": "https://store.jleague.jp/club/oita/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_oita_pokemon&l-id=jos_pokemon_2026_list_57",
+    "partner": "カメックス",
+    "products": [
+      {
+        "title": "大分トリニータ　カメックス タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/oita/item/P0000111669/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "大分トリニータ　カメックス キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/oita/item/P0000111668/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "大分トリニータ　カメックス Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/oita/item/P0000111667/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "大分トリニータ亀祭2025コラボシャツ販売用",
+        "price": "6,600円",
+        "url": "https://store.jleague.jp/club/oita/item/P0000089781/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "miyazaki": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/miyazaki/",
+    "collection_url": "https://store.jleague.jp/club/miyazaki/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_miyazaki_pokemon&l-id=jos_pokemon_2026_list_58",
+    "partner": "グランブル",
+    "products": [
+      {
+        "title": "テゲバジャーロ宮崎　グランブル タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/miyazaki/item/P0000111657/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "テゲバジャーロ宮崎　グランブル キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/miyazaki/item/P0000111656/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "テゲバジャーロ宮崎　グランブル Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/miyazaki/item/P0000111655/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "tochigi": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/tochigi/",
+    "collection_url": "https://store.jleague.jp/club/tochigi/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_tochigi_pokemon&l-id=jos_pokemon_2026_list_10",
+    "partner": "ゴウカザル",
+    "products": [
+      {
+        "title": "栃木SC　ゴウカザル タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/tochigi/item/P0000112233/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "栃木SC　ゴウカザル キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/tochigi/item/P0000112232/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "栃木SC　ゴウカザル Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/tochigi/item/P0000112231/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "tosu": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/tosu/",
+    "collection_url": "https://store.jleague.jp/club/tosu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_tosu_pokemon&l-id=jos_pokemon_2026_list_54",
+    "partner": "ポリゴンZ",
+    "products": [
+      {
+        "title": "サガン鳥栖　ポリゴンZ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/tosu/item/P0000111705/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "サガン鳥栖　ポリゴンZ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/tosu/item/P0000111704/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "サガン鳥栖　ポリゴンZ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/tosu/item/P0000111703/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "fukushima": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/fukushima/",
+    "collection_url": "https://store.jleague.jp/club/fukushima/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_fukushima_pokemon&l-id=jos_pokemon_2026_list_06",
+    "partner": "バシャーモ",
+    "products": [
+      {
+        "title": "福島ユナイテッドFC　バシャーモ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/fukushima/item/P0000112281/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "福島ユナイテッドFC　バシャーモ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/fukushima/item/P0000112280/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "福島ユナイテッドFC　バシャーモ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/fukushima/item/P0000112279/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "matsumoto": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/matsumoto/",
+    "collection_url": "https://store.jleague.jp/club/matsumoto/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_matsumoto_pokemon&l-id=jos_pokemon_2026_list_26",
+    "partner": "バンギラス",
+    "products": [
+      {
+        "title": "松本山雅FC　バンギラス タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/matsumoto/item/P0000112041/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "松本山雅FC　バンギラス キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/matsumoto/item/P0000112040/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "松本山雅FC　バンギラス Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/matsumoto/item/P0000112039/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "nagano": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/nagano/",
+    "collection_url": "https://store.jleague.jp/club/nagano/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_nagano_pokemon&l-id=jos_pokemon_2026_list_27",
+    "partner": "カミツオロチ",
+    "products": [
+      {
+        "title": "AC長野パルセイロ　カミツオロチ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/nagano/item/P0000112029/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "AC長野パルセイロ　カミツオロチ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/nagano/item/P0000112027/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "AC長野パルセイロ　ピカチュウ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/nagano/item/P0000112022/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "sagamihara": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/sagamihara/",
+    "collection_url": "https://store.jleague.jp/club/sagamihara/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_sagamihara_pokemon&l-id=jos_pokemon_2026_list_24",
+    "partner": "ナットレイ",
+    "products": [
+      {
+        "title": "SC相模原　ナットレイ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/sagamihara/item/P0000112065/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "SC相模原　ナットレイ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/sagamihara/item/P0000112064/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "SC相模原　ナットレイ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/sagamihara/item/P0000112063/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "shiga": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/shiga/",
+    "collection_url": "https://store.jleague.jp/club/shiga/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_shiga_pokemon&l-id=jos_pokemon_2026_list_36",
+    "partner": "ナマズン",
+    "products": [
+      {
+        "title": "レイラック滋賀FC　ナマズン キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/shiga/item/P0000111920/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "レイラック滋賀FC　ナマズン Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/shiga/item/P0000111919/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "gifu": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/gifu/",
+    "collection_url": "https://store.jleague.jp/club/gifu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_gifu_pokemon&l-id=jos_pokemon_2026_list_35",
+    "partner": "メガニウム",
+    "products": [
+      {
+        "title": "FC岐阜　メガニウム キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/gifu/item/P0000111932/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC岐阜　メガニウム Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/gifu/item/P0000111931/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC岐阜×オグリキャップコラボキーホルダー（1990有馬記念）",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/gifu/item/P0000082506/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "kanazawa": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kanazawa/",
+    "collection_url": "https://store.jleague.jp/club/kanazawa/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kanazawa_pokemon&l-id=jos_pokemon_2026_list_30",
+    "partner": "ムクホーク",
+    "products": [
+      {
+        "title": "ツエーゲン金沢　ムクホーク タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kanazawa/item/P0000111993/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ツエーゲン金沢　ムクホーク キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kanazawa/item/P0000111992/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ツエーゲン金沢　ムクホーク Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kanazawa/item/P0000111991/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "fc-osaka": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/fosaka/",
+    "collection_url": "https://store.jleague.jp/club/fosaka/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_fosaka_pokemon&l-id=jos_pokemon_2026_list_40",
+    "partner": "アシレーヌ",
+    "products": [
+      {
+        "title": "FC大阪　アシレーヌ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/fosaka/item/P0000111873/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC大阪　アシレーヌ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/fosaka/item/P0000111872/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC大阪　アシレーヌ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/fosaka/item/P0000111871/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "sanuki": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/sanuki/",
+    "collection_url": "https://store.jleague.jp/club/sanuki/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_sanuki_pokemon&l-id=jos_pokemon_2026_list_47",
+    "partner": "モジャンボ",
+    "products": [
+      {
+        "title": "カマタマーレ讃岐　モジャンボ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/sanuki/item/P0000111789/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "カマタマーレ讃岐　モジャンボ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/sanuki/item/P0000111788/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "カマタマーレ讃岐　モジャンボ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/sanuki/item/P0000111787/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "nara": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/nara/",
+    "collection_url": "https://store.jleague.jp/club/nara/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_nara_pokemon&l-id=jos_pokemon_2026_list_42",
+    "partner": "メブキジカ（あきのすがた）",
+    "products": [
+      {
+        "title": "奈良クラブ　メブキジカ(あきのすがた) タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/nara/item/P0000111849/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "奈良クラブ　メブキジカ(あきのすがた) キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/nara/item/P0000111848/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "奈良クラブ　メブキジカ(あきのすがた) Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/nara/item/P0000111847/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "tottori": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/tottori/",
+    "collection_url": "https://store.jleague.jp/club/tottori/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_tottori_pokemon&l-id=jos_pokemon_2026_list_43",
+    "partner": "エルレイド",
+    "products": [
+      {
+        "title": "ガイナーレ鳥取　エルレイド タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/tottori/item/P0000111837/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ガイナーレ鳥取　エルレイド キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/tottori/item/P0000111836/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ガイナーレ鳥取　エルレイド Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/tottori/item/P0000111835/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "ehime": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/ehime/",
+    "collection_url": "https://store.jleague.jp/club/ehime/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_ehime_pokemon&l-id=jos_pokemon_2026_list_49",
+    "partner": "ファイアロー",
+    "products": [
+      {
+        "title": "愛媛FC　ファイアロー タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/ehime/item/P0000111765/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "愛媛FC　ファイアロー キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/ehime/item/P0000111764/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "愛媛FC　ファイアロー Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/ehime/item/P0000111763/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "Fruit of the Loomコラボキャップ（ブラック）",
+        "price": "5,280円",
+        "url": "https://store.jleague.jp/club/ehime/item/P0000076834/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "Fruit of the Loomコラボボクサーパンツ",
+        "price": "5,500円",
+        "url": "https://store.jleague.jp/club/ehime/item/P0000076833/",
+        "group": "コラボグッズ"
+      },
+      {
+        "title": "Fruit of the Loomコラボスウェット",
+        "price": "7,480円",
+        "url": "https://store.jleague.jp/club/ehime/item/P0000076832/",
+        "group": "コラボグッズ"
+      }
+    ]
+  },
+  "yamaguchi": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/yamaguchi/",
+    "collection_url": "https://store.jleague.jp/club/yamaguchi/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_yamaguchi_pokemon&l-id=jos_pokemon_2026_list_46",
+    "partner": "カエンジシ（オスのすがた）",
+    "products": [
+      {
+        "title": "レノファ山口FC　カエンジシ(オスのすがた) タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/yamaguchi/item/P0000111801/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "レノファ山口FC　カエンジシ(オスのすがた) キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/yamaguchi/item/P0000111800/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "レノファ山口FC　カエンジシ(オスのすがた) Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/yamaguchi/item/P0000111799/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kagoshima": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kagoshima/",
+    "collection_url": "https://store.jleague.jp/club/kagoshima/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kagoshima_pokemon&l-id=jos_pokemon_2026_list_59",
+    "partner": "バクーダ",
+    "products": [
+      {
+        "title": "鹿児島ユナイテッドFC　バクーダ　キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kagoshima/item/P0000111644/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "鹿児島ユナイテッドFC　バクーダ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kagoshima/item/P0000111643/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kitakyushu": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kitakyushu/",
+    "collection_url": "https://store.jleague.jp/club/kitakyushu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kitakyushu_pokemon&l-id=jos_pokemon_2026_list_53",
+    "partner": "キマワリ",
+    "products": [
+      {
+        "title": "ギラヴァンツ北九州　キマワリ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kitakyushu/item/P0000111717/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ギラヴァンツ北九州　キマワリ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kitakyushu/item/P0000111715/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ギラヴァンツ北九州　ピカチュウ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kitakyushu/item/P0000111710/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "ryukyu": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/ryukyu/",
+    "collection_url": "https://store.jleague.jp/club/ryukyu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_ryukyu_pokemon&l-id=jos_pokemon_2026_list_60",
+    "partner": "マンタイン",
+    "products": [
+      {
+        "title": "FC琉球　マンタイン タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/ryukyu/item/P0000111633/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC琉球　マンタイン キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/ryukyu/item/P0000111632/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "FC琉球　マンタイン Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/ryukyu/item/P0000111631/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kumamoto": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kumamoto/",
+    "collection_url": "https://store.jleague.jp/club/kumamoto/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kumamoto_pokemon&l-id=jos_pokemon_2026_list_56",
+    "partner": "ギャロップ",
+    "products": [
+      {
+        "title": "ロアッソ熊本　ピカチュウ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kumamoto/item/P0000111673/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ロアッソ熊本　ギャロップ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kumamoto/item/P0000111680/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "kochi": {
+    "checked_at": "2026-09-18T16:31+09:00",
+    "shop_url": "https://store.jleague.jp/club/kochi/",
+    "collection_url": "https://store.jleague.jp/club/kochi/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kochi_pokemon&l-id=jos_pokemon_2026_list_51",
+    "partner": "マフィティフ",
+    "products": [
+      {
+        "title": "高知ユナイテッドSC　マフィティフ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kochi/item/P0000111741/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "高知ユナイテッドSC　マフィティフ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kochi/item/P0000111740/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "高知ユナイテッドSC　マフィティフ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kochi/item/P0000111739/",
+        "group": "ポケモン"
+      }
+    ]
+  },
+  "gunma": {
+    "checked_at": "2026-09-18T16:34+09:00",
+    "shop_url": "https://store.jleague.jp/club/kusatsu/",
+    "collection_url": "https://store.jleague.jp/club/kusatsu/search/-/-/%E3%83%9D%E3%82%B1%E3%83%A2%E3%83%B3/?sort=2&inventory_no_flg=0&sb=2026/20260806_kusatsu_pokemon&l-id=jos_pokemon_2026_list_12",
+    "partner": "ゴロンダ",
+    "products": [
+      {
+        "title": "ザスパ群馬　ゴロンダ タオルマフラー",
+        "price": "2,500円",
+        "url": "https://store.jleague.jp/club/kusatsu/item/P0000112209/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ザスパ群馬　ゴロンダ キーホルダー",
+        "price": "1,100円",
+        "url": "https://store.jleague.jp/club/kusatsu/item/P0000112208/",
+        "group": "ポケモン"
+      },
+      {
+        "title": "ザスパ群馬　ゴロンダ Tシャツ BLACK キッズ",
+        "price": "4,400円",
+        "url": "https://store.jleague.jp/club/kusatsu/item/P0000112207/",
+        "group": "ポケモン"
+      }
+    ]
+  }
+}
