@@ -60,3 +60,16 @@ class FanCommunityTests(unittest.TestCase):
         cleanup(self.engine,now=int(time.time()))
         with self.engine.connect() as conn:
             self.assertEqual(conn.execute(select(messages)).all(),[]);self.assertEqual(conn.execute(select(views)).all(),[])
+
+    def test_all_clubs_accept_messages_and_public_walls_are_isolated(self):
+        self.assertEqual(set(self.client.get('/api/fan/status').get_json()['message_clubs']), {'a','b','c','d','sapporo'})
+        r=self.post('messages/a',{'nickname':'サポーター','body':'最後まで応援します','agree':True})
+        self.assertEqual(r.status_code,201)
+        self.assertEqual(self.client.get('/api/fan/messages/a').get_json()['messages'],[])
+        with self.engine.begin() as conn:
+            conn.execute(update(messages).where(messages.c.id==r.get_json()['id']).values(status='approved'))
+        self.assertEqual(len(self.client.get('/api/fan/messages/a').get_json()['messages']),1)
+        self.assertEqual(self.client.get('/api/fan/messages/b').get_json()['messages'],[])
+        self.assertEqual(self.client.get('/api/fan/messages/sapporo').get_json()['messages'],[])
+        self.assertEqual(self.post('messages/unknown',{'nickname':'x','body':'応援','agree':True}).status_code,404)
+        self.assertEqual(self.client.get('/api/fan/messages/unknown').status_code,404)

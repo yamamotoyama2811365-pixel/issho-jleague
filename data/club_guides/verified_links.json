@@ -1,0 +1,280 @@
+{
+  "iwata": {
+    "socials": [
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/user/jubilochannel",
+        "source_url": "https://www.jubilo-iwata.co.jp/"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/people/%E3%82%B8%E3%83%A5%E3%83%93%E3%83%AD%E7%A3%90%E7%94%B0/100044550442086/?ref=embed_page#",
+        "source_url": "https://www.jubilo-iwata.co.jp/"
+      },
+      {
+        "platform": "X",
+        "url": "https://x.com/Jubiloiwata_YFC",
+        "source_url": "https://www.jubilo-iwata.co.jp/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/jubiloiwata.official/",
+        "source_url": "https://www.jubilo-iwata.co.jp/"
+      },
+      {
+        "platform": "TikTok",
+        "url": "https://www.tiktok.com/@jubiloiwata_official",
+        "source_url": "https://www.jubilo-iwata.co.jp/"
+      }
+    ]
+  },
+  "miyazaki": {
+    "socials": [
+      {
+        "platform": "X",
+        "url": "https://x.com/55tegevajaro",
+        "source_url": "https://www.tegevajaro.com/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/tegevajaro_miyazaki_official",
+        "source_url": "https://www.tegevajaro.com/"
+      },
+      {
+        "platform": "TikTok",
+        "url": "https://www.tiktok.com/@tegevajaro_official",
+        "source_url": "https://www.tegevajaro.com/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/UC7o37HE7TWuF36GR7ADM-Xg",
+        "source_url": "https://www.tegevajaro.com/"
+      }
+    ]
+  },
+  "sagamihara": {
+    "socials": [
+      {
+        "platform": "X",
+        "url": "https://twitter.com/sc_sagamihara",
+        "source_url": "https://www.scsagamihara.com/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/s.c.sagamihara_players/",
+        "source_url": "https://www.scsagamihara.com/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/UCzccKnYGn4dsqUJwgV8jbEw",
+        "source_url": "https://www.scsagamihara.com/"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/scsagamihara/?locale=ja_JP",
+        "source_url": "https://www.scsagamihara.com/"
+      },
+      {
+        "platform": "TikTok",
+        "url": "https://www.tiktok.com/@scsagamihara?lang=ja-JP",
+        "source_url": "https://www.scsagamihara.com/"
+      }
+    ]
+  },
+  "kumamoto": {
+    "socials": [
+      {
+        "platform": "X",
+        "url": "https://twitter.com/roassoofficial",
+        "source_url": "https://roasso-k.com/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/UCq3YBwctnz5IGUty-VNlo9g/featured",
+        "source_url": "https://roasso-k.com/"
+      }
+    ]
+  },
+  "ehime": {
+    "socials": [
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/ehimefc.efc",
+        "source_url": "https://ehimefc.com/"
+      },
+      {
+        "platform": "X",
+        "url": "https://twitter.com/ehime_fc",
+        "source_url": "https://ehimefc.com/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/ehimefc12/",
+        "source_url": "https://ehimefc.com/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/ehimefcchannel",
+        "source_url": "https://ehimefc.com/"
+      }
+    ],
+    "official_url": "https://ehimefc.com/"
+  },
+  "c-osaka": {
+    "socials": [
+      {
+        "platform": "X",
+        "url": "https://twitter.com/crz_official",
+        "source_url": "https://www.cerezo.jp/docs/socialmedia_policy/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/cerezo_osaka/",
+        "source_url": "https://www.cerezo.jp/docs/socialmedia_policy/"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/OfficialCerezoOsaka",
+        "source_url": "https://www.cerezo.jp/docs/socialmedia_policy/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/c/CerezoOsakaOfficialchannel/",
+        "source_url": "https://www.cerezo.jp/docs/socialmedia_policy/"
+      },
+      {
+        "platform": "TikTok",
+        "url": "https://www.tiktok.com/@cerezo_osaka_official",
+        "source_url": "https://www.cerezo.jp/docs/socialmedia_policy/"
+      }
+    ]
+  },
+  "nagano": {
+    "socials": [
+      {
+        "platform": "X",
+        "url": "https://twitter.com/NAGANO_PARCEIRO",
+        "source_url": "https://parceiro.co.jp/"
+      }
+    ]
+  },
+  "shiga": {
+    "socials": [
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/reilacshiga",
+        "source_url": "https://reilac-shiga.co.jp/"
+      },
+      {
+        "platform": "X",
+        "url": "https://x.com/reilacshiga",
+        "source_url": "https://reilac-shiga.co.jp/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/reilacshiga",
+        "source_url": "https://reilac-shiga.co.jp/"
+      }
+    ]
+  },
+  "yamagata": {
+    "socials": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/montediogram/",
+        "source_url": "https://www.montedioyamagata.jp/club/sns/"
+      },
+      {
+        "platform": "X",
+        "url": "https://x.com/monte_prstaff",
+        "source_url": "https://www.montedioyamagata.jp/club/sns/"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/montedioyamagata.jp/",
+        "source_url": "https://www.montedioyamagata.jp/club/sns/"
+      }
+    ]
+  },
+  "tottori": {
+    "socials": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/gainare_tottori/",
+        "source_url": "https://www.gainare.co.jp/"
+      },
+      {
+        "platform": "X",
+        "url": "https://twitter.com/gainareofficial",
+        "source_url": "https://www.gainare.co.jp/"
+      }
+    ]
+  },
+  "omiya": {
+    "official_url": "https://www.rbomiya.com/jp-ja",
+    "socials": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/omiya.ardija/",
+        "source_url": "https://www.instagram.com/reel/DaiCflcSK2b/"
+      }
+    ]
+  },
+  "nagoya": {
+    "socials": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/nagoyagrampus/",
+        "source_url": "https://nagoya-grampus.jp/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/user/NagoyaGrampus758",
+        "source_url": "https://nagoya-grampus.jp/"
+      }
+    ]
+  },
+  "tosu": {
+    "socials": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/sagantosu_official/",
+        "source_url": "https://www.sagan-tosu.net/fan/sns/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@sagantosuofficial",
+        "source_url": "https://www.sagan-tosu.net/fan/sns/"
+      },
+      {
+        "platform": "X",
+        "url": "https://twitter.com/saganofficial17",
+        "source_url": "https://www.sagan-tosu.net/fan/sns/"
+      }
+    ]
+  },
+  "kagoshima": {
+    "socials": [
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/k.united.fc",
+        "source_url": "http://www.kufc.co.jp/"
+      },
+      {
+        "platform": "X",
+        "url": "https://twitter.com/kagoshimaufc?lang=ja",
+        "source_url": "http://www.kufc.co.jp/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/UCu-OJwTScMutClVRNEcpbOw/",
+        "source_url": "http://www.kufc.co.jp/"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/kagoshimaunitedfc/",
+        "source_url": "http://www.kufc.co.jp/"
+      }
+    ]
+  }
+}

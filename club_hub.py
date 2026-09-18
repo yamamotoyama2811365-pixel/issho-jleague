@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent
 JST = timezone(timedelta(hours=9))
 
 
-def calendar_link(match, checked_at):
+def calendar_link(match, checked_at, club_slug='sapporo', club_name='札幌'):
     if not match.get('kickoff') or match.get('note'):
         return None
     try:
@@ -30,12 +30,12 @@ def calendar_link(match, checked_at):
                 segment = ' '
             segment += char
         return '\r\n'.join(result + [segment])
-    lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Issho JLeague//Sapporo//JA',
+    lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Issho JLeague//Club Calendar//JA',
              'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
-             f"UID:sapporo-{match['date']}-{match['home_away']}@issho-jleague.pages.dev",
+             f"UID:{club_slug}-{match['date']}-{match['home_away']}@issho-jleague.pages.dev",
              f"DTSTAMP:{stamp:%Y%m%dT%H%M%SZ}",
              f"DTSTART:{start.astimezone(timezone.utc):%Y%m%dT%H%M%SZ}",
-             'SUMMARY:' + escaped(f"札幌 vs {match['opponent']} ({match['home_away']})"),
+             'SUMMARY:' + escaped(f"{club_name} vs {match['opponent']} ({match['home_away']})"),
              'LOCATION:' + escaped(match['venue_full']),
              'DESCRIPTION:' + escaped('日程変更・最新情報はクラブ公式で確認してください。'),
              'URL:' + match['source_url'], 'END:VEVENT', 'END:VCALENDAR']

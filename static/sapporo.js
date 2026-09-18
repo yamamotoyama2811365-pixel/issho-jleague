@@ -80,7 +80,7 @@
       const matching = rows.filter(row => (category === 'all' || row.dataset.category === category) && normalize(row.dataset.search || '').includes(query));
       rows.forEach(row => { row.hidden = true; });
       (expanded ? matching : matching.slice(0, limit)).forEach(row => { row.hidden = false; });
-      count.textContent = matching.length ? `${matching.length}${isPlayers ? '選手' : '試合'}${!expanded && matching.length > limit ? ` / ${limit}${isPlayers ? '選手' : '試合'}を表示` : ''}` : '該当する選手はいません';
+      count.textContent = matching.length ? `${matching.length}${isPlayers ? '選手' : '試合'}${!expanded && matching.length > limit ? ` / ${limit}${isPlayers ? '選手' : '試合'}を表示` : ''}` : (isPlayers ? '該当する選手はいません' : '該当する試合はありません');
       more.hidden = matching.length <= limit;
       more.textContent = expanded ? (isPlayers ? '12選手に戻す' : '6試合に戻す') : `残り${matching.length - limit}${isPlayers ? '選手' : '試合'}を表示`;
       buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));

@@ -2,9 +2,9 @@ import os
 import random
 import re
 import uuid
-from league_content import build_club_hub
 from club_hub import build_sapporo_hub
 from club_goods import build_club_goods
+from club_fan_hub import build_fan_hub
 from datetime import datetime, timezone, timedelta
 from flask import Flask, jsonify, render_template, request, abort
 from sqlalchemy import create_engine, String, Integer, DateTime, ForeignKey, Text, select, func, desc, asc, or_, text
@@ -375,27 +375,17 @@ def club_detail(slug):
             .order_by(desc(Player.goals), desc(Player.appearances), Player.name)
             .limit(6)
         ).all()
+    standing = standing_for(club.id)
+    league_rows = safe_rows("""
+        SELECT s.*, c.name, c.slug FROM standings s JOIN clubs c ON c.id = s.club_id
+        WHERE s.league = :league ORDER BY s.rank
+    """, {"league": club.league})
     if slug == "sapporo":
-        standing = standing_for(club.id)
-        recent_results = results_for(club.id, 40)
-        league_rows = safe_rows("""
-            SELECT s.*, c.name, c.slug FROM standings s JOIN clubs c ON c.id = s.club_id
-            WHERE s.league = :league ORDER BY s.rank
-        """, {"league": club.league})
-        hub = build_sapporo_hub(standing, recent_results, league_rows, roster)
-        return render_template("club_sapporo.html", club=club, roster=roster,
-                               top_scorers=top_scorers, standing=standing, hub=hub, goods=build_club_goods(slug))
-    return render_template(
-        "club.html",
-        hub=build_club_hub(club, roster),
-        goods=build_club_goods(slug),
-        club=club,
-        roster=roster,
-        top_scorers=top_scorers,
-        standing=standing_for(club.id),
-        recent_results=results_for(club.id, 12),
-        next_fixtures=fixtures_for(club_id=club.id, limit=5),
-    )
+        hub = build_sapporo_hub(standing, results_for(club.id, 40), league_rows, roster)
+    else:
+        hub = build_fan_hub(club, roster, standing, league_rows, fixtures_for(club_id=club.id, limit=None))
+    return render_template("club.html", club=club, roster=roster, top_scorers=top_scorers,
+                           standing=standing, hub=hub, goods=build_club_goods(slug))
 
 
 @app.route("/schedule")

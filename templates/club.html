@@ -1,66 +1,101 @@
 {% extends 'base.html' %}
-{% block title %}{{ club.name }} | 一生Jリーグ{% endblock %}
-{% block description %}{{ club.name }}の次の試合、最新ニュース、直近の試合記録、公式ハイライト、監督・選手コメント、スタメン率、コラボグッズをまとめた非公式ファンガイド。{% endblock %}
-{% block extra_head %}<link rel="stylesheet" href="/static/club-goods.css?v=1"><link rel="stylesheet" href="/static/sapporo.css?v=5"><script src="/static/sapporo.js?v=3" defer></script>{% endblock %}
-{% block content %}<div class="sapporo-hub league-club-hub">
-<section class="page-head club-head">
-  <p class="eyebrow">{{ club.league }} CLUB GUIDE</p>
-  <h1>{{ club.name }}</h1>
-  <div class="club-summary-pills">
-    {% if standing %}<span>{{ standing.rank }}位</span><span>{{ standing.points }}pt</span><span>{{ standing.played }}試合</span>{% endif %}
-    {% if club.stadium %}<a href="/stadium/{{ club.stadium.slug }}">HOME {{ club.stadium.name }}</a>{% endif %}
-  </div>
-</section><nav class="club-jump" aria-label="クラブページのメニュー"><a href="#next-match">次の試合</a><a href="#team-updates">最新情報</a><a href="#match-recap">試合を振り返る</a><a href="#match-comments">公式コメント</a><a href="#players-to-watch">注目選手</a><a href="#club-goods">コラボグッズ</a><a href="#squad">全選手</a></nav>
+{% block title %}{{ club.name }}｜次戦・選手・ホーム観戦ガイド | 一生Jリーグ{% endblock %}
+{% block description %}{{ club.name }}の次戦プレビュー、日程・カレンダー、試合記録、順位、注目選手・スタメン率、コラボグッズ、ホーム観戦ガイド、公式SNS、20文字の応援をまとめた非公式ファンガイド。{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/club-goods.css?v=1"><link rel="stylesheet" href="/static/sapporo.css?v=6"><link rel="stylesheet" href="/static/club-fan-hub.css?v=1"><script src="/static/sapporo.js?v=4" defer></script>{% endblock %}
+{% block content %}
+{% set next = hub.next_match %}
+<div class="sapporo-hub{% if club.slug != 'sapporo' %} league-club-hub{% endif %}">
+  <div class="hub-breadcrumb"><a href="/clubs#{{ club.league|lower }}">クラブを探す</a><span>/</span><span>{{ club.name }}</span></div>
+  <section class="consadole-hero" aria-labelledby="club-title">
+    <div class="hero-word" aria-hidden="true">{{ club.slug|upper }}</div>
+    <div class="hero-copy"><p class="hub-kicker">{{ club.league }} / {{ club.slug|upper }} · FAN GUIDE</p><h1 id="club-title">{% if club.slug == 'sapporo' %}北海道<br>コンサドーレ札幌{% else %}{{ club.name }}{% endif %}</h1><p class="hero-message">{{ '赤黒と、次の週末へ。' if club.slug == 'sapporo' else 'このクラブと、次の週末へ。' }}</p><p class="hero-caption">試合を知る。選手を追う。スタジアムで会おう。</p></div>
+    <div class="hero-status">
+      <span class="hub-chip">{{ club.league }} 現在の順位</span>
+      {% if standing %}<div class="hero-rank"><strong>{{ standing.rank }}</strong><span>位 <b>/ 20</b></span></div><p><b>{{ standing.points }}</b> 勝点 <span>·</span> {{ standing.played }} 試合</p><div class="hero-record"><span>{{ standing.wins }} 勝</span><span>{{ standing.draws }} 分</span><span>{{ standing.losses }} 敗</span></div>{% else %}<p>順位を確認中</p>{% endif %}
+      <a href="#team-form">チームの現在地を見る ↗</a>
+    </div>
+    <span class="hero-footnote">一生Jリーグによる非公式ファンガイド</span>
+  </section>
 
-{% if next_fixtures %}
-<section id="next-match" class="section-head"><div><p class="eyebrow">NEXT MATCH</p><h2>次の試合</h2></div><a href="/schedule?club={{ club.slug }}">日程一覧 →</a></section>
-<div class="fixture-stack">
-{% for f in next_fixtures[:3] %}
-<article class="fixture-card featured">
-  <div class="fixture-date"><b>{{ f.match_date }}</b><span>{{ f.kickoff or '時間未定' }}</span></div>
-  <div class="fixture-main">
-    <small>{{ f.competition or club.league }}</small>
-    <h3>{{ f.home_name }} <b>vs</b> {{ f.away_name }}</h3>
-    <p>{% if f.venue %}{{ f.venue }}{% else %}会場確認中{% endif %}</p>
-  </div>
-  <div class="fixture-actions">
-    {% if f.ticket_url %}<a class="btn primary" href="{{ f.ticket_url }}" target="_blank" rel="nofollow noopener">チケットを買う</a>{% endif %}
-    {% if f.stadium_slug %}<a class="btn" href="/stadium/{{ f.stadium_slug }}">会場ガイド</a>{% endif %}
-    {% if f.match_url %}<a class="text-link" href="{{ f.match_url }}" target="_blank" rel="nofollow noopener">Jリーグ公式 →</a>{% endif %}
-  </div>
-</article>
-{% endfor %}
-</div>
-{% endif %}
+  <nav class="club-jump" aria-label="クラブのページ内メニュー"><a href="#next-match">次の試合</a><a href="#team-updates">最新動向</a><a href="#match-recap">振り返り</a><a href="#match-comments">コメント</a><a href="#players-to-watch">注目選手</a><a href="#team-form">戦績・順位</a><a href="#club-schedule">日程</a><a href="#club-news">ニュース</a><a href="#club-goods">コラボグッズ</a><a href="#squad">選手</a><a href="#home-guide">観戦ガイド</a><a href="#club-voices">人・SNS</a><a href="#fan-messages">応援</a><a href="#fan-ranking">閲覧ランキング</a></nav>
 
-{% include '_sapporo_editorial.html' %}
-{% include '_club_goods.html' %}
-<div class="club-content-grid">
-<section id="squad">
-  <div class="section-head compact"><div><p class="eyebrow">SQUAD</p><h2>所属選手</h2></div><a href="/players?club={{ club.slug }}">全選手 →</a></div>
+  {% if next %}
+  <section id="next-match" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">NEXT MATCH</p><h2>次の90分。</h2></div><span class="hub-update">日程確認 {{ hub.checked_at }} JST</span></div>
+    <div class="next-layout">
+      <article class="next-main">
+        <div class="match-meta"><span class="location-tag {{ next.home_away|lower }}">{{ next.home_away }}</span><span>{{ next.competition }} {{ next.round }}</span></div>
+        <time class="match-day" datetime="{{ next.date }}">{{ next.date_label }} <span>{{ next.kickoff or '時間未定' }}{% if next.kickoff %}<small> KICK OFF</small>{% endif %}</span></time>
+        <h3><span>{{ club.name }}</span><small>VS</small><strong>{{ next.opponent_name }}</strong></h3>
+        <dl class="match-details"><div><dt>会場</dt><dd>{{ next.venue_full }}</dd></div><div><dt>放送・配信</dt><dd>{{ next.broadcast or '公式の試合情報で確認' }}</dd></div></dl>
+        {% if next.note %}<p class="hub-note">{{ next.note }}</p>{% endif %}
+        <div class="hub-actions">{% if next.ticket_url %}<a class="hub-button red" href="{{ next.ticket_url }}" target="_blank" rel="noopener">チケットを買う ↗</a>{% endif %}{% if next.calendar %}<a class="hub-button" href="{{ next.calendar }}" download="{{ club.slug }}-{{ next.date }}.ics">カレンダーに保存 ＋</a>{% endif %}</div>
+        <div class="match-foot"><a href="{{ next.source_url }}" target="_blank" rel="noopener">公式の試合情報 ↗</a>{% if next.event_url %}<a href="{{ next.event_url }}" target="_blank" rel="noopener">当日のイベント ↗</a>{% endif %}</div>
+      </article>
+      <aside class="match-preview">
+        <p class="hub-kicker">MATCH PREVIEW</p><h3>数字から見る、次の相手。</h3>
+        {% if standing and hub.comparison %}
+        <div class="comparison-head"><strong>{{ club.name }}</strong><span>リーグ戦</span><strong>{{ next.opponent }}</strong></div>
+        {% for key, label, suffix in [('rank','順位','位'),('points','勝点',''),('goals_for','得点',''),('goals_against','失点','')] %}<div class="comparison-row"><b>{{ standing[key] }}{{ suffix }}</b><span>{{ label }}</span><b>{{ hub.comparison[key] }}{{ suffix }}</b></div>{% endfor %}
+        <p class="hub-note">{{ club.name }} {{ standing.played }}試合 / {{ next.opponent }} {{ hub.comparison.played }}試合消化</p>
+        {% else %}<p>対戦相手と試合の詳細は、クラブ公式のプレビューへ。</p>{% endif %}
+        {% if hub.league_results %}<div class="preview-take"><b>今回、注目したいこと</b><p>{{ club.name }}は直近{{ hub.league_results|length }}試合のリーグ戦で{{ hub.form.gf }}得点・{{ hub.form.ga }}失点。{% if hub.form.ga > hub.form.gf %}失点をどこまで抑え、得点を勝点につなげられるか。{% else %}積み上げてきた得点力を、次の試合でも発揮できるか。{% endif %}</p><small>掲載データからの編集メモ</small></div>{% endif %}
+      </aside>
+    </div>
+  </section>
+  {% else %}<section id="next-match" class="hub-section"><div class="hub-heading"><h2>次の試合</h2></div><p>次の試合は公式発表を確認次第更新します。</p><a href="{{ hub.guide.official_url }}" target="_blank" rel="noopener">クラブ公式で日程を確認 ↗</a></section>{% endif %}
+
+  {% include '_sapporo_editorial.html' %}
+
+  <section id="team-form" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">WHERE WE STAND</p><h2>チームの現在地</h2></div><a href="/standings#{{ club.league|lower }}">{{ club.league }}の全順位 →</a></div>
+    <div class="form-layout">
+      <article class="hub-panel"><div class="panel-heading"><h3>リーグ戦、直近{{ hub.league_results|length }}試合</h3><span>新しい試合から</span></div>
+        {% if hub.league_results %}<div class="form-summary"><div class="form-badges">{% for r in hub.league_results %}<span class="form-badge {{ r.outcome }}" title="{{ r.date_label }} {{ r.opponent }} {{ r.club_score }}-{{ r.opponent_score }}">{{ r.label }}</span>{% endfor %}</div><p>{{ hub.form.win }}勝 {{ hub.form.draw }}分 {{ hub.form.loss }}敗 <span>／ {{ hub.form.gf }}得点 {{ hub.form.ga }}失点</span></p></div>{% endif %}
+        <div class="hub-results">{% for r in hub.league_results %}<div class="hub-result"><time>{{ r.date_label }}</time><span class="outcome {{ r.outcome }}">{{ r.label }}</span><span>{{ r.opponent }}</span><b>{{ r.club_score }} <i>−</i> {{ r.opponent_score }}</b><small>{{ r.venue or '' }}</small></div>{% else %}<p>リーグ戦の結果を確認中です。</p>{% endfor %}</div>
+        <a class="hub-inline" href="/results?club={{ club.slug }}">カップ戦を含む結果も見る →</a>
+      </article>
+      <article class="hub-panel nearby-panel"><div class="panel-heading"><h3>{{ club.name }}と近隣順位のクラブ</h3><span>{{ club.league }}</span></div>
+        <div class="nearby-label"><span>順位・クラブ</span><span>勝点 / 得失点</span></div>
+        {% for r in hub.nearby %}<a class="nearby-row {% if r.slug == club.slug %}is-sapporo{% endif %}" href="/club/{{ r.slug }}"><b>{{ r.rank }}</b><strong>{{ r.name }}</strong><span>{{ r.points }}<small>{{ '%+d'|format(r.goal_diff or 0) }}</small></span></a>{% endfor %}
+        {% if standing %}<div class="season-totals"><div><b>{{ standing.goals_for }}</b><span>シーズン得点</span></div><div><b>{{ standing.goals_against }}</b><span>シーズン失点</span></div><div><b>{{ '%+d'|format(standing.goal_diff or 0) }}</b><span>得失点差</span></div></div>{% endif %}
+        <p class="hub-note">順位データ更新 {{ hub.standing_checked or '確認中' }}<br><a href="https://www.jleague.jp/standings/{{ club.league|lower }}/" target="_blank" rel="noopener">Jリーグ公式で確認 ↗</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section id="club-schedule" class="hub-section" data-hub-filter="schedule">
+    <div class="hub-heading"><div><p class="hub-kicker">PLAN YOUR MATCHDAY</p><h2>次の応援を、カレンダーに。</h2></div><a href="{{ 'https://www.consadole-sapporo.jp/game/list/' if club.slug == 'sapporo' else hub.profile.source_url ~ 'day/' }}" target="_blank" rel="noopener">公式の全日程 ↗</a></div>
+    <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="開催地で日程を絞り込む"><button type="button" data-filter="all" aria-pressed="true">すべて</button><button type="button" data-filter="HOME" aria-pressed="false">HOME</button><button type="button" data-filter="AWAY" aria-pressed="false">AWAY</button></div><span data-filter-count aria-live="polite"></span></div>
+    <div class="hub-fixtures">{% for m in hub.matches %}<article class="schedule-row" data-filter-item data-category="{{ m.home_away }}"><div class="schedule-when"><time>{{ m.date[:4] }}<b>{{ m.date_label }}</b></time><span>{{ m.kickoff or '時間未定' }}</span></div><div class="schedule-versus"><small><span class="location-tag {{ m.home_away|lower }}">{{ m.home_away }}</span>{{ m.competition }} {{ m.round }}</small><h3>vs {{ m.opponent_name }}</h3><p>{{ m.venue_full }} <span>· {{ m.broadcast or '配信確認中' }}</span></p>{% if m.note %}<p class="schedule-change">{{ m.note }}</p>{% endif %}</div><div class="schedule-links">{% if m.ticket_url %}<a href="{{ m.ticket_url }}" target="_blank" rel="noopener">チケット ↗</a>{% endif %}{% if m.calendar %}<a href="{{ m.calendar }}" download="{{ club.slug }}-{{ m.date }}.ics">予定を保存 ＋</a>{% endif %}<a href="{{ m.source_url }}" target="_blank" rel="noopener">試合情報 ↗</a></div></article>{% endfor %}</div>
+    <button type="button" class="hub-more" data-filter-more hidden>残りの日程を見る</button><p class="hub-note">開始時刻は日本時間。日程変更の注記がある試合・時刻未定の試合は、カレンダー保存の対象外です。</p>
+  </section>
+
+  <section id="club-news" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">FROM THE CLUB</p><h2>いま、知っておきたいこと。</h2></div><span class="hub-update">クラブ公式のお知らせ</span></div>
+    <div class="club-news-grid">{% for n in hub.news %}<a class="club-news-card" href="{{ n.url }}" target="_blank" rel="noopener"><div><time>{{ n.date }}</time><span>{{ n.category }}</span></div><h3>{{ n.title }}</h3><span class="news-arrow">公式で読む ↗</span></a>{% endfor %}</div><p class="hub-note">取得 {{ hub.checked_at }} JST · <a href="{{ hub.guide.official_url }}" target="_blank" rel="noopener">最新のお知らせはクラブ公式へ ↗</a></p>
+  </section>
+
+  {% include '_club_goods.html' %}
+
+  <section id="squad" class="hub-section">
+    <div class="hub-heading"><div><p class="hub-kicker">KNOW YOUR TEAM</p><h2>名前がわかると、もっと熱くなる。</h2></div><span class="hub-update">登録 {{ roster|length }}選手</span></div>
+    {% if top_scorers %}<h3 class="scorers-label">チームの得点上位</h3><div class="hub-scorers">{% for p in top_scorers[:3] %}<a href="/player/{{ p.slug }}"><div class="player-shirt-number" aria-hidden="true">{{ p.number if p.number is not none else '—' }}</div><div class="scorer-name"><small>{{ p.position or '' }} / #{{ p.number if p.number is not none else '—' }}</small><h3>{{ p.name }}</h3><p><strong>{{ p.goals }}</strong> 得点 <span>{{ p.appearances if p.appearances is not none else '—' }}試合出場</span></p>{% include '_starting_rate.html' %}<span class="hub-inline">選手プロフィール →</span></div></a>{% endfor %}</div>{% endif %}
+    {% if club.slug == 'sapporo' %}{% include '_sapporo_spotlight.html' %}{% endif %}
     <details class="starting-method"><summary>スタメン率の計算方法・出典</summary><p>今季{{ club.league }}の先発回数 ÷ チームの終了済みリーグ戦数 × 100。途中出場・カップ戦は先発回数に含めません。次の試合への起用確率を予測した数値ではありません。加入前・欠場中の試合も分母に含みます。</p><p>集計期間：{{ hub.starting.since }}〜{{ hub.starting.through }} ／ {{ hub.starting.total }}試合中{{ hub.starting.covered }}試合の先発記録を確認。記録が揃うまでは割合を表示しません。</p><p>{% for source in hub.starting.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.round }}（{{ source.date }}）公式記録 ↗</a> {% endfor %}</p></details>
     <div class="squad-directory" data-hub-filter="players">
-      <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="ポジションで選手を絞り込む"><button type="button" data-filter="all" aria-pressed="true">全選手</button>{% for pos in ['GK','DF','MF','FW'] %}<button type="button" data-filter="{{ pos }}" aria-pressed="false">{{ pos }}</button>{% endfor %}</div><label class="player-search">名前・背番号で探す<input type="search" data-player-search placeholder="名前・背番号" autocomplete="off"></label></div>
+      <div class="filter-bar" hidden data-js-control><div class="hub-pills" role="group" aria-label="ポジションで選手を絞り込む"><button type="button" data-filter="all" aria-pressed="true">全選手</button>{% for pos in ['GK','DF','MF','FW'] %}<button type="button" data-filter="{{ pos }}" aria-pressed="false">{{ pos }}</button>{% endfor %}</div><label class="player-search">名前・背番号で探す<input type="search" data-player-search placeholder="例：選手名、背番号" autocomplete="off"></label></div>
       <p class="hub-note" data-filter-count aria-live="polite"></p><p class="hub-note">スタメン率の高い順 · 同率は背番号順</p><div class="hub-roster">{% for p in hub.ordered_roster %}<a class="hub-player" href="/player/{{ p.slug }}" data-filter-item data-category="{{ p.position or '' }}" data-search="{{ p.name }} {{ p.number if p.number is not none else '' }}"><b>{{ p.number if p.number is not none else '—' }}</b><div><small>{{ p.position or '—' }}</small><strong>{{ p.name }}</strong><span>{{ p.appearances if p.appearances is not none else '—' }} 出場 <i>·</i> {{ p.goals if p.goals is not none else '—' }} 得点</span>{% include '_starting_rate.html' %}</div><span aria-hidden="true">↗</span></a>{% endfor %}</div><button type="button" class="hub-more" data-filter-more hidden>全選手を表示</button>
     </div><p class="hub-note">選手データ更新 {{ hub.player_checked or '確認中' }} · 出場・得点は取得済みのJリーグ公式データ。「—」は未取得です。</p>
-</section>
-<aside>
-  <div class="panel sticky-card">
-    <p class="eyebrow">MATCHDAY BASE</p><h2>ホーム観戦</h2>
-    {% if club.stadium %}
-      <h3>{{ club.stadium.name }}</h3>
-      <p>{{ club.stadium.address or '住所確認中' }}</p>
-      <a class="btn primary full" href="/stadium/{{ club.stadium.slug }}">会場・アクセス・遠征ガイド</a>
-    {% else %}<p>ホームスタジアム情報を確認中です。</p>{% endif %}
-  </div>
-</aside>
-</div>
+  </section>
 
-<section class="section-head"><div><p class="eyebrow">RECENT FORM</p><h2>直近の戦績</h2></div><a href="/results?club={{ club.slug }}">結果一覧 →</a></section>
-<div class="results-list">
-{% for row in recent_results %}
-<div class="result-row"><time>{{ row.match_date }}</time><span class="league-chip">{{ row.result or '-' }}</span><strong>{{ club.name }}</strong><b class="score">{{ row.club_score }} - {{ row.opponent_score }}</b><span>{{ row.opponent }}</span><small>{{ row.competition }}{% if row.venue %} / {{ row.venue }}{% endif %}</small></div>
-{% endfor %}
+  {% if club.slug == 'sapporo' %}{% include '_sapporo_home_guide.html' %}{% else %}{% include '_club_home_guide.html' %}{% endif %}
+
+  {% include '_fan_messages.html' %}
+  {% include '_fan_rankings.html' %}
+  {% if club.slug == 'sapporo' %}{% include '_sapporo_social.html' %}{% else %}{% include '_club_social.html' %}{% endif %}
+
+  {% include '_club_everyday.html' %}
+  <div class="hub-source-note">データ：Jリーグ公式・{{ club.name }}公式。観戦案内は各欄に記載した公式情報をもとに編集。日程・ニュースの取得日時は各欄に表示しています。試合の変更、チケットの残席、当日の実施内容は公式ページをご確認ください。</div>
 </div>
-{% include '_fan_rankings.html' %}
-</div>{% endblock %}
+{% endblock %}

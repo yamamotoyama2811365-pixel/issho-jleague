@@ -125,7 +125,7 @@ def register(app, engine, clubs):
 
     @app.get('/api/fan/status')
     def fan_status():
-        return jsonify(ok=True, version=1, message_clubs=['sapporo'])
+        return jsonify(ok=True, version=2, message_clubs=sorted(slugs))
 
     @app.post('/api/fan/view')
     def fan_view():
@@ -152,7 +152,7 @@ def register(app, engine, clubs):
 
     @app.get('/api/fan/messages/<club>')
     def fan_messages(club):
-        if club != 'sapporo':
+        if club not in slugs:
             return jsonify(error='このクラブの受付は準備中です。'), 404
         with engine.connect() as conn:
             rows = conn.execute(select(messages.c.id, messages.c.nickname, messages.c.body, messages.c.created_at)
@@ -160,8 +160,10 @@ def register(app, engine, clubs):
                 .order_by(messages.c.created_at.desc(), messages.c.id).limit(30)).mappings().all()
         return jsonify(messages=[dict(row) for row in rows])
 
-    @app.post('/api/fan/messages/sapporo')
-    def fan_submit():
+    @app.post('/api/fan/messages/<club>')
+    def fan_submit(club):
+        if club not in slugs:
+            return jsonify(error='クラブが見つかりません。'), 404
         payload = request.get_json()
         if payload.get('website') or payload.get('agree') is not True:
             return jsonify(error='投稿ルールを確認してください。'), 400
@@ -174,7 +176,7 @@ def register(app, engine, clubs):
         try:
             with engine.begin() as conn:
                 limited(conn, 'message', 1800)
-                conn.execute(messages.insert().values(id=mid, club='sapporo', nickname=nickname, body=body,
+                conn.execute(messages.insert().values(id=mid, club=club, nickname=nickname, body=body,
                     status='pending', created_at=int(time.time()), delete_hash=hashlib.sha256(delete_token.encode()).hexdigest()))
         except IntegrityError:
             return jsonify(error='連続投稿を防ぐため、30分ほど時間を空けてください。'), 429
