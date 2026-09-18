@@ -44,7 +44,11 @@ def build_fan_hub(club,roster,standing,league_rows,fixtures,today=None):
                opponent=f['away_name'] if home else f['home_name'],opponent_name=f['away_name'] if home else f['home_name'],
                competition=f.get('competition') or '明治安田'+club.league+'リーグ',round=f.get('round_label',''),
                venue_full=f.get('venue') or '',venue=f.get('venue') or '',source_url=url,ticket_url=f.get('ticket_url'),note='',completed=False)
-        if m['date']>=today:matches[url]=m
+        if m['date']>=today:
+            previous=matches.get(url,{})
+            m['broadcast']=previous.get('broadcast','')
+            m['note']=previous.get('note','')
+            matches[url]=m
     # Calendar and fixture sources can use different URL shapes for the same match.
     unique={}
     for m in matches.values():

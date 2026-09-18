@@ -1,11 +1,22 @@
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from league_content import lineup, soup_for
+from league_content import lineup, soup_for, schedule
 from fan_editorial import recent_player_form
 from lineup_stats import starting_rates
 
 class OfficialLineupTests(unittest.TestCase):
+    def test_future_calendar_keeps_kickoff_broadcast_and_cup_name(self):
+        html='''<div class="m-schedule"><a class="m-schedule__link" href="/match/emperor/2026/092317/">
+        <div class="m-schedule__team-home"><span class="m-schedule__team-name" data-media="pc">鹿島アントラーズ</span></div>
+        <div class="m-schedule__team-away"><span class="m-schedule__team-name" data-media="pc">ヴァンフォーレ甲府</span></div>
+        <p class="m-schedule__time-text">17:00</p><p class="m-schedule__info-platform">スカパー！</p>
+        <p class="m-schedule__info-stadium" data-media="pc">メルカリスタジアム</p></a></div>'''
+        match=schedule(html,'鹿島アントラーズ')[0]
+        self.assertEqual((match['date'],match['kickoff'],match['competition'],match['broadcast']),
+                         ('2026-09-23','17:00','天皇杯','スカパー！'))
+        self.assertFalse(match['completed'])
+
     def setUp(self):
         self.html = (Path(__file__).parent/'fixtures/sendai-sapporo-lineup.html').read_text()
         self.facts = lineup(self.html)

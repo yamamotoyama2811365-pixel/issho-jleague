@@ -27,6 +27,7 @@ def get(url):
         try:
             r=requests.get(url,timeout=30,headers={'User-Agent':'IsshoJLeague/2.0 (official fan guide facts)'})
             r.raise_for_status()
+            r.encoding='utf-8'
             return r.text
         except requests.RequestException:
             if attempt==2:raise
@@ -37,11 +38,19 @@ def collect_club(item):
     league,name,slug=item
     matches={};recent_news=[]
     # The J.League club calendar is month-scoped. Fetch every month in the
-    # current autumn/spring season so rate denominators never omit August.
+    # current autumn/spring season: completed games for rates, and all published
+    # future fixtures so every club has the same season calendar as Sapporo.
     start_year=NOW.year if NOW.month>=8 else NOW.year-1
     year,month=start_year,8
-    while (year,month)<=(NOW.year,NOW.month):
-        html=get(f'https://www.jleague.jp/club/{OFFICIAL_SLUGS.get(slug,slug)}/day/?year={year}&month={month}')
+    while (year,month)<=(start_year+1,6):
+        cached=CACHE/f'calendar-{slug}-{year}-{month:02}.html'
+        future=(year,month)>(NOW.year,NOW.month)
+        fresh=cached.exists() and NOW.timestamp()-cached.stat().st_mtime<12*3600
+        if future and fresh:
+            html=cached.read_text()
+        else:
+            html=get(f'https://www.jleague.jp/club/{OFFICIAL_SLUGS.get(slug,slug)}/day/?year={year}&month={month}')
+            if future:cached.write_text(html)
         rows=schedule(html,name)
         for m in rows:
             if m['date']>=f'{start_year}-08-01':matches[m['source_url']]=m

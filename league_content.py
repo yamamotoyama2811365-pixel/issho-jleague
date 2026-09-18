@@ -42,14 +42,15 @@ def schedule(html, club_name):
         ended='試合終了' in text(card) and len(scores)==2 and all(x.isdigit() for x in scores)
         league=hit.group(1).upper()
         url=urljoin(BASE,a['href']).split('#')[0]
-        kickoff=re.search(r'\d{1,2}:\d{2}',text(card.select_one('.m-schedule__status-time')))
+        kickoff=re.search(r'\d{1,2}:\d{2}',text(card.select_one('.m-schedule__time-text, .m-schedule__status-time')))
+        broadcast=text(card.select_one('.m-schedule__info-platform'))
         ticket=card.select_one('a[href*="jleague-ticket.jp"]')
         found[url]=dict(date=day,home=home,away=away,home_away='HOME' if name_key(home)==name_key(club_name) else 'AWAY',
             opponent=away if name_key(home)==name_key(club_name) else home,completed=ended,
-            competition='明治安田'+league+'リーグ' if league in ['J1','J2','J3'] else 'ルヴァンカップ' if league=='LEAGUECUP' else league,
+            competition='明治安田'+league+'リーグ' if league in ['J1','J2','J3'] else {'LEAGUECUP':'ルヴァンカップ','EMPEROR':'天皇杯','ACLE':'ACL Elite','ACL2':'ACL Two'}.get(league,league),
             round='',home_score=int(scores[0]) if ended else None,away_score=int(scores[1]) if ended else None,
             source_url=url,venue=text(card.select_one('.m-schedule__info-stadium[data-media="pc"]')),
-            kickoff=kickoff.group() if kickoff else None,ticket_url=ticket['href'] if ticket else None)
+            kickoff=kickoff.group() if kickoff else None,broadcast=broadcast,ticket_url=ticket['href'] if ticket else None)
     return list(found.values())
 
 
