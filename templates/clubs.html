@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}推しクラブを探す | MATCHDAY{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="/static/club-directory.css?v=1">{% endblock %}
 {% block content %}
-<section class="page-head"><p class="eyebrow">FIND YOUR CLUB</p><h1>推しクラブを探す</h1><p>リーグ別・順位順で探す60クラブ。現在の成績と次の試合を確認し、日程・所属選手・ホーム会場へ。</p></section>
-<section data-tabs data-query-league class="league-section" aria-label="リーグ別クラブ一覧">
+<section class="page-head club-directory-head"><p class="eyebrow">FIND YOUR CLUB</p><h1>推しクラブを探す</h1><p>J1・J2・J3の60クラブを順位順に。成績と次の試合を見比べて、気になるクラブへ。</p></section>
+<section data-tabs data-query-league class="league-section club-directory" aria-label="リーグ別クラブ一覧">
 <div class="league-tabs" data-tab-list aria-label="クラブのリーグ">{% for league in ['J1','J2','J3'] %}<a href="#{{ league|lower }}" data-tab="{{ league|lower }}">{{ league }}</a>{% endfor %}</div>
 <label class="club-filter">クラブ名・ホーム会場で検索 <input type="search" data-club-search placeholder="例：浦和、埼玉" autocomplete="off"></label>
 <p class="directory-count" data-club-count role="status" aria-live="polite"></p>
 {% for league in ['J1','J2','J3'] %}
 <div id="{{ league|lower }}" data-tab-panel="{{ league|lower }}">
 <div class="league-summary"><h2>{{ league }} クラブ一覧</h2><a href="/standings#{{ league|lower }}">全順位・成績を比較 →</a></div>
-<div class="club-grid">
+<div class="club-banner-list">
 {% for c in clubs if c.league == league %}
 {% set st = standing_map.get(c.id) %}{% set f = next_map.get(c.id) %}
-<article class="club-card rich" data-club-card data-search="{{ c.name }} {{ c.stadium.name if c.stadium else '' }}">
-  <div class="club-card-top"><span class="league-chip">{{ league }}</span>{% if st %}<strong>{{ st.rank }}<small>位</small></strong>{% endif %}</div>
-  <h3><a href="/club/{{ c.slug }}">{{ c.name }}</a></h3>
-  {% if st %}<p class="club-record"><b>{{ st.points }}<small> pt</small></b><span>{{ st.played }}試合 {{ st.wins }}勝 {{ st.draws }}分 {{ st.losses }}敗</span></p>{% endif %}
-  <div class="club-next"><span class="eyebrow">NEXT MATCH</span>{% if f %}<time>{{ f.match_date }} {{ f.kickoff or '時間未定' }} / {{ f.round_label }}</time><strong><span class="league-chip">{{ 'HOME' if f.home_club_id == c.id else 'AWAY' }}</span> vs {{ f.away_name if f.home_club_id == c.id else f.home_name }}</strong>{% else %}<p>次戦の日程は更新をお待ちください。</p>{% endif %}</div>
-  <p class="club-home">HOME：{% if c.stadium %}<a href="/stadium/{{ c.stadium.slug }}">{{ c.stadium.name }} →</a>{% else %}会場情報準備中{% endif %}</p>
-  <div class="card-links"><a class="btn" href="/schedule?league={{ league }}&club={{ c.slug }}">試合日程</a><a class="btn" href="/players?club={{ c.slug }}">所属選手</a><a class="text-link" href="/club/{{ c.slug }}">クラブ詳細 →</a></div>
+<article class="club-banner" data-club-card data-search="{{ c.name }} {{ c.stadium.name if c.stadium else '' }}" aria-labelledby="club-name-{{ c.slug }}">
+  <div class="club-banner-rank" aria-label="{% if st %}{{ st.rank }}位{% else %}順位未確定{% endif %}"><strong>{{ st.rank if st else '—' }}</strong><small>位</small></div>
+  <div class="club-banner-identity">
+    <h3 id="club-name-{{ c.slug }}"><a href="/club/{{ c.slug }}">{{ c.name }}</a></h3>
+    <p>{% if c.stadium %}<span>ホーム</span><a href="/stadium/{{ c.stadium.slug }}">{{ c.stadium.name }} ↗</a>{% else %}ホーム会場情報を確認中{% endif %}</p>
+  </div>
+  <div class="club-banner-record">{% if st %}<strong>{{ st.points }}<small> 勝点</small></strong><span>{{ st.played }}試合 · {{ st.wins }}勝 {{ st.draws }}分 {{ st.losses }}敗</span>{% else %}<span>成績確認中</span>{% endif %}</div>
+  <div class="club-banner-next"><span class="club-banner-label">次の試合</span>{% if f %}<time>{{ f.match_date }} {{ f.kickoff or '時間未定' }}{% if f.round_label %} · {{ f.round_label }}{% endif %}</time><strong><span class="club-banner-side">{{ 'HOME' if f.home_club_id == c.id else 'AWAY' }}</span><span>vs {{ f.away_name if f.home_club_id == c.id else f.home_name }}</span></strong>{% else %}<p>日程を確認中</p>{% endif %}</div>
+  <div class="club-banner-actions"><a class="club-banner-open" href="/club/{{ c.slug }}" aria-label="{{ c.name }}のクラブ詳細">クラブ詳細 <span aria-hidden="true">→</span></a><div><a href="/schedule?league={{ league }}&club={{ c.slug }}">試合日程</a><a href="/players?club={{ c.slug }}">所属選手</a></div></div>
 </article>
 {% endfor %}
 </div>
