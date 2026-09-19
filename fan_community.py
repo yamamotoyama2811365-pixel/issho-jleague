@@ -12,7 +12,12 @@ from sqlalchemy import MetaData, Table, Column, String, Integer, Text, select, f
 from sqlalchemy.exc import IntegrityError
 
 metadata = MetaData()
-views = Table('fan_views', metadata, Column('id', String(64), primary_key=True), Column('club', String(80), nullable=False, index=True), Column('created_at', Integer, nullable=False, index=True))
+views = Table('fan_views', metadata,
+    Column('id', String(64), primary_key=True),
+    Column('club', String(80), nullable=False, index=True),
+    Column('source', String(32), nullable=True, index=True),
+    Column('path', String(200), nullable=True),
+    Column('created_at', Integer, nullable=False, index=True))
 messages = Table('fan_messages', metadata,
     Column('id', String(32), primary_key=True), Column('club', String(80), nullable=False, index=True),
     Column('nickname', String(12), nullable=False), Column('body', String(20), nullable=False),
@@ -22,6 +27,7 @@ limits = Table('fan_limits', metadata, Column('id', String(64), primary_key=True
 settings = Table('fan_settings', metadata, Column('key', String(32), primary_key=True), Column('value', Text, nullable=False))
 ORIGINS = {'https://issho-jleague.pages.dev', 'https://issho-jleague.onrender.com'}
 REPORT_REASONS = {'abuse', 'personal', 'spam', 'other'}
+TRAFFIC_SOURCES = {'google_organic','bing_organic','yahoo_organic','x','threads_sns','direct','internal','referral','unknown'}
 JST = timezone(timedelta(hours=9))
 
 
@@ -30,6 +36,10 @@ def initialize(engine):
         if engine.dialect.name == 'postgresql':
             conn.execute(text('SELECT pg_advisory_xact_lock(74213650)'))
         metadata.create_all(conn)
+        if engine.dialect.name == 'postgresql':
+            conn.execute(text("ALTER TABLE fan_views ADD COLUMN IF NOT EXISTS source VARCHAR(32)"))
+            conn.execute(text("ALTER TABLE fan_views ADD COLUMN IF NOT EXISTS path VARCHAR(200)"))
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_fan_views_source ON fan_views(source)"))
         key = conn.scalar(select(settings.c.value).where(settings.c.key == 'hash_secret'))
         if not key:
             key = secrets.token_hex(32)
@@ -125,7 +135,7 @@ def register(app, engine, clubs):
 
     @app.get('/api/fan/status')
     def fan_status():
-        return jsonify(ok=True, version=2, message_clubs=sorted(slugs))
+        return jsonify(ok=True, version=3, message_clubs=sorted(slugs))
 
     @app.post('/api/fan/view')
     def fan_view():
@@ -141,7 +151,13 @@ def register(app, engine, clubs):
             with engine.begin() as conn:
                 # A single connection cannot contribute to every club in a short burst.
                 limited(conn, 'view-burst', 5)
-                conn.execute(views.insert().values(id=key, club=club, created_at=now))
+                source=payload.get('source')
+                if not isinstance(source,str) or source not in TRAFFIC_SOURCES:
+                    source='unknown'
+                conn.execute(views.insert().values(
+                    id=key, club=club, source=source,
+                    path=f'/club/{club}/', created_at=now
+                ))
         except IntegrityError:
             pass
         return ('', 204)
@@ -149,6 +165,33 @@ def register(app, engine, clubs):
     @app.get('/api/fan/rankings')
     def fan_rankings():
         return jsonify(rankings(engine, clubs))
+
+    @app.get('/api/fan/traffic')
+    def fan_traffic():
+        raw=(request.args.get('day') or '').strip()
+        try:
+            day=datetime.strptime(raw,'%Y-%m-%d').date() if raw else datetime.now(JST).date()
+        except ValueError:
+            return jsonify(error='日付はYYYY-MM-DDで指定してください。'),400
+        start=int(datetime(day.year,day.month,day.day,tzinfo=JST).timestamp())
+        end=start+86400
+        with engine.connect() as conn:
+            total=int(conn.scalar(select(func.count()).select_from(views).where(
+                views.c.created_at>=start,views.c.created_at<end
+            )) or 0)
+            source_rows=conn.execute(
+                select(views.c.source,func.count()).where(
+                    views.c.created_at>=start,views.c.created_at<end
+                ).group_by(views.c.source).order_by(func.count().desc())
+            ).all()
+            page_rows=conn.execute(
+                select(views.c.path,func.count()).where(
+                    views.c.created_at>=start,views.c.created_at<end
+                ).group_by(views.c.path).order_by(func.count().desc()).limit(10)
+            ).all()
+        sources={(source or 'unknown'):int(count) for source,count in source_rows}
+        top_pages=[{'path':path or '/', 'views':int(count)} for path,count in page_rows]
+        return jsonify(day=day.isoformat(),pageviews=total,sources=sources,top_pages=top_pages)
 
     @app.get('/api/fan/messages/<club>')
     def fan_messages(club):
