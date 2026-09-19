@@ -1,6 +1,7 @@
 import tempfile
 import time
 import unittest
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from unittest.mock import patch
 from flask import Flask
@@ -52,6 +53,20 @@ class FanCommunityTests(unittest.TestCase):
         data=rankings(self.engine,CLUBS,now=1800000030);rows=data['leagues']['J1'];self.assertEqual([r['rank'] for r in rows],[1,1,None]);self.assertTrue(rows[0]['tied']);self.assertFalse(rows[2]['tied'])
         self.assertFalse(any('count' in r or 'views' in r for r in rows))
         self.assertTrue(all(r['rank'] is None for r in rankings(self.engine,CLUBS,now=1800000030+8*86400)['leagues']['J1']))
+    def test_view_source_and_daily_traffic(self):
+        now=int(time.time())
+        day=datetime.fromtimestamp(now,timezone(timedelta(hours=9))).date().isoformat()
+        with patch('fan_community.time.time',return_value=now):
+            self.post('view',{'club':'a','source':'x'})
+        with self.engine.connect() as conn:
+            row=conn.execute(select(views)).mappings().one()
+            self.assertEqual(row['source'],'x')
+            self.assertEqual(row['path'],'/club/a/')
+        data=self.client.get('/api/fan/traffic?day='+day).get_json()
+        self.assertEqual(data['pageviews'],1)
+        self.assertEqual(data['sources'],{'x':1})
+        self.assertEqual(data['top_pages'][0],{'path':'/club/a/','views':1})
+
     def test_cleanup_only_feature_retention(self):
         self.submit()
         with self.engine.begin() as conn:
