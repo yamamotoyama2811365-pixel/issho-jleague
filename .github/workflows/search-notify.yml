@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '55 13,21 * * *'
+    # Notify after the weekend pre-match refresh (11:55 JST).
+    - cron: '55 2 * * 6,0'
 permissions:
   contents: read
 jobs:
