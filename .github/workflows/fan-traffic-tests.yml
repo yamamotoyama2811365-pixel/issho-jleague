@@ -1,0 +1,27 @@
+name: Fan traffic analytics verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'fan_community.py'
+      - 'static/fan-community.js'
+      - 'tests/test_fan_community.py'
+      - '.github/workflows/fan-traffic-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_fan_community.py' -v
+      - run: node --check static/fan-community.js
+      - run: python -m compileall -q fan_community.py tests/test_fan_community.py
