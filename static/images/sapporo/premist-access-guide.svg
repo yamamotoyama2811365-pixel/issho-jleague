@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 480" role="img" aria-labelledby="title desc">
+<title id="title">地下鉄さっぽろ駅から大和ハウス プレミストドームへのアクセス早見図</title>
+<desc id="desc">地下鉄東豊線でさっぽろから終点福住まで約13分。福住駅3番出口から徒歩約10分で大和ハウス プレミストドームへ。駅での待ち時間や混雑は別に見込みます。</desc>
+<rect width="1120" height="480" rx="18" fill="#faf8f2"/>
+<g font-family="'Noto Sans JP',system-ui,sans-serif" text-anchor="middle" fill="#352d32">
+<text x="560" y="53" font-size="26" font-weight="800">さっぽろ → 福住 → プレミストドーム</text><text x="560" y="85" font-size="15" fill="#796d72">地下鉄東豊線を終点まで。福住駅では「3番出口」を目印に。</text>
+<path d="M191 204H929" stroke="#d4cdcd" stroke-width="10"/>
+<path d="M191 204H560" stroke="#1687b4" stroke-width="10"/>
+<path d="M560 204H929" stroke="#c12f49" stroke-width="8" stroke-dasharray="10 9"/>
+<g fill="#fff" stroke-width="6"><circle cx="191" cy="204" r="20" stroke="#1687b4"/><circle cx="560" cy="204" r="20" stroke="#1687b4"/><circle cx="929" cy="204" r="20" stroke="#c12f49"/></g>
+<rect x="257" y="134" width="237" height="43" rx="21" fill="#dceff6"/><text x="376" y="161" font-size="18" font-weight="800" fill="#126a8c">東豊線 約13分</text>
+<rect x="650" y="134" width="187" height="43" rx="21" fill="#f1dfe3"/><text x="744" y="161" font-size="18" font-weight="800" fill="#a52640">徒歩 約10分</text>
+<text x="191" y="267" font-size="25" font-weight="800">さっぽろ駅</text><text x="191" y="300" font-size="15">地下鉄東豊線</text>
+<text x="560" y="267" font-size="25" font-weight="800">福住駅</text><text x="560" y="300" font-size="15">東豊線の終点</text><rect x="496" y="318" width="128" height="36" rx="7" fill="#126a8c"/><text x="560" y="343" font-size="18" font-weight="800" fill="#fff">3番出口</text>
+<text x="929" y="267" font-size="22" font-weight="800">プレミストドーム</text><text x="929" y="300" font-size="14">入場ゲートはチケットで確認</text>
+<rect x="103" y="390" width="914" height="51" rx="9" fill="#eee8df"/><text x="560" y="422" font-size="15">列車の待ち時間・駅構内の移動・試合日の混雑は、目安時間に加えて計画しましょう。</text>
+<text x="560" y="467" font-size="12" fill="#796d72">路線と移動順の概略図（地理的な縮尺はありません） / 参照：ドーム公式 地下鉄アクセス</text>
+</g></svg>
