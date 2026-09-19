@@ -10,6 +10,25 @@
     if (!response.ok) throw new Error(data.error || '通信できませんでした。時間をおいてお試しください。');
     return data;
   }
+  function trafficSource() {
+    const key='jleague-entry-source-v1';
+    try { const saved=sessionStorage.getItem(key); if(saved) return saved; } catch (_) {}
+    let source='direct';
+    try {
+      if(document.referrer){
+        const host=new URL(document.referrer).hostname.toLowerCase();
+        if(host===location.hostname||host==='issho-jleague.onrender.com') source='internal';
+        else if(host==='t.co'||host==='x.com'||host.endsWith('.x.com')||host==='twitter.com'||host.endsWith('.twitter.com')) source='x';
+        else if(host==='threads.net'||host.endsWith('.threads.net')||host.includes('instagram.com')||host.includes('facebook.com')) source='threads_sns';
+        else if(host.includes('google.')) source='google_organic';
+        else if(host.includes('bing.com')) source='bing_organic';
+        else if(host.includes('search.yahoo.')) source='yahoo_organic';
+        else source='referral';
+      }
+    } catch (_) { source='unknown'; }
+    try { sessionStorage.setItem(key,source); } catch (_) {}
+    return source;
+  }
   // No tracking during previews/tests. The HTML never waits for the API to start.
   if (club && location.hostname === 'issho-jleague.pages.dev' && !navigator.webdriver && !new URLSearchParams(location.search).has('v')) {
     let timer;
@@ -19,7 +38,7 @@
       timer = setTimeout(() => {
         const key = 'fan-view:' + club;
         try { if (Date.now() - Number(sessionStorage.getItem(key) || 0) < 1800000) return; } catch (_) {}
-        fetch(api + '/api/fan/view', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({club}),credentials:'omit',keepalive:true}).then(response=>{
+        fetch(api + '/api/fan/view', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({club,source:trafficSource()}),credentials:'omit',keepalive:true}).then(response=>{
           if(response.ok) try { sessionStorage.setItem(key,String(Date.now())); } catch (_) {}
         }).catch(()=>{});
       },5000);
