@@ -29,6 +29,8 @@ on:
   schedule:
     # Refresh the next round every morning/evening (06:20 / 22:20 JST).
     - cron: '20 13,21 * * *'
+    # Matchday refresh before Saturday/Sunday kickoffs (11:20 JST).
+    - cron: '20 2 * * 6,0'
 
 permissions:
   contents: write
